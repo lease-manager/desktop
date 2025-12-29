@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="kienzle.desktop.MainLayout"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="551.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.MainLayoutController">
+   <children>
+      <BorderPane prefHeight="551.0" prefWidth="800.0">
+         <center>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="165.0" prefWidth="600.0">
+                     <children>
+                        <Label fx:id="lblTitle" alignment="CENTER" contentDisplay="CENTER" text="lblTitle" />
+                        <Label fx:id="lblVerpaechterTxt" text="lblVerpaechterTxt" />
+                        <AnchorPane prefHeight="185.0" prefWidth="600.0">
 
+</AnchorPane>
+                        <TableView prefHeight="258.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="columnID" />
+                              <TableColumn prefWidth="75.0" text="columnFlurstuecknr" />
+                              <TableColumn prefWidth="75.0" text="columnGemarkung" />
+                              <TableColumn prefWidth="75.0" text="columnGroese" />
+                              <TableColumn prefWidth="75.0" text="columnWirtschaftsart" />
+                              <TableColumn prefWidth="75.0" text="columnDescription" />
+                              <TableColumn prefWidth="75.0" text="columnEuro" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="106.0" prefWidth="646.0" />
+               </children>
+            </VBox>
+         </center></BorderPane>
+   </children>
 </AnchorPane>
