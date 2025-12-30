@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<!-- WICHTIG: type="..." definiert, wovon die Java-Klasse erbt -->
+<!-- KEIN fx:controller Attribut hier! -->
+<fx:root type="javafx.scene.layout.StackPane"
+         xmlns="http://javafx.com/javafx/17"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TextField fx:id="textField" style="-fx-padding: 5 5 5 5;" />
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="kienzle.customcontrols.LabeledTextField"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+        <Label fx:id="hintLabel"
+               style="-fx-font-size: 10px; -fx-text-fill: gray;"
+               StackPane.alignment="TOP_LEFT"
+               mouseTransparent="true">
+            <StackPane.margin>
+                <Insets top="2" left="5" />
+            </StackPane.margin>
+        </Label>
+    </children>
+</fx:root>
