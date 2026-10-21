@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Amtsgericht Mitte",
+    "strasse": "Littenstraße",
+    "hausnummer": "12-17",
+    "plz": "10179",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Hamburg",
+    "strasse": "Sievekingplatz",
+    "hausnummer": "1",
+    "plz": "20355",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Leipzig",
+    "strasse": "Bernhard-Göring-Straße",
+    "hausnummer": "64",
+    "plz": "04275",
+    "ort": "Leipzig"
+  }
+]

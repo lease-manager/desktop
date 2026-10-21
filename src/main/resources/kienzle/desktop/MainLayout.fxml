@@ -1,47 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="551.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.MainLayoutController">
+<AnchorPane prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.MainLayoutController">
    <children>
-      <BorderPane prefHeight="551.0" prefWidth="800.0">
-         <center>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.32" prefHeight="650.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <VBox spacing="10.0">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
                <children>
-                  <VBox prefHeight="165.0" prefWidth="600.0">
-                     <children>
-                        <Label fx:id="lblTitle" alignment="CENTER" contentDisplay="CENTER" text="lblTitle" />
-                        <Label fx:id="lblVerpaechterTxt" text="lblVerpaechterTxt" />
-                        <StackPane>
-                            <children>
-                                <TextField fx:id="textField" />
-                                <Label fx:id="hintLabel" style="-fx-font-size: 10px; -fx-text-fill: gray;" />
-                            </children>
-                        </StackPane>
-                        <TableView prefHeight="258.0" prefWidth="600.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="columnID" />
-                              <TableColumn prefWidth="75.0" text="columnFlurstuecknr" />
-                              <TableColumn prefWidth="75.0" text="columnGemarkung" />
-                              <TableColumn prefWidth="75.0" text="columnGroese" />
-                              <TableColumn prefWidth="75.0" text="columnWirtschaftsart" />
-                              <TableColumn prefWidth="75.0" text="columnDescription" />
-                              <TableColumn prefWidth="75.0" text="columnEuro" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </VBox>
-                  <HBox prefHeight="106.0" prefWidth="646.0" />
+                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Pachtverträge" />
+                  <ListView fx:id="contractList" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
-         </center></BorderPane>
+            <VBox spacing="14.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Label fx:id="lblTitle" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Pachtvertrag" />
+                  <Label fx:id="lblVerpaechterTxt" style="-fx-font-size: 14px;" text="Verpächter" />
+
+                  <GridPane hgap="12.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints minWidth="180.0" halignment="RIGHT" />
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <children>
+                      <Label text="Größe m²:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                      <TextField fx:id="sizeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                      <Label text="Pachtzins in Euro:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                      <TextField fx:id="rentField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                      <Label text="Pachtverhältnis:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                      <TextField fx:id="durationField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                      <Label text="Beginn:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                      <TextField fx:id="startDateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                      <Label text="Günstiger Zeitraum:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                      <TextField fx:id="introRentField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                      <Label text="Erster Pachtzins:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                      <TextField fx:id="firstRentDateField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                      <Label text="Zahlungsempfänger:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                      <TextField fx:id="recipientField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                      <Label text="Geldinstitut:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                      <TextField fx:id="bankField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                      <Label text="IBAN:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                      <TextField fx:id="ibanField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+                      <Label text="BIC:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                      <TextField fx:id="bicField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                    </children>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                  </GridPane>
+
+                  <StackPane>
+                     <children>
+                        <TextField fx:id="textField" style="-fx-padding: 7 8 7 8;" />
+                        <Label mouseTransparent="true" style="-fx-font-size: 10px; -fx-text-fill: gray;" text="Verpächter" StackPane.alignment="TOP_LEFT">
+                           <StackPane.margin>
+                              <Insets left="8.0" top="2.0" />
+                           </StackPane.margin>
+                        </Label>
+                     </children>
+                  </StackPane>
+
+                  <TableView fx:id="detailTable" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="detailKeyColumn" prefWidth="260.0" text="Feld" />
+                        <TableColumn fx:id="detailValueColumn" prefWidth="420.0" text="Wert" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
    </children>
 </AnchorPane>

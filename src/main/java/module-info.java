@@ -1,6 +1,11 @@
 module kienzle.desktop {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
+    requires java.desktop;
+    requires org.apache.pdfbox;
+    requires org.apache.commons.logging;
+    requires com.google.gson;
 
     // Automatic module name for ControlsFX 11.2.1
     requires org.controlsfx.controls;
