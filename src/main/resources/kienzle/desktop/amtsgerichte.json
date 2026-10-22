@@ -1,10 +1,1606 @@
 [
   {
+    "name": "Amtsgericht Bad Waldsee",
+    "strasse": "Wurzacher Straße",
+    "hausnummer": "73",
+    "plz": "88339",
+    "ort": "Bad Waldsee"
+  },
+  {
+    "name": "Amtsgericht Bruchsal",
+    "strasse": "Schönbornstraße",
+    "hausnummer": "18",
+    "plz": "76646",
+    "ort": "Bruchsal"
+  },
+  {
+    "name": "Amtsgericht Langenburg",
+    "strasse": "Bächlinger Straße",
+    "hausnummer": "35",
+    "plz": "74595",
+    "ort": "Langenburg"
+  },
+  {
+    "name": "Amtsgericht Mannheim",
+    "strasse": "Schloss (Westflügel)",
+    "hausnummer": "",
+    "plz": "68159",
+    "ort": "Mannheim"
+  },
+  {
+    "name": "Amtsgericht Nagold",
+    "strasse": "Gerichtsplatz",
+    "hausnummer": "1",
+    "plz": "72202",
+    "ort": "Nagold"
+  },
+  {
+    "name": "Amtsgericht Riedlingen",
+    "strasse": "Kirchstraße",
+    "hausnummer": "20",
+    "plz": "88499",
+    "ort": "Riedlingen"
+  },
+  {
+    "name": "Amtsgericht Schopfheim",
+    "strasse": "Hauptstraße",
+    "hausnummer": "16",
+    "plz": "79650",
+    "ort": "Schopfheim"
+  },
+  {
+    "name": "Amtsgericht Calw",
+    "strasse": "Schillerstraße",
+    "hausnummer": "11",
+    "plz": "75365",
+    "ort": "Calw"
+  },
+  {
+    "name": "Amtsgericht Ettlingen",
+    "strasse": "Sternengasse",
+    "hausnummer": "26",
+    "plz": "76275",
+    "ort": "Ettlingen"
+  },
+  {
+    "name": "Amtsgericht Geislingen/Steige",
+    "strasse": "Schulstraße",
+    "hausnummer": "17",
+    "plz": "73312",
+    "ort": "Geislingen an der Steige"
+  },
+  {
+    "name": "Amtsgericht Überlingen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "8",
+    "plz": "88662",
+    "ort": "Überlingen"
+  },
+  {
+    "name": "Amtsgericht Waldshut-Tiengen",
+    "strasse": "Bismarckstraße",
+    "hausnummer": "23",
+    "plz": "79761",
+    "ort": "Waldshut-Tiengen"
+  },
+  {
+    "name": "Amtsgericht Backnang",
+    "strasse": "Stiftshof",
+    "hausnummer": "11",
+    "plz": "71522",
+    "ort": "Backnang"
+  },
+  {
+    "name": "Amtsgericht Biberach/Riß",
+    "strasse": "Alter Postplatz",
+    "hausnummer": "4",
+    "plz": "88400",
+    "ort": "Biberach an der Riß"
+  },
+  {
+    "name": "Amtsgericht Böblingen",
+    "strasse": "Steinbeisstraße",
+    "hausnummer": "7",
+    "plz": "71034",
+    "ort": "Böblingen"
+  },
+  {
+    "name": "Amtsgericht Mosbach",
+    "strasse": "Hauptstraße",
+    "hausnummer": "110",
+    "plz": "74821",
+    "ort": "Mosbach"
+  },
+  {
+    "name": "Amtsgericht Rottweil",
+    "strasse": "Königstraße",
+    "hausnummer": "20",
+    "plz": "78628",
+    "ort": "Rottweil"
+  },
+  {
+    "name": "Amtsgericht Schwäbisch Gmünd",
+    "strasse": "Rektor-Klaus-Straße",
+    "hausnummer": "21",
+    "plz": "73525",
+    "ort": "Schwäbisch Gmünd"
+  },
+  {
+    "name": "Amtsgericht Staufen im Breisgau",
+    "strasse": "Hauptstraße",
+    "hausnummer": "9",
+    "plz": "79219",
+    "ort": "Staufen im Breisgau"
+  },
+  {
+    "name": "Amtsgericht Tauberbischofsheim",
+    "strasse": "Schmiederstraße",
+    "hausnummer": "22",
+    "plz": "97941",
+    "ort": "Tauberbischofsheim"
+  },
+  {
+    "name": "Amtsgericht Wiesloch",
+    "strasse": "Bergstraße",
+    "hausnummer": "3",
+    "plz": "69168",
+    "ort": "Wiesloch"
+  },
+  {
+    "name": "Amtsgericht Aalen",
+    "strasse": "Stuttgarter Straße",
+    "hausnummer": "9/7",
+    "plz": "73430",
+    "ort": "Aalen"
+  },
+  {
+    "name": "Amtsgericht Besigheim",
+    "strasse": "Amtsgerichtsgasse",
+    "hausnummer": "5",
+    "plz": "74354",
+    "ort": "Besigheim"
+  },
+  {
+    "name": "Amtsgericht Freudenstadt",
+    "strasse": "Stuttgarter Straße",
+    "hausnummer": "15",
+    "plz": "72250",
+    "ort": "Freudenstadt"
+  },
+  {
+    "name": "Amtsgericht Künzelsau",
+    "strasse": "Schillerstraße",
+    "hausnummer": "13",
+    "plz": "74653",
+    "ort": "Künzelsau"
+  },
+  {
+    "name": "Amtsgericht Schwetzingen",
+    "strasse": "Zeyherstraße",
+    "hausnummer": "6",
+    "plz": "68723",
+    "ort": "Schwetzingen"
+  },
+  {
+    "name": "Amtsgericht Vaihingen an der Enz",
+    "strasse": "Franckstraße",
+    "hausnummer": "20",
+    "plz": "71665",
+    "ort": "Vaihingen an der Enz"
+  },
+  {
+    "name": "Amtsgericht Baden-Baden",
+    "strasse": "Gutenbergstraße",
+    "hausnummer": "17",
+    "plz": "76532",
+    "ort": "Baden-Baden"
+  },
+  {
+    "name": "Amtsgericht Buchen",
+    "strasse": "Amtsstraße",
+    "hausnummer": "26",
+    "plz": "74722",
+    "ort": "Buchen (Odenwald)"
+  },
+  {
+    "name": "Amtsgericht Heidelberg",
+    "strasse": "Kurfürsten-Anlage",
+    "hausnummer": "15",
+    "plz": "69115",
+    "ort": "Heidelberg"
+  },
+  {
+    "name": "Amtsgericht Konstanz",
+    "strasse": "Untere Laube",
+    "hausnummer": "12",
+    "plz": "78462",
+    "ort": "Konstanz"
+  },
+  {
+    "name": "Amtsgericht Lörrach",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "4",
+    "plz": "79539",
+    "ort": "Lörrach"
+  },
+  {
+    "name": "Amtsgericht Nürtingen",
+    "strasse": "Neuffener Straße",
+    "hausnummer": "28",
+    "plz": "72622",
+    "ort": "Nürtingen"
+  },
+  {
+    "name": "Amtsgericht Radolfzell am Bodensee",
+    "strasse": "Seetorstraße",
+    "hausnummer": "5",
+    "plz": "78315",
+    "ort": "Radolfzell am Bodensee"
+  },
+  {
+    "name": "Amtsgericht Reutlingen",
+    "strasse": "Gartenstraße",
+    "hausnummer": "40",
+    "plz": "72764",
+    "ort": "Reutlingen"
+  },
+  {
+    "name": "Amtsgericht Rottenburg",
+    "strasse": "Obere Gasse",
+    "hausnummer": "44",
+    "plz": "72108",
+    "ort": "Rottenburg am Neckar"
+  },
+  {
+    "name": "Amtsgericht Tuttlingen",
+    "strasse": "Werderstraße",
+    "hausnummer": "8",
+    "plz": "78532",
+    "ort": "Tuttlingen"
+  },
+  {
+    "name": "Amtsgericht Wertheim",
+    "strasse": "Friedrichstraße",
+    "hausnummer": "6",
+    "plz": "97877",
+    "ort": "Wertheim"
+  },
+  {
+    "name": "Amtsgericht Breisach am Rhein",
+    "strasse": "Kapuzinergasse",
+    "hausnummer": "2",
+    "plz": "79206",
+    "ort": "Breisach am Rhein"
+  },
+  {
+    "name": "Amtsgericht Emmendingen",
+    "strasse": "Karl-Friedrich-Straße",
+    "hausnummer": "25",
+    "plz": "79312",
+    "ort": "Emmendingen"
+  },
+  {
+    "name": "Amtsgericht Heidenheim a. d. Brenz",
+    "strasse": "Olgastraße",
+    "hausnummer": "22",
+    "plz": "89518",
+    "ort": "Heidenheim an der Brenz"
+  },
+  {
+    "name": "Amtsgericht Karlsruhe",
+    "strasse": "Schlossplatz",
+    "hausnummer": "23",
+    "plz": "76131",
+    "ort": "Karlsruhe"
+  },
+  {
+    "name": "Amtsgericht Offenburg",
+    "strasse": "Hindenburgstraße",
+    "hausnummer": "5",
+    "plz": "77654",
+    "ort": "Offenburg"
+  },
+  {
+    "name": "Amtsgericht Philippsburg",
+    "strasse": "Marktplatz",
+    "hausnummer": "8",
+    "plz": "76661",
+    "ort": "Philippsburg"
+  },
+  {
+    "name": "Amtsgericht Sankt Blasien",
+    "strasse": "Am Kurgarten",
+    "hausnummer": "15",
+    "plz": "79837",
+    "ort": "St. Blasien"
+  },
+  {
+    "name": "Amtsgericht Singen am Hohentwiel",
+    "strasse": "Erzbergerstraße",
+    "hausnummer": "28",
+    "plz": "78224",
+    "ort": "Singen (Hohentwiel)"
+  },
+  {
+    "name": "Amtsgericht Sinsheim",
+    "strasse": "Werderstraße",
+    "hausnummer": "12",
+    "plz": "74889",
+    "ort": "Sinsheim"
+  },
+  {
+    "name": "Amtsgericht Spaichingen",
+    "strasse": "Hauptstraße",
+    "hausnummer": "72",
+    "plz": "78549",
+    "ort": "Spaichingen"
+  },
+  {
+    "name": "Amtsgericht Stockach",
+    "strasse": "Tuttlinger Straße",
+    "hausnummer": "8",
+    "plz": "78333",
+    "ort": "Stockach"
+  },
+  {
+    "name": "Amtsgericht Balingen",
+    "strasse": "Ebertstraße",
+    "hausnummer": "20",
+    "plz": "72336",
+    "ort": "Balingen"
+  },
+  {
+    "name": "Amtsgericht Bühl",
+    "strasse": "Hauptstraße",
+    "hausnummer": "94",
+    "plz": "77815",
+    "ort": "Bühl"
+  },
+  {
+    "name": "Amtsgericht Esslingen am Neckar",
+    "strasse": "Ritterstraße",
+    "hausnummer": "8/10",
+    "plz": "73728",
+    "ort": "Esslingen am Neckar"
+  },
+  {
+    "name": "Amtsgericht Hechingen",
+    "strasse": "Heiligkreuzstraße",
+    "hausnummer": "9",
+    "plz": "72379",
+    "ort": "Hechingen"
+  },
+  {
+    "name": "Amtsgericht Karlsruhe-Durlach",
+    "strasse": "Karlsburgstraße",
+    "hausnummer": "10",
+    "plz": "76227",
+    "ort": "Karlsruhe"
+  },
+  {
+    "name": "Amtsgericht Kirchheim unter Teck",
+    "strasse": "Alleenstraße",
+    "hausnummer": "86",
+    "plz": "73230",
+    "ort": "Kirchheim unter Teck"
+  },
+  {
+    "name": "Amtsgericht Lahr/Schwarzwald",
+    "strasse": "Turmstraße",
+    "hausnummer": "15",
+    "plz": "77933",
+    "ort": "Lahr"
+  },
+  {
+    "name": "Amtsgericht Leonberg",
+    "strasse": "Schlosshof",
+    "hausnummer": "7",
+    "plz": "71229",
+    "ort": "Leonberg"
+  },
+  {
+    "name": "Amtsgericht Münsingen",
+    "strasse": "Schlosshof",
+    "hausnummer": "3",
+    "plz": "72525",
+    "ort": "Münsingen"
+  },
+  {
+    "name": "Amtsgericht Rastatt",
+    "strasse": "Herrenstraße",
+    "hausnummer": "18",
+    "plz": "76437",
+    "ort": "Rastatt"
+  },
+  {
+    "name": "Amtsgericht Schorndorf",
+    "strasse": "Burgschloss",
+    "hausnummer": "",
+    "plz": "73614",
+    "ort": "Schorndorf"
+  },
+  {
+    "name": "Amtsgericht Waiblingen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "48",
+    "plz": "71332",
+    "ort": "Waiblingen"
+  },
+  {
+    "name": "Amtsgericht Adelsheim",
+    "strasse": "Rietstraße",
+    "hausnummer": "4",
+    "plz": "74740",
+    "ort": "Adelsheim"
+  },
+  {
+    "name": "Amtsgericht Bad Säckingen",
+    "strasse": "Hauensteinstraße",
+    "hausnummer": "9",
+    "plz": "79713",
+    "ort": "Bad Säckingen"
+  },
+  {
+    "name": "Amtsgericht Bad Urach",
+    "strasse": "Beim Schloss",
+    "hausnummer": "1",
+    "plz": "72574",
+    "ort": "Bad Urach"
+  },
+  {
+    "name": "Amtsgericht Crailsheim",
+    "strasse": "Schloßplatz",
+    "hausnummer": "1",
+    "plz": "74564",
+    "ort": "Crailsheim"
+  },
+  {
+    "name": "Amtsgericht Öhringen",
+    "strasse": "Karlsvorstadt",
+    "hausnummer": "18",
+    "plz": "74613",
+    "ort": "Öhringen"
+  },
+  {
+    "name": "Amtsgericht Schönau im Schwarzwald",
+    "strasse": "Friedrichstraße",
+    "hausnummer": "24",
+    "plz": "79677",
+    "ort": "Schönau im Schwarzwald"
+  },
+  {
+    "name": "Amtsgericht Stuttgart-Bad Cannstatt",
+    "strasse": "Badstraße",
+    "hausnummer": "23",
+    "plz": "70372",
+    "ort": "Stuttgart"
+  },
+  {
+    "name": "Amtsgericht Tettnang",
+    "strasse": "Montfortplatz",
+    "hausnummer": "1",
+    "plz": "88069",
+    "ort": "Tettnang"
+  },
+  {
+    "name": "Amtsgericht Wolfach",
+    "strasse": "Hauptstraße",
+    "hausnummer": "40",
+    "plz": "77709",
+    "ort": "Wolfach"
+  },
+  {
+    "name": "Amtsgericht Bad Mergentheim",
+    "strasse": "Schloss",
+    "hausnummer": "5",
+    "plz": "97980",
+    "ort": "Bad Mergentheim"
+  },
+  {
+    "name": "Amtsgericht Marbach",
+    "strasse": "Strohgasse",
+    "hausnummer": "3",
+    "plz": "71672",
+    "ort": "Marbach am Neckar"
+  },
+  {
+    "name": "Amtsgericht Oberkirch",
+    "strasse": "Hauptstraße",
+    "hausnummer": "48",
+    "plz": "77704",
+    "ort": "Oberkirch"
+  },
+  {
+    "name": "Amtsgericht Pforzheim",
+    "strasse": "Lindenstraße",
+    "hausnummer": "8",
+    "plz": "75175",
+    "ort": "Pforzheim"
+  },
+  {
+    "name": "Amtsgericht Titisee-Neustadt",
+    "strasse": "Franz-Schubert-Weg",
+    "hausnummer": "3",
+    "plz": "79822",
+    "ort": "Titisee-Neustadt"
+  },
+  {
+    "name": "Amtsgericht Villingen-Schwenningen",
+    "strasse": "Niedere Straße",
+    "hausnummer": "94",
+    "plz": "78050",
+    "ort": "Villingen-Schwenningen"
+  },
+  {
+    "name": "Amtsgericht Ehingen/Donau",
+    "strasse": "Marktplatz",
+    "hausnummer": "3",
+    "plz": "89584",
+    "ort": "Ehingen (Donau)"
+  },
+  {
+    "name": "Amtsgericht Freiburg im Breisgau",
+    "strasse": "Holzmarkt",
+    "hausnummer": "2",
+    "plz": "79098",
+    "ort": "Freiburg im Breisgau"
+  },
+  {
+    "name": "Amtsgericht Kehl",
+    "strasse": "Hermann-Dietrich-Straße",
+    "hausnummer": "6",
+    "plz": "77694",
+    "ort": "Kehl"
+  },
+  {
+    "name": "Amtsgericht Müllheim",
+    "strasse": "Werderstraße",
+    "hausnummer": "37",
+    "plz": "79379",
+    "ort": "Müllheim"
+  },
+  {
+    "name": "Amtsgericht Schwäbisch Hall",
+    "strasse": "Unterlimpurger Straße",
+    "hausnummer": "8",
+    "plz": "74523",
+    "ort": "Schwäbisch Hall"
+  },
+  {
+    "name": "Amtsgericht Sigmaringen",
+    "strasse": "Karlstraße",
+    "hausnummer": "17",
+    "plz": "72488",
+    "ort": "Sigmaringen"
+  },
+  {
+    "name": "Amtsgericht Stuttgart",
+    "strasse": "Hauffstraße",
+    "hausnummer": "5",
+    "plz": "70190",
+    "ort": "Stuttgart"
+  },
+  {
+    "name": "Amtsgericht Waldkirch",
+    "strasse": "Freie Straße",
+    "hausnummer": "15",
+    "plz": "79183",
+    "ort": "Waldkirch"
+  },
+  {
+    "name": "Amtsgericht Kenzingen",
+    "strasse": "Eisenbahnstraße",
+    "hausnummer": "22",
+    "plz": "79341",
+    "ort": "Kenzingen"
+  },
+  {
+    "name": "Amtsgericht Achern",
+    "strasse": "Allerheiligenstraße",
+    "hausnummer": "5",
+    "plz": "77855",
+    "ort": "Achern"
+  },
+  {
+    "name": "Amtsgericht Albstadt",
+    "strasse": "Gartenstraße",
+    "hausnummer": "17",
+    "plz": "72458",
+    "ort": "Albstadt"
+  },
+  {
+    "name": "Amtsgericht Bad Saulgau",
+    "strasse": "Schützenstraße",
+    "hausnummer": "14",
+    "plz": "88348",
+    "ort": "Bad Saulgau"
+  },
+  {
+    "name": "Amtsgericht Brackenheim",
+    "strasse": "Maulbronner Straße",
+    "hausnummer": "8",
+    "plz": "74336",
+    "ort": "Brackenheim"
+  },
+  {
+    "name": "Amtsgericht Bretten",
+    "strasse": "Obere Kirchgasse",
+    "hausnummer": "9",
+    "plz": "75015",
+    "ort": "Bretten"
+  },
+  {
+    "name": "Amtsgericht Donaueschingen",
+    "strasse": "Muehlenstraße",
+    "hausnummer": "5",
+    "plz": "78166",
+    "ort": "Donaueschingen"
+  },
+  {
+    "name": "Amtsgericht Ellwangen (Jagst)",
+    "strasse": "Schöner Graben",
+    "hausnummer": "25",
+    "plz": "73479",
+    "ort": "Ellwangen (Jagst)"
+  },
+  {
+    "name": "Amtsgericht Ettenheim",
+    "strasse": "Otto-Stoelcker-Straße",
+    "hausnummer": "8",
+    "plz": "77955",
+    "ort": "Ettenheim"
+  },
+  {
+    "name": "Amtsgericht Gengenbach",
+    "strasse": "Grabenstraße",
+    "hausnummer": "17",
+    "plz": "77723",
+    "ort": "Gengenbach"
+  },
+  {
+    "name": "Amtsgericht Gernsbach",
+    "strasse": "Hauptstraße",
+    "hausnummer": "44",
+    "plz": "76593",
+    "ort": "Gernsbach"
+  },
+  {
+    "name": "Amtsgericht Göppingen",
+    "strasse": "Schlossplatz",
+    "hausnummer": "1",
+    "plz": "73033",
+    "ort": "Göppingen"
+  },
+  {
+    "name": "Amtsgericht Heilbronn",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "2-6",
+    "plz": "74072",
+    "ort": "Heilbronn"
+  },
+  {
+    "name": "Amtsgericht Leutkirch",
+    "strasse": "Karlstraße",
+    "hausnummer": "2",
+    "plz": "88299",
+    "ort": "Leutkirch im Allgäu"
+  },
+  {
+    "name": "Amtsgericht Ludwigsburg",
+    "strasse": "Schorndorfer Straße",
+    "hausnummer": "39",
+    "plz": "71638",
+    "ort": "Ludwigsburg"
+  },
+  {
+    "name": "Amtsgericht Maulbronn",
+    "strasse": "Klosterstraße",
+    "hausnummer": "1",
+    "plz": "75433",
+    "ort": "Maulbronn"
+  },
+  {
+    "name": "Amtsgericht Neresheim",
+    "strasse": "Hauptstraße",
+    "hausnummer": "2",
+    "plz": "73450",
+    "ort": "Neresheim"
+  },
+  {
+    "name": "Amtsgericht Oberndorf am Neckar",
+    "strasse": "Mauserstraße",
+    "hausnummer": "28",
+    "plz": "78727",
+    "ort": "Oberndorf am Neckar"
+  },
+  {
+    "name": "Amtsgericht Ravensburg",
+    "strasse": "Herrenstraße",
+    "hausnummer": "40-44",
+    "plz": "88212",
+    "ort": "Ravensburg"
+  },
+  {
+    "name": "Amtsgericht Ulm",
+    "strasse": "Zeughausgasse",
+    "hausnummer": "14",
+    "plz": "89073",
+    "ort": "Ulm"
+  },
+  {
+    "name": "Amtsgericht Wangen im Allgäu",
+    "strasse": "Lindauer Straße",
+    "hausnummer": "28",
+    "plz": "88239",
+    "ort": "Wangen im Allgäu"
+  },
+  {
+    "name": "Amtsgericht Horb am Neckar",
+    "strasse": "Marktplatz",
+    "hausnummer": "22",
+    "plz": "72160",
+    "ort": "Horb am Neckar"
+  },
+  {
+    "name": "Amtsgericht Tübingen",
+    "strasse": "Doblerstraße",
+    "hausnummer": "14",
+    "plz": "72074",
+    "ort": "Tübingen"
+  },
+  {
+    "name": "Amtsgericht Weinheim",
+    "strasse": "Ehretstraße",
+    "hausnummer": "11",
+    "plz": "69469",
+    "ort": "Weinheim"
+  },
+  {
+    "name": "Amtsgericht Ingolstadt",
+    "strasse": "Neubaustraße",
+    "hausnummer": "8",
+    "plz": "85049",
+    "ort": "Ingolstadt"
+  },
+  {
+    "name": "Amtsgericht Neumarkt in der Oberpfalz",
+    "strasse": "Residenzplatz",
+    "hausnummer": "1",
+    "plz": "92318",
+    "ort": "Neumarkt in der Oberpfalz"
+  },
+  {
+    "name": "Amtsgericht Obernburg am Main Zweigstelle Miltenberg",
+    "strasse": "Hauptstraße",
+    "hausnummer": "29",
+    "plz": "63897",
+    "ort": "Miltenberg"
+  },
+  {
+    "name": "Amtsgericht Traunstein",
+    "strasse": "Herzog-Otto-Straße",
+    "hausnummer": "1",
+    "plz": "83278",
+    "ort": "Traunstein"
+  },
+  {
+    "name": "Amtsgericht Ebersberg",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "19",
+    "plz": "85560",
+    "ort": "Ebersberg"
+  },
+  {
+    "name": "Amtsgericht Garmisch-Partenkirchen",
+    "strasse": "Rathausplatz",
+    "hausnummer": "11",
+    "plz": "82467",
+    "ort": "Garmisch-Partenkirchen"
+  },
+  {
+    "name": "Amtsgericht Neuburg a. d. Donau",
+    "strasse": "Ottheinrichplatz A",
+    "hausnummer": "1",
+    "plz": "86633",
+    "ort": "Neuburg a. d. Donau"
+  },
+  {
+    "name": "Amtsgericht Nördlingen",
+    "strasse": "Tändelmarkt",
+    "hausnummer": "5",
+    "plz": "86720",
+    "ort": "Nördlingen"
+  },
+  {
+    "name": "Amtsgericht Schwabach",
+    "strasse": "Weißenburger Straße",
+    "hausnummer": "8",
+    "plz": "91126",
+    "ort": "Schwabach"
+  },
+  {
+    "name": "Amtsgericht Weilheim i.OB",
+    "strasse": "Alpenstraße",
+    "hausnummer": "16",
+    "plz": "82362",
+    "ort": "Weilheim i.OB"
+  },
+  {
+    "name": "Amtsgericht Altötting",
+    "strasse": "Traunsteiner Straße",
+    "hausnummer": "1 a",
+    "plz": "84503",
+    "ort": "Altötting"
+  },
+  {
+    "name": "Amtsgericht Amberg",
+    "strasse": "Paulanerplatz",
+    "hausnummer": "4",
+    "plz": "92224",
+    "ort": "Amberg"
+  },
+  {
+    "name": "Amtsgericht Erding",
+    "strasse": "Münchener Straße",
+    "hausnummer": "27",
+    "plz": "85435",
+    "ort": "Erding"
+  },
+  {
+    "name": "Amtsgericht Haßfurt",
+    "strasse": "Hofheimer Straße",
+    "hausnummer": "1",
+    "plz": "97437",
+    "ort": "Haßfurt"
+  },
+  {
+    "name": "Amtsgericht Hersbruck",
+    "strasse": "Schloßplatz",
+    "hausnummer": "1",
+    "plz": "91217",
+    "ort": "Hersbruck"
+  },
+  {
+    "name": "Amtsgericht Hof",
+    "strasse": "Berliner Platz",
+    "hausnummer": "1",
+    "plz": "95030",
+    "ort": "Hof"
+  },
+  {
+    "name": "Amtsgericht Passau",
+    "strasse": "Schustergasse",
+    "hausnummer": "4",
+    "plz": "94032",
+    "ort": "Passau"
+  },
+  {
+    "name": "Amtsgericht Sonthofen",
+    "strasse": "Prinz-Luitpold-Straße",
+    "hausnummer": "2",
+    "plz": "87527",
+    "ort": "Sonthofen"
+  },
+  {
+    "name": "Amtsgericht Aschaffenburg Zweigstelle Alzenau in Unterfranken",
+    "strasse": "Burgstraße",
+    "hausnummer": "14",
+    "plz": "63755",
+    "ort": "Alzenau in Unterfranken"
+  },
+  {
+    "name": "Amtsgericht Erlangen",
+    "strasse": "Mozartstraße",
+    "hausnummer": "23",
+    "plz": "91052",
+    "ort": "Erlangen"
+  },
+  {
+    "name": "Amtsgericht Kelheim",
+    "strasse": "Klosterstraße",
+    "hausnummer": "6",
+    "plz": "93309",
+    "ort": "Kelheim"
+  },
+  {
+    "name": "Amtsgericht Tirschenreuth",
+    "strasse": "Mähringer Straße",
+    "hausnummer": "10",
+    "plz": "95643",
+    "ort": "Tirschenreuth"
+  },
+  {
+    "name": "Amtsgericht Augsburg",
+    "strasse": "Am Alten Einlaß",
+    "hausnummer": "1",
+    "plz": "86150",
+    "ort": "Augsburg"
+  },
+  {
+    "name": "Amtsgericht Cham",
+    "strasse": "Kirchplatz",
+    "hausnummer": "13",
+    "plz": "93413",
+    "ort": "Cham"
+  },
+  {
+    "name": "Amtsgericht Dillingen an der Donau",
+    "strasse": "St. Ulrichs-Platz",
+    "hausnummer": "3",
+    "plz": "89407",
+    "ort": "Dillingen an der Donau"
+  },
+  {
+    "name": "Amtsgericht Fürstenfeldbruck",
+    "strasse": "Stadelbergerstraße",
+    "hausnummer": "5",
+    "plz": "82256",
+    "ort": "Fürstenfeldbruck"
+  },
+  {
+    "name": "Amtsgericht Kulmbach",
+    "strasse": "Kohlenbachstraße",
+    "hausnummer": "10",
+    "plz": "95326",
+    "ort": "Kulmbach"
+  },
+  {
+    "name": "Amtsgericht Landau a.d.Isar",
+    "strasse": "Hochstraße",
+    "hausnummer": "17",
+    "plz": "94405",
+    "ort": "Landau a.d. Isar"
+  },
+  {
+    "name": "Amtsgericht Landsberg am Lech",
+    "strasse": "Lechstraße",
+    "hausnummer": "7",
+    "plz": "86899",
+    "ort": "Landsberg am Lech"
+  },
+  {
+    "name": "Amtsgericht Aschaffenburg",
+    "strasse": "Erthalstraße",
+    "hausnummer": "3",
+    "plz": "63739",
+    "ort": "Aschaffenburg"
+  },
+  {
+    "name": "Amtsgericht Coburg",
+    "strasse": "Ketschendorfer Straße",
+    "hausnummer": "1",
+    "plz": "96450",
+    "ort": "Coburg"
+  },
+  {
+    "name": "Amtsgericht Forchheim",
+    "strasse": "Kapellenstraße",
+    "hausnummer": "15",
+    "plz": "91301",
+    "ort": "Forchheim"
+  },
+  {
+    "name": "Amtsgericht Kronach",
+    "strasse": "Amtsgerichtsstraße",
+    "hausnummer": "15",
+    "plz": "96317",
+    "ort": "Kronach"
+  },
+  {
+    "name": "Amtsgericht Lindau (Bodensee)",
+    "strasse": "Stiftsplatz",
+    "hausnummer": "4",
+    "plz": "88131",
+    "ort": "Lindau (Bodensee)"
+  },
+  {
+    "name": "Amtsgericht München",
+    "strasse": "Pacellistraße",
+    "hausnummer": "5",
+    "plz": "80333",
+    "ort": "München"
+  },
+  {
+    "name": "Amtsgericht Pfaffenhofen a.d.Ilm",
+    "strasse": "Ingolstädter Straße",
+    "hausnummer": "45",
+    "plz": "85276",
+    "ort": "Pfaffenhofen a.d.Ilm"
+  },
+  {
+    "name": "Amtsgericht Straubing",
+    "strasse": "Kolbstraße",
+    "hausnummer": "11",
+    "plz": "94315",
+    "ort": "Straubing"
+  },
+  {
+    "name": "Amtsgericht Weiden i.d. OPf.",
+    "strasse": "Ledererstraße",
+    "hausnummer": "9",
+    "plz": "92637",
+    "ort": "Weiden i.d.OPf."
+  },
+  {
+    "name": "Amtsgericht Schwandorf",
+    "strasse": "Kreuzbergstraße",
+    "hausnummer": "19",
+    "plz": "92421",
+    "ort": "Schwandorf"
+  },
+  {
+    "name": "Amtsgericht Starnberg",
+    "strasse": "Otto-Gaßner-Straße",
+    "hausnummer": "2",
+    "plz": "82319",
+    "ort": "Starnberg"
+  },
+  {
+    "name": "Amtsgericht Ansbach",
+    "strasse": "Promenade",
+    "hausnummer": "8",
+    "plz": "91522",
+    "ort": "Ansbach"
+  },
+  {
+    "name": "Amtsgericht Eggenfelden",
+    "strasse": "Feuerhausgasse",
+    "hausnummer": "12",
+    "plz": "84307",
+    "ort": "Eggenfelden"
+  },
+  {
+    "name": "Amtsgericht Freyung",
+    "strasse": "Geyersbergerstraße",
+    "hausnummer": "1",
+    "plz": "94078",
+    "ort": "Freyung"
+  },
+  {
+    "name": "Amtsgericht Gemünden am Main",
+    "strasse": "Friedenstraße",
+    "hausnummer": "7",
+    "plz": "97737",
+    "ort": "Gemünden am Main"
+  },
+  {
+    "name": "Amtsgericht Lichtenfels",
+    "strasse": "Kronacher Straße",
+    "hausnummer": "18",
+    "plz": "96215",
+    "ort": "Lichtenfels"
+  },
+  {
+    "name": "Amtsgericht Memmingen",
+    "strasse": "Buxacher Straße",
+    "hausnummer": "6",
+    "plz": "87700",
+    "ort": "Memmingen"
+  },
+  {
+    "name": "Amtsgericht Bad Kissingen",
+    "strasse": "Maxstraße",
+    "hausnummer": "27",
+    "plz": "97688",
+    "ort": "Bad Kissingen"
+  },
+  {
+    "name": "Amtsgericht Günzburg",
+    "strasse": "Ichenhauser Straße",
+    "hausnummer": "16",
+    "plz": "89312",
+    "ort": "Günzburg"
+  },
+  {
+    "name": "Amtsgericht Kempten (Allgäu)",
+    "strasse": "Residenzplatz",
+    "hausnummer": "4-6",
+    "plz": "87435",
+    "ort": "Kempten (Allgäu)"
+  },
+  {
+    "name": "Amtsgericht Kitzingen",
+    "strasse": "Friedenstraße",
+    "hausnummer": "3 a",
+    "plz": "97318",
+    "ort": "Kitzingen"
+  },
+  {
+    "name": "Amtsgericht Neustadt an der Aisch",
+    "strasse": "Bamberger Straße",
+    "hausnummer": "28",
+    "plz": "91413",
+    "ort": "Neustadt an der Aisch"
+  },
+  {
+    "name": "Amtsgericht Regensburg",
+    "strasse": "Augustenstraße",
+    "hausnummer": "3",
+    "plz": "93049",
+    "ort": "Regensburg"
+  },
+  {
+    "name": "Amtsgericht Rosenheim",
+    "strasse": "Bismarckstraße",
+    "hausnummer": "1",
+    "plz": "83022",
+    "ort": "Rosenheim"
+  },
+  {
+    "name": "Amtsgericht Schweinfurt",
+    "strasse": "Rüfferstraße",
+    "hausnummer": "1",
+    "plz": "97421",
+    "ort": "Schweinfurt"
+  },
+  {
+    "name": "Amtsgericht Wolfratshausen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "18",
+    "plz": "82515",
+    "ort": "Wolfratshausen"
+  },
+  {
+    "name": "Amtsgericht Deggendorf",
+    "strasse": "Amanstraße",
+    "hausnummer": "17",
+    "plz": "94469",
+    "ort": "Deggendorf"
+  },
+  {
+    "name": "Amtsgericht Miesbach",
+    "strasse": "Rosenheimer Straße",
+    "hausnummer": "16",
+    "plz": "83714",
+    "ort": "Miesbach"
+  },
+  {
+    "name": "Amtsgericht Weißenburg",
+    "strasse": "Niederhofener Straße",
+    "hausnummer": "9",
+    "plz": "91781",
+    "ort": "Weißenburg"
+  },
+  {
+    "name": "Amtsgericht Bad Neustadt a.d. Saale",
+    "strasse": "Rathausgasse",
+    "hausnummer": "4",
+    "plz": "97616",
+    "ort": "Bad Neustadt a.d.Saale"
+  },
+  {
+    "name": "Amtsgericht Fürth",
+    "strasse": "Bäumenstraße",
+    "hausnummer": "32",
+    "plz": "90762",
+    "ort": "Fürth"
+  },
+  {
+    "name": "Amtsgericht Wunsiedel",
+    "strasse": "Kemnather Straße",
+    "hausnummer": "33",
+    "plz": "95632",
+    "ort": "Wunsiedel"
+  },
+  {
+    "name": "Amtsgericht Aichach",
+    "strasse": "Schloßplatz",
+    "hausnummer": "9",
+    "plz": "86551",
+    "ort": "Aichach"
+  },
+  {
+    "name": "Amtsgericht Kaufbeuren",
+    "strasse": "Ganghoferstraße",
+    "hausnummer": "9-11",
+    "plz": "87600",
+    "ort": "Kaufbeuren"
+  },
+  {
+    "name": "Amtsgericht Würzburg",
+    "strasse": "Ottostraße",
+    "hausnummer": "5",
+    "plz": "97070",
+    "ort": "Würzburg"
+  },
+  {
+    "name": "Amtsgericht Bamberg",
+    "strasse": "Synagogenplatz",
+    "hausnummer": "1",
+    "plz": "96047",
+    "ort": "Bamberg"
+  },
+  {
+    "name": "Amtsgericht Bayreuth",
+    "strasse": "Wittelsbacherring",
+    "hausnummer": "22",
+    "plz": "95444",
+    "ort": "Bayreuth"
+  },
+  {
+    "name": "Amtsgericht Freising",
+    "strasse": "Domberg",
+    "hausnummer": "20",
+    "plz": "85354",
+    "ort": "Freising"
+  },
+  {
+    "name": "Amtsgericht Landshut",
+    "strasse": "Maximilianstraße",
+    "hausnummer": "22",
+    "plz": "84028",
+    "ort": "Landshut"
+  },
+  {
+    "name": "Amtsgericht Laufen",
+    "strasse": "Tittmoninger Straße",
+    "hausnummer": "32",
+    "plz": "83410",
+    "ort": "Laufen"
+  },
+  {
+    "name": "Amtsgericht Mühldorf am Inn",
+    "strasse": "Innstraße",
+    "hausnummer": "1",
+    "plz": "84453",
+    "ort": "Mühldorf am Inn"
+  },
+  {
+    "name": "Amtsgericht Neu-Ulm",
+    "strasse": "Schützenstraße",
+    "hausnummer": "60",
+    "plz": "89231",
+    "ort": "Neu-Ulm"
+  },
+  {
+    "name": "Amtsgericht Nürnberg",
+    "strasse": "Fürther Straße",
+    "hausnummer": "110",
+    "plz": "90429",
+    "ort": "Nürnberg"
+  },
+  {
+    "name": "Amtsgericht Obernburg am Main",
+    "strasse": "Römerstraße",
+    "hausnummer": "80",
+    "plz": "63785",
+    "ort": "Obernburg am Main"
+  },
+  {
+    "name": "Amtsgericht Dachau",
+    "strasse": "Schlossgasse",
+    "hausnummer": "1",
+    "plz": "85221",
+    "ort": "Dachau"
+  },
+  {
+    "name": "Amtsgericht Viechtach",
+    "strasse": "Mönchshofstraße",
+    "hausnummer": "29",
+    "plz": "94234",
+    "ort": "Viechtach"
+  },
+  {
+    "name": "Amtsgericht Charlottenburg",
+    "strasse": "Amtsgerichtsplatz",
+    "hausnummer": "1",
+    "plz": "14057",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Wedding",
+    "strasse": "Brunnenplatz",
+    "hausnummer": "1",
+    "plz": "13357",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Tempelhof-Kreuzberg",
+    "strasse": "Möckernstraße",
+    "hausnummer": "130",
+    "plz": "10963",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Spandau",
+    "strasse": "Altstädter Ring",
+    "hausnummer": "7",
+    "plz": "13597",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Lichtenberg",
+    "strasse": "Roedeliusplatz",
+    "hausnummer": "1",
+    "plz": "10365",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Neukölln",
+    "strasse": "Karl-Marx-Straße",
+    "hausnummer": "77/79",
+    "plz": "12043",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Pankow/Weißensee - Familiengericht -",
+    "strasse": "Kissingenstraße",
+    "hausnummer": "5-6",
+    "plz": "13189",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Pankow/Weißensee",
+    "strasse": "Parkstraße",
+    "hausnummer": "71",
+    "plz": "13086",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Tiergarten",
+    "strasse": "Turmstraße",
+    "hausnummer": "91",
+    "plz": "10559",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Köpenick",
+    "strasse": "Mandrellaplatz",
+    "hausnummer": "6",
+    "plz": "12555",
+    "ort": "Berlin"
+  },
+  {
     "name": "Amtsgericht Mitte",
     "strasse": "Littenstraße",
     "hausnummer": "12-17",
     "plz": "10179",
     "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Schöneberg",
+    "strasse": "Grunewaldstraße",
+    "hausnummer": "66-67",
+    "plz": "10823",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Tempelhof-Kreuzberg - Familiengericht -",
+    "strasse": "Hallesches Ufer",
+    "hausnummer": "62",
+    "plz": "10963",
+    "ort": "Berlin"
+  },
+  {
+    "name": "Amtsgericht Brandenburg an der Havel",
+    "strasse": "Magdeburger Straße",
+    "hausnummer": "47",
+    "plz": "14770",
+    "ort": "Brandenburg an der Havel"
+  },
+  {
+    "name": "Amtsgericht Eberswalde",
+    "strasse": "Breite Straße",
+    "hausnummer": "62",
+    "plz": "16225",
+    "ort": "Eberswalde"
+  },
+  {
+    "name": "Amtsgericht Strausberg",
+    "strasse": "Klosterstraße",
+    "hausnummer": "13",
+    "plz": "15344",
+    "ort": "Strausberg"
+  },
+  {
+    "name": "Amtsgericht Bad Freienwalde (Oder)",
+    "strasse": "Viktor-Blüthgen-Straße",
+    "hausnummer": "9",
+    "plz": "16259",
+    "ort": "Bad Freienwalde (Oder)"
+  },
+  {
+    "name": "Amtsgericht Lübben (Spreewald)",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2-3",
+    "plz": "15907",
+    "ort": "Lübben (Spreewald)"
+  },
+  {
+    "name": "Amtsgericht Neuruppin",
+    "strasse": "Karl-Marx-Straße",
+    "hausnummer": "18 a",
+    "plz": "16816",
+    "ort": "Neuruppin"
+  },
+  {
+    "name": "Amtsgericht Potsdam",
+    "strasse": "Hegelallee",
+    "hausnummer": "8",
+    "plz": "14467",
+    "ort": "Potsdam"
+  },
+  {
+    "name": "Amtsgericht Prenzlau",
+    "strasse": "Baustraße",
+    "hausnummer": "37",
+    "plz": "17291",
+    "ort": "Prenzlau"
+  },
+  {
+    "name": "Amtsgericht Frankfurt (Oder)",
+    "strasse": "Müllroser Chaussee",
+    "hausnummer": "55",
+    "plz": "15236",
+    "ort": "Frankfurt (Oder)"
+  },
+  {
+    "name": "Amtsgericht Luckenwalde",
+    "strasse": "Lindenallee",
+    "hausnummer": "16",
+    "plz": "14943",
+    "ort": "Luckenwalde"
+  },
+  {
+    "name": "Amtsgericht Zehdenick",
+    "strasse": "Friedrich-Ebert-Platz",
+    "hausnummer": "9",
+    "plz": "16792",
+    "ort": "Zehdenick"
+  },
+  {
+    "name": "Amtsgericht Cottbus Zweigstelle Guben",
+    "strasse": "Alte Poststraße",
+    "hausnummer": "66",
+    "plz": "03172",
+    "ort": "Guben"
+  },
+  {
+    "name": "Amtsgericht Cottbus",
+    "strasse": "Gerichtsplatz",
+    "hausnummer": "2",
+    "plz": "03046",
+    "ort": "Cottbus"
+  },
+  {
+    "name": "Amtsgericht Senftenberg",
+    "strasse": "Steindamm",
+    "hausnummer": "8",
+    "plz": "01968",
+    "ort": "Senftenberg"
+  },
+  {
+    "name": "Amtsgericht Bad Liebenwerda",
+    "strasse": "Burgplatz",
+    "hausnummer": "4",
+    "plz": "04924",
+    "ort": "Bad Liebenwerda"
+  },
+  {
+    "name": "Amtsgericht Eisenhüttenstadt",
+    "strasse": "Diehloer Straße",
+    "hausnummer": "62",
+    "plz": "15890",
+    "ort": "Eisenhüttenstadt"
+  },
+  {
+    "name": "Amtsgericht Zossen",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "10",
+    "plz": "15806",
+    "ort": "Zossen"
+  },
+  {
+    "name": "Amtsgericht Bernau bei Berlin",
+    "strasse": "Breitscheidstraße",
+    "hausnummer": "50",
+    "plz": "16321",
+    "ort": "Bernau bei Berlin"
+  },
+  {
+    "name": "Amtsgericht Perleberg",
+    "strasse": "Lindenstraße",
+    "hausnummer": "12",
+    "plz": "19348",
+    "ort": "Perleberg"
+  },
+  {
+    "name": "Amtsgericht Nauen",
+    "strasse": "Paul-Jerchel-Straße",
+    "hausnummer": "9",
+    "plz": "14641",
+    "ort": "Nauen"
+  },
+  {
+    "name": "Amtsgericht Oranienburg",
+    "strasse": "Berliner Straße",
+    "hausnummer": "38",
+    "plz": "16515",
+    "ort": "Oranienburg"
+  },
+  {
+    "name": "Amtsgericht Fürstenwalde/Spree",
+    "strasse": "Eisenbahnstraße",
+    "hausnummer": "8",
+    "plz": "15517",
+    "ort": "Fürstenwalde/Spree"
+  },
+  {
+    "name": "Amtsgericht Königs Wusterhausen",
+    "strasse": "Friedrich-Engels-Straße",
+    "hausnummer": "58",
+    "plz": "15745",
+    "ort": "Wildau"
+  },
+  {
+    "name": "Amtsgericht Rathenow",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "19",
+    "plz": "14712",
+    "ort": "Rathenow"
+  },
+  {
+    "name": "Amtsgericht Schwedt/Oder",
+    "strasse": "Paul-Meyer-Straße",
+    "hausnummer": "8",
+    "plz": "16303",
+    "ort": "Schwedt/Oder"
+  },
+  {
+    "name": "Amtsgericht Bremerhaven",
+    "strasse": "Nordstraße",
+    "hausnummer": "10",
+    "plz": "27580",
+    "ort": "Bremerhaven"
+  },
+  {
+    "name": "Amtsgericht Bremen",
+    "strasse": "Ostertorstraße",
+    "hausnummer": "25-31",
+    "plz": "28195",
+    "ort": "Bremen"
+  },
+  {
+    "name": "Amtsgericht Bremen-Blumenthal",
+    "strasse": "Landrat-Christians-Straße",
+    "hausnummer": "67",
+    "plz": "28779",
+    "ort": "Bremen"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Altona",
+    "strasse": "Max-Brauer-Allee",
+    "hausnummer": "91",
+    "plz": "22765",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Bergedorf",
+    "strasse": "Ernst-Mantius-Straße",
+    "hausnummer": "8",
+    "plz": "21029",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Wandsbek",
+    "strasse": "Schädlerstraße",
+    "hausnummer": "28",
+    "plz": "22041",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Harburg",
+    "strasse": "Buxtehuder Straße",
+    "hausnummer": "9",
+    "plz": "21073",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Barmbek",
+    "strasse": "Spohrstraße",
+    "hausnummer": "6",
+    "plz": "22083",
+    "ort": "Hamburg"
   },
   {
     "name": "Amtsgericht Hamburg",
@@ -14,10 +1610,3013 @@
     "ort": "Hamburg"
   },
   {
+    "name": "Amtsgericht Hamburg-St.Georg",
+    "strasse": "Lübeckertordamm",
+    "hausnummer": "4",
+    "plz": "20099",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Hamburg-Blankenese",
+    "strasse": "Dormienstraße",
+    "hausnummer": "7",
+    "plz": "22587",
+    "ort": "Hamburg"
+  },
+  {
+    "name": "Amtsgericht Alsfeld",
+    "strasse": "Landgraf-Hermann-Straße",
+    "hausnummer": "1",
+    "plz": "36304",
+    "ort": "Alsfeld"
+  },
+  {
+    "name": "Amtsgericht Biedenkopf",
+    "strasse": "Hainstraße",
+    "hausnummer": "72",
+    "plz": "35216",
+    "ort": "Biedenkopf"
+  },
+  {
+    "name": "Amtsgericht Frankfurt am Main",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2",
+    "plz": "60313",
+    "ort": "Frankfurt am Main"
+  },
+  {
+    "name": "Amtsgericht Fürth",
+    "strasse": "Heppenheimer Straße",
+    "hausnummer": "15",
+    "plz": "64658",
+    "ort": "Fürth"
+  },
+  {
+    "name": "Amtsgericht Lampertheim",
+    "strasse": "Bürstädter Straße",
+    "hausnummer": "1",
+    "plz": "68623",
+    "ort": "Lampertheim"
+  },
+  {
+    "name": "Amtsgericht Rüdesheim am Rhein",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "9",
+    "plz": "65385",
+    "ort": "Rüdesheim am Rhein"
+  },
+  {
+    "name": "Amtsgericht Wiesbaden",
+    "strasse": "Mainzer Straße",
+    "hausnummer": "124",
+    "plz": "65189",
+    "ort": "Wiesbaden"
+  },
+  {
+    "name": "Amtsgericht Dillenburg",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "7",
+    "plz": "35683",
+    "ort": "Dillenburg"
+  },
+  {
+    "name": "Amtsgericht Korbach",
+    "strasse": "Hagenstraße",
+    "hausnummer": "2",
+    "plz": "34497",
+    "ort": "Korbach"
+  },
+  {
+    "name": "Amtsgericht Limburg a. d. Lahn",
+    "strasse": "Walderdorffstraße",
+    "hausnummer": "12",
+    "plz": "65549",
+    "ort": "Limburg a. d. Lahn"
+  },
+  {
+    "name": "Amtsgericht Seligenstadt",
+    "strasse": "Klein Welzheimer Straße",
+    "hausnummer": "1",
+    "plz": "63500",
+    "ort": "Seligenstadt"
+  },
+  {
+    "name": "Amtsgericht Frankenberg (Eder)",
+    "strasse": "Geismarer Straße",
+    "hausnummer": "22",
+    "plz": "35066",
+    "ort": "Frankenberg (Eder)"
+  },
+  {
+    "name": "Amtsgericht Gießen",
+    "strasse": "Gutfleischstraße",
+    "hausnummer": "1",
+    "plz": "35390",
+    "ort": "Gießen"
+  },
+  {
+    "name": "Amtsgericht Hanau",
+    "strasse": "Nußallee",
+    "hausnummer": "17",
+    "plz": "63450",
+    "ort": "Hanau"
+  },
+  {
+    "name": "Amtsgericht Kassel Zweigstelle Hofgeismar",
+    "strasse": "Friedrich-Pfaff-Straße",
+    "hausnummer": "8",
+    "plz": "34369",
+    "ort": "Hofgeismar"
+  },
+  {
+    "name": "Amtsgericht Königstein im Taunus",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2",
+    "plz": "61462",
+    "ort": "Königstein im Taunus"
+  },
+  {
+    "name": "Amtsgericht Limburg a. d. Lahn Zweigstelle Hadamar",
+    "strasse": "Gymnasiumstraße",
+    "hausnummer": "2",
+    "plz": "65589",
+    "ort": "Hadamar"
+  },
+  {
+    "name": "Amtsgericht Dillenburg Zweigstelle Herborn",
+    "strasse": "Westerwaldstraße",
+    "hausnummer": "16",
+    "plz": "35745",
+    "ort": "Herborn"
+  },
+  {
+    "name": "Amtsgericht Kirchhain",
+    "strasse": "Niederrheinische Straße",
+    "hausnummer": "32",
+    "plz": "35274",
+    "ort": "Kirchhain"
+  },
+  {
+    "name": "Amtsgericht Schwalmstadt",
+    "strasse": "Steinkautsweg",
+    "hausnummer": "2",
+    "plz": "34613",
+    "ort": "Schwalmstadt"
+  },
+  {
+    "name": "Amtsgericht Eschwege",
+    "strasse": "Friedrich-Wilhelm-Straße",
+    "hausnummer": "39",
+    "plz": "37269",
+    "ort": "Eschwege"
+  },
+  {
+    "name": "Amtsgericht Idstein",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "1",
+    "plz": "65510",
+    "ort": "Idstein"
+  },
+  {
+    "name": "Amtsgericht Rüsselsheim",
+    "strasse": "Johann-Sebastian-Bach-Straße",
+    "hausnummer": "45",
+    "plz": "65428",
+    "ort": "Rüsselsheim"
+  },
+  {
+    "name": "Amtsgericht Bad Homburg",
+    "strasse": "Auf der Steinkaut",
+    "hausnummer": "10-12",
+    "plz": "61352",
+    "ort": "Bad Homburg v. d. Höhe"
+  },
+  {
+    "name": "Amtsgericht Bad Schwalbach",
+    "strasse": "Am Kurpark",
+    "hausnummer": "12",
+    "plz": "65307",
+    "ort": "Bad Schwalbach"
+  },
+  {
+    "name": "Amtsgericht Dieburg",
+    "strasse": "Bei der Erlesmühle",
+    "hausnummer": "1",
+    "plz": "64807",
+    "ort": "Dieburg"
+  },
+  {
+    "name": "Amtsgericht Friedberg (Hessen)",
+    "strasse": "Homburger Straße",
+    "hausnummer": "18",
+    "plz": "61169",
+    "ort": "Friedberg (Hessen)"
+  },
+  {
+    "name": "Amtsgericht Hünfeld",
+    "strasse": "Hauptstraße",
+    "hausnummer": "24",
+    "plz": "36088",
+    "ort": "Hünfeld"
+  },
+  {
+    "name": "Amtsgericht Michelstadt",
+    "strasse": "Erbacher Straße",
+    "hausnummer": "47",
+    "plz": "64720",
+    "ort": "Michelstadt"
+  },
+  {
+    "name": "Amtsgericht Weilburg",
+    "strasse": "Mauerstraße",
+    "hausnummer": "25",
+    "plz": "35781",
+    "ort": "Weilburg"
+  },
+  {
+    "name": "Amtsgericht Gelnhausen",
+    "strasse": "Philipp-Reis-Straße",
+    "hausnummer": "9",
+    "plz": "63571",
+    "ort": "Gelnhausen"
+  },
+  {
+    "name": "Amtsgericht Groß-Gerau",
+    "strasse": "Europaring",
+    "hausnummer": "11-13",
+    "plz": "64521",
+    "ort": "Groß-Gerau"
+  },
+  {
+    "name": "Amtsgericht Langen (Hessen)",
+    "strasse": "Zimmerstraße",
+    "hausnummer": "29",
+    "plz": "63225",
+    "ort": "Langen (Hessen)"
+  },
+  {
+    "name": "Amtsgericht Melsungen",
+    "strasse": "Kasseler Straße",
+    "hausnummer": "29",
+    "plz": "34212",
+    "ort": "Melsungen"
+  },
+  {
+    "name": "Amtsgericht Bad Hersfeld",
+    "strasse": "Dudenstraße",
+    "hausnummer": "10",
+    "plz": "36251",
+    "ort": "Bad Hersfeld"
+  },
+  {
+    "name": "Amtsgericht Fulda",
+    "strasse": "Königstraße",
+    "hausnummer": "38",
+    "plz": "36037",
+    "ort": "Fulda"
+  },
+  {
+    "name": "Amtsgericht Marburg",
+    "strasse": "Universitätsstraße",
+    "hausnummer": "48",
+    "plz": "35037",
+    "ort": "Marburg"
+  },
+  {
+    "name": "Amtsgericht Büdingen",
+    "strasse": "Stiegelwiese",
+    "hausnummer": "1",
+    "plz": "63654",
+    "ort": "Büdingen"
+  },
+  {
+    "name": "Amtsgericht Bensheim",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "26",
+    "plz": "64625",
+    "ort": "Bensheim"
+  },
+  {
+    "name": "Amtsgericht Darmstadt",
+    "strasse": "Mathildenplatz",
+    "hausnummer": "15",
+    "plz": "64283",
+    "ort": "Darmstadt"
+  },
+  {
+    "name": "Amtsgericht Fritzlar",
+    "strasse": "Schladenweg",
+    "hausnummer": "1",
+    "plz": "34560",
+    "ort": "Fritzlar"
+  },
+  {
+    "name": "Amtsgericht Offenbach am Main",
+    "strasse": "Kaiserstraße",
+    "hausnummer": "16-18",
+    "plz": "63065",
+    "ort": "Offenbach am Main"
+  },
+  {
+    "name": "Amtsgericht Wetzlar",
+    "strasse": "Wertherstraße",
+    "hausnummer": "1-2",
+    "plz": "35578",
+    "ort": "Wetzlar"
+  },
+  {
+    "name": "Amtsgericht Kassel",
+    "strasse": "Frankfurter Straße",
+    "hausnummer": "9",
+    "plz": "34117",
+    "ort": "Kassel"
+  },
+  {
+    "name": "Amtsgericht Güstrow",
+    "strasse": "Franz-Parr-Platz",
+    "hausnummer": "2 a",
+    "plz": "18273",
+    "ort": "Güstrow"
+  },
+  {
+    "name": "Amtsgericht Schwerin",
+    "strasse": "Demmlerplatz",
+    "hausnummer": "1-2",
+    "plz": "19053",
+    "ort": "Schwerin"
+  },
+  {
+    "name": "Amtsgericht Stralsund",
+    "strasse": "Bielkenhagen",
+    "hausnummer": "9",
+    "plz": "18439",
+    "ort": "Stralsund"
+  },
+  {
+    "name": "Amtsgericht Stralsund Zweigstelle Bergen auf Rügen",
+    "strasse": "Schulstraße",
+    "hausnummer": "1",
+    "plz": "18528",
+    "ort": "Bergen auf Rügen"
+  },
+  {
+    "name": "Amtsgericht Neubrandenburg",
+    "strasse": "Friedrich-Engels-Ring",
+    "hausnummer": "16-18",
+    "plz": "17033",
+    "ort": "Neubrandenburg"
+  },
+  {
+    "name": "Amtsgericht Waren (Müritz) Zweigstelle Neustrelitz",
+    "strasse": "Tiergartenstraße",
+    "hausnummer": "5",
+    "plz": "17235",
+    "ort": "Neustrelitz"
+  },
+  {
+    "name": "Amtsgericht Waren (Müritz)",
+    "strasse": "Zum Amtsbrink",
+    "hausnummer": "4",
+    "plz": "17192",
+    "ort": "Waren (Müritz)"
+  },
+  {
+    "name": "Amtsgericht Ludwigslust",
+    "strasse": "Käthe-Kollwitz-Straße",
+    "hausnummer": "35",
+    "plz": "19288",
+    "ort": "Ludwigslust"
+  },
+  {
+    "name": "Amtsgericht Wismar",
+    "strasse": "Vor dem Fürstenhof",
+    "hausnummer": "1",
+    "plz": "23966",
+    "ort": "Wismar"
+  },
+  {
+    "name": "Amtsgericht Pasewalk Zweigstelle Anklam",
+    "strasse": "Baustraße",
+    "hausnummer": "9",
+    "plz": "17389",
+    "ort": "Anklam"
+  },
+  {
+    "name": "Amtsgericht Pasewalk",
+    "strasse": "Grünstraße",
+    "hausnummer": "61",
+    "plz": "17309",
+    "ort": "Pasewalk"
+  },
+  {
+    "name": "Amtsgericht Wismar Zweigstelle Grevesmühlen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "2-4",
+    "plz": "23936",
+    "ort": "Grevesmühlen"
+  },
+  {
+    "name": "Amtsgericht Greifswald",
+    "strasse": "Lange Straße",
+    "hausnummer": "2 a",
+    "plz": "17489",
+    "ort": "Greifswald"
+  },
+  {
+    "name": "Amtsgericht Rostock",
+    "strasse": "Zochstraße",
+    "hausnummer": "13",
+    "plz": "18057",
+    "ort": "Rostock"
+  },
+  {
+    "name": "Amtsgericht Neubrandenburg Zweigstelle Demmin",
+    "strasse": "Clara-Zetkin-Straße",
+    "hausnummer": "14",
+    "plz": "17109",
+    "ort": "Demmin"
+  },
+  {
+    "name": "Amtsgericht Ludwigslust Zweigstelle Parchim",
+    "strasse": "Moltkeplatz",
+    "hausnummer": "2",
+    "plz": "19370",
+    "ort": "Parchim"
+  },
+  {
+    "name": "Amtsgericht Bad Iburg",
+    "strasse": "Schloss",
+    "hausnummer": "",
+    "plz": "49186",
+    "ort": "Bad Iburg"
+  },
+  {
+    "name": "Amtsgericht Duderstadt",
+    "strasse": "Hinterstraße",
+    "hausnummer": "33",
+    "plz": "37115",
+    "ort": "Duderstadt"
+  },
+  {
+    "name": "Amtsgericht Emden",
+    "strasse": "Ringstraße",
+    "hausnummer": "6",
+    "plz": "26721",
+    "ort": "Emden"
+  },
+  {
+    "name": "Amtsgericht Goslar",
+    "strasse": "Hoher Weg",
+    "hausnummer": "9",
+    "plz": "38640",
+    "ort": "Goslar"
+  },
+  {
+    "name": "Amtsgericht Nordhorn",
+    "strasse": "Seilerbahn",
+    "hausnummer": "15",
+    "plz": "48529",
+    "ort": "Nordhorn"
+  },
+  {
+    "name": "Amtsgericht Vechta",
+    "strasse": "Kapitelplatz",
+    "hausnummer": "8",
+    "plz": "49377",
+    "ort": "Vechta"
+  },
+  {
+    "name": "Amtsgericht Wolfenbüttel",
+    "strasse": "Rosenwall",
+    "hausnummer": "1 a",
+    "plz": "38300",
+    "ort": "Wolfenbüttel"
+  },
+  {
+    "name": "Amtsgericht Holzminden",
+    "strasse": "Karlstraße",
+    "hausnummer": "15",
+    "plz": "37603",
+    "ort": "Holzminden"
+  },
+  {
+    "name": "Amtsgericht Achim",
+    "strasse": "Obernstraße",
+    "hausnummer": "40",
+    "plz": "28832",
+    "ort": "Achim"
+  },
+  {
+    "name": "Amtsgericht Bückeburg",
+    "strasse": "Herminenstraße",
+    "hausnummer": "30",
+    "plz": "31675",
+    "ort": "Bückeburg"
+  },
+  {
+    "name": "Amtsgericht Cuxhaven",
+    "strasse": "Deichstraße",
+    "hausnummer": "12 a",
+    "plz": "27472",
+    "ort": "Cuxhaven"
+  },
+  {
+    "name": "Amtsgericht Einbeck",
+    "strasse": "Hullerser Straße",
+    "hausnummer": "1",
+    "plz": "37574",
+    "ort": "Einbeck"
+  },
+  {
+    "name": "Amtsgericht Gifhorn",
+    "strasse": "Am Schloßgarten",
+    "hausnummer": "4",
+    "plz": "38518",
+    "ort": "Gifhorn"
+  },
+  {
+    "name": "Amtsgericht Hameln",
+    "strasse": "Zehnthof",
+    "hausnummer": "1",
+    "plz": "31785",
+    "ort": "Hameln"
+  },
+  {
+    "name": "Amtsgericht Hann. Münden",
+    "strasse": "Schlossplatz",
+    "hausnummer": "9",
+    "plz": "34346",
+    "ort": "Hann. Münden"
+  },
+  {
+    "name": "Amtsgericht Hildesheim",
+    "strasse": "Kaiserstraße",
+    "hausnummer": "60",
+    "plz": "31134",
+    "ort": "Hildesheim"
+  },
+  {
+    "name": "Amtsgericht Neustadt am Rübenberge",
+    "strasse": "Ludwig-Enneccerus-Platz",
+    "hausnummer": "2",
+    "plz": "31535",
+    "ort": "Neustadt am Rübenberge"
+  },
+  {
+    "name": "Amtsgericht Oldenburg (Oldenburg)",
+    "strasse": "Elisabethstraße",
+    "hausnummer": "8",
+    "plz": "26135",
+    "ort": "Oldenburg (Oldenburg)"
+  },
+  {
+    "name": "Amtsgericht Papenburg",
+    "strasse": "Hauptkanal Links",
+    "hausnummer": "28",
+    "plz": "26871",
+    "ort": "Papenburg"
+  },
+  {
+    "name": "Amtsgericht Seesen",
+    "strasse": "Wilhelmplatz",
+    "hausnummer": "1",
+    "plz": "38723",
+    "ort": "Seesen"
+  },
+  {
+    "name": "Amtsgericht Celle",
+    "strasse": "Mühlenstraße",
+    "hausnummer": "8",
+    "plz": "29221",
+    "ort": "Celle"
+  },
+  {
+    "name": "Amtsgericht Cloppenburg",
+    "strasse": "Burgstraße",
+    "hausnummer": "9-10",
+    "plz": "49661",
+    "ort": "Cloppenburg"
+  },
+  {
+    "name": "Amtsgericht Lüneburg",
+    "strasse": "Am Ochsenmarkt",
+    "hausnummer": "3",
+    "plz": "21335",
+    "ort": "Lüneburg"
+  },
+  {
+    "name": "Amtsgericht Aurich",
+    "strasse": "Schloßplatz",
+    "hausnummer": "2",
+    "plz": "26603",
+    "ort": "Aurich"
+  },
+  {
+    "name": "Amtsgericht Braunschweig",
+    "strasse": "An der Martinikirche",
+    "hausnummer": "8",
+    "plz": "38100",
+    "ort": "Braunschweig"
+  },
+  {
+    "name": "Amtsgericht Bremervörde",
+    "strasse": "Amtsallee",
+    "hausnummer": "1-2",
+    "plz": "27432",
+    "ort": "Bremervörde"
+  },
+  {
+    "name": "Amtsgericht Clausthal-Zellerfeld",
+    "strasse": "Marktstraße",
+    "hausnummer": "9",
+    "plz": "38678",
+    "ort": "Clausthal-Zellerfeld"
+  },
+  {
+    "name": "Amtsgericht Dannenberg",
+    "strasse": "Amtsberg",
+    "hausnummer": "2-3",
+    "plz": "29451",
+    "ort": "Dannenberg (Elbe)"
+  },
+  {
+    "name": "Amtsgericht Geestland",
+    "strasse": "Debstedter Straße",
+    "hausnummer": "17",
+    "plz": "27607",
+    "ort": "Geestland"
+  },
+  {
+    "name": "Amtsgericht Lingen (Ems)",
+    "strasse": "Burgstraße",
+    "hausnummer": "28",
+    "plz": "49808",
+    "ort": "Lingen (Ems)"
+  },
+  {
+    "name": "Amtsgericht Nienburg (Weser)",
+    "strasse": "Berliner Ring",
+    "hausnummer": "98",
+    "plz": "31582",
+    "ort": "Nienburg (Weser)"
+  },
+  {
+    "name": "Amtsgericht Otterndorf",
+    "strasse": "Am Großen Specken",
+    "hausnummer": "6/7",
+    "plz": "21762",
+    "ort": "Otterndorf"
+  },
+  {
+    "name": "Amtsgericht Salzgitter",
+    "strasse": "Joachim-Campe-Straße",
+    "hausnummer": "15",
+    "plz": "38226",
+    "ort": "Salzgitter"
+  },
+  {
+    "name": "Amtsgericht Wennigsen (Deister)",
+    "strasse": "Hülsebrinkstraße",
+    "hausnummer": "1",
+    "plz": "30974",
+    "ort": "Wennigsen (Deister)"
+  },
+  {
+    "name": "Amtsgericht Wittmund",
+    "strasse": "Am Markt",
+    "hausnummer": "11",
+    "plz": "26409",
+    "ort": "Wittmund"
+  },
+  {
+    "name": "Amtsgericht Hannover",
+    "strasse": "Volgersweg",
+    "hausnummer": "1",
+    "plz": "30175",
+    "ort": "Hannover"
+  },
+  {
+    "name": "Amtsgericht Jever",
+    "strasse": "Schloßstraße",
+    "hausnummer": "1-2",
+    "plz": "26441",
+    "ort": "Jever"
+  },
+  {
+    "name": "Amtsgericht Meppen",
+    "strasse": "Obergerichtsstraße",
+    "hausnummer": "20",
+    "plz": "49716",
+    "ort": "Meppen"
+  },
+  {
+    "name": "Amtsgericht Norden",
+    "strasse": "Norddeicher Straße",
+    "hausnummer": "1",
+    "plz": "26506",
+    "ort": "Norden"
+  },
+  {
+    "name": "Amtsgericht Nordenham",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "56",
+    "plz": "26954",
+    "ort": "Nordenham"
+  },
+  {
+    "name": "Amtsgericht Northeim",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "31",
+    "plz": "37154",
+    "ort": "Northeim"
+  },
+  {
+    "name": "Amtsgericht Rinteln",
+    "strasse": "Ostertorstraße",
+    "hausnummer": "3",
+    "plz": "31737",
+    "ort": "Rinteln"
+  },
+  {
+    "name": "Amtsgericht Soltau",
+    "strasse": "Rühberg",
+    "hausnummer": "13-15",
+    "plz": "29614",
+    "ort": "Soltau"
+  },
+  {
+    "name": "Amtsgericht Stadthagen",
+    "strasse": "Enzer Straße",
+    "hausnummer": "12",
+    "plz": "31655",
+    "ort": "Stadthagen"
+  },
+  {
+    "name": "Amtsgericht Varel",
+    "strasse": "Schlossplatz",
+    "hausnummer": "7",
+    "plz": "26316",
+    "ort": "Varel"
+  },
+  {
+    "name": "Amtsgericht Verden (Aller)",
+    "strasse": "Johanniswall",
+    "hausnummer": "8",
+    "plz": "27283",
+    "ort": "Verden (Aller)"
+  },
+  {
+    "name": "Amtsgericht Walsrode",
+    "strasse": "Lange Straße",
+    "hausnummer": "29-33",
+    "plz": "29664",
+    "ort": "Walsrode"
+  },
+  {
+    "name": "Amtsgericht Lehrte",
+    "strasse": "Schlesische Straße",
+    "hausnummer": "1",
+    "plz": "31275",
+    "ort": "Lehrte"
+  },
+  {
+    "name": "Amtsgericht Osterode am Harz",
+    "strasse": "Amtshof",
+    "hausnummer": "20",
+    "plz": "37520",
+    "ort": "Osterode am Harz"
+  },
+  {
+    "name": "Amtsgericht Peine",
+    "strasse": "Am Amthof 2, 4, 6,",
+    "hausnummer": "7",
+    "plz": "31224",
+    "ort": "Peine"
+  },
+  {
+    "name": "Amtsgericht Rotenburg (Wümme)",
+    "strasse": "Am Pferdemarkt",
+    "hausnummer": "6",
+    "plz": "27356",
+    "ort": "Rotenburg (Wümme)"
+  },
+  {
+    "name": "Amtsgericht Stolzenau",
+    "strasse": "Weserstraße 6, 8,",
+    "hausnummer": "10",
+    "plz": "31592",
+    "ort": "Stolzenau"
+  },
+  {
+    "name": "Amtsgericht Sulingen",
+    "strasse": "Lange Straße",
+    "hausnummer": "56",
+    "plz": "27232",
+    "ort": "Sulingen"
+  },
+  {
+    "name": "Amtsgericht Winsen (Luhe)",
+    "strasse": "Schlossplatz",
+    "hausnummer": "4",
+    "plz": "21423",
+    "ort": "Winsen (Luhe)"
+  },
+  {
+    "name": "Amtsgericht Zeven",
+    "strasse": "Bäckerstraße",
+    "hausnummer": "1",
+    "plz": "27404",
+    "ort": "Zeven"
+  },
+  {
+    "name": "Amtsgericht Alfeld (Leine)",
+    "strasse": "Kalandstraße",
+    "hausnummer": "1",
+    "plz": "31061",
+    "ort": "Alfeld (Leine)"
+  },
+  {
+    "name": "Amtsgericht Bad Gandersheim",
+    "strasse": "Am Plan",
+    "hausnummer": "3 b",
+    "plz": "37581",
+    "ort": "Bad Gandersheim"
+  },
+  {
+    "name": "Amtsgericht Burgdorf",
+    "strasse": "Schlossstraße",
+    "hausnummer": "4",
+    "plz": "31303",
+    "ort": "Burgdorf"
+  },
+  {
+    "name": "Amtsgericht Buxtehude",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "4",
+    "plz": "21614",
+    "ort": "Buxtehude"
+  },
+  {
+    "name": "Amtsgericht Elze",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "26",
+    "plz": "31008",
+    "ort": "Elze"
+  },
+  {
+    "name": "Amtsgericht Helmstedt",
+    "strasse": "Stobenstraße",
+    "hausnummer": "5",
+    "plz": "38350",
+    "ort": "Helmstedt"
+  },
+  {
+    "name": "Amtsgericht Osnabrück",
+    "strasse": "Kollegienwall",
+    "hausnummer": "29-31",
+    "plz": "49074",
+    "ort": "Osnabrück"
+  },
+  {
+    "name": "Amtsgericht Osterholz-Scharmbeck",
+    "strasse": "Klosterplatz",
+    "hausnummer": "1",
+    "plz": "27711",
+    "ort": "Osterholz-Scharmbeck"
+  },
+  {
+    "name": "Amtsgericht Syke",
+    "strasse": "Amtshof",
+    "hausnummer": "2",
+    "plz": "28857",
+    "ort": "Syke"
+  },
+  {
+    "name": "Amtsgericht Tostedt",
+    "strasse": "Unter Den Linden",
+    "hausnummer": "23",
+    "plz": "21255",
+    "ort": "Tostedt"
+  },
+  {
+    "name": "Amtsgericht Wildeshausen",
+    "strasse": "Delmenhorster Straße",
+    "hausnummer": "17",
+    "plz": "27793",
+    "ort": "Wildeshausen"
+  },
+  {
+    "name": "Amtsgericht Brake (Unterweser)",
+    "strasse": "Bürgermeister-Müller-Straße",
+    "hausnummer": "34",
+    "plz": "26919",
+    "ort": "Brake (Unterweser)"
+  },
+  {
+    "name": "Amtsgericht Diepholz",
+    "strasse": "Lange Straße",
+    "hausnummer": "32",
+    "plz": "49356",
+    "ort": "Diepholz"
+  },
+  {
+    "name": "Amtsgericht Herzberg am Harz",
+    "strasse": "Schloß Nr.",
+    "hausnummer": "4",
+    "plz": "37412",
+    "ort": "Herzberg am Harz"
+  },
+  {
+    "name": "Amtsgericht Leer (Ostfriesland)",
+    "strasse": "Wörde",
+    "hausnummer": "3-5",
+    "plz": "26789",
+    "ort": "Leer (Ostfriesland)"
+  },
+  {
+    "name": "Amtsgericht Stade",
+    "strasse": "Wilhadikirchhof",
+    "hausnummer": "1",
+    "plz": "21682",
+    "ort": "Stade"
+  },
+  {
+    "name": "Amtsgericht Delmenhorst",
+    "strasse": "Bismarckstraße",
+    "hausnummer": "110",
+    "plz": "27749",
+    "ort": "Delmenhorst"
+  },
+  {
+    "name": "Amtsgericht Springe",
+    "strasse": "Zum Oberntor",
+    "hausnummer": "2",
+    "plz": "31832",
+    "ort": "Springe"
+  },
+  {
+    "name": "Amtsgericht Westerstede",
+    "strasse": "Wilhelm-Geiler-Straße",
+    "hausnummer": "12 a",
+    "plz": "26655",
+    "ort": "Westerstede"
+  },
+  {
+    "name": "Amtsgericht Bersenbrück",
+    "strasse": "Stiftshof",
+    "hausnummer": "8",
+    "plz": "49593",
+    "ort": "Bersenbrück"
+  },
+  {
+    "name": "Amtsgericht Burgwedel",
+    "strasse": "Im Klint",
+    "hausnummer": "4",
+    "plz": "30938",
+    "ort": "Burgwedel"
+  },
+  {
+    "name": "Amtsgericht Göttingen",
+    "strasse": "Berliner Straße",
+    "hausnummer": "8",
+    "plz": "37073",
+    "ort": "Göttingen"
+  },
+  {
+    "name": "Amtsgericht Uelzen",
+    "strasse": "Fritz-Röver-Straße",
+    "hausnummer": "5",
+    "plz": "29525",
+    "ort": "Uelzen"
+  },
+  {
+    "name": "Amtsgericht Wilhelmshaven",
+    "strasse": "Marktstraße",
+    "hausnummer": "15",
+    "plz": "26382",
+    "ort": "Wilhelmshaven"
+  },
+  {
+    "name": "Amtsgericht Wolfsburg",
+    "strasse": "Rothenfelder Straße",
+    "hausnummer": "43",
+    "plz": "38440",
+    "ort": "Wolfsburg"
+  },
+  {
+    "name": "Amtsgericht Arnsberg",
+    "strasse": "Eichholzstraße",
+    "hausnummer": "4",
+    "plz": "59821",
+    "ort": "Arnsberg"
+  },
+  {
+    "name": "Amtsgericht Blomberg",
+    "strasse": "Kolberger Straße",
+    "hausnummer": "1",
+    "plz": "32825",
+    "ort": "Blomberg"
+  },
+  {
+    "name": "Amtsgericht Brühl",
+    "strasse": "Balthasar-Neumann-Platz",
+    "hausnummer": "3",
+    "plz": "50321",
+    "ort": "Brühl"
+  },
+  {
+    "name": "Amtsgericht Detmold",
+    "strasse": "Heinrich-Drake-Straße",
+    "hausnummer": "3",
+    "plz": "32756",
+    "ort": "Detmold"
+  },
+  {
+    "name": "Amtsgericht Dülmen",
+    "strasse": "Königswall",
+    "hausnummer": "15",
+    "plz": "48249",
+    "ort": "Dülmen"
+  },
+  {
+    "name": "Amtsgericht Herne",
+    "strasse": "Friedrich-Ebert-Platz",
+    "hausnummer": "1",
+    "plz": "44623",
+    "ort": "Herne"
+  },
+  {
+    "name": "Amtsgericht Iserlohn",
+    "strasse": "Friedrichstraße",
+    "hausnummer": "108-110",
+    "plz": "58636",
+    "ort": "Iserlohn"
+  },
+  {
+    "name": "Amtsgericht Jülich",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "15",
+    "plz": "52428",
+    "ort": "Jülich"
+  },
+  {
+    "name": "Amtsgericht Lübbecke",
+    "strasse": "Kaiserstraße",
+    "hausnummer": "18",
+    "plz": "32312",
+    "ort": "Lübbecke"
+  },
+  {
+    "name": "Amtsgericht Marl",
+    "strasse": "Adolf-Grimme-Straße",
+    "hausnummer": "3",
+    "plz": "45768",
+    "ort": "Marl"
+  },
+  {
+    "name": "Amtsgericht Medebach",
+    "strasse": "Marktstraße",
+    "hausnummer": "2",
+    "plz": "59964",
+    "ort": "Medebach"
+  },
+  {
+    "name": "Amtsgericht Oberhausen",
+    "strasse": "Friedensplatz",
+    "hausnummer": "1",
+    "plz": "46045",
+    "ort": "Oberhausen"
+  },
+  {
+    "name": "Amtsgericht Rheinberg",
+    "strasse": "Rheinstraße",
+    "hausnummer": "67",
+    "plz": "47495",
+    "ort": "Rheinberg"
+  },
+  {
+    "name": "Amtsgericht Soest",
+    "strasse": "Nöttenstraße",
+    "hausnummer": "28",
+    "plz": "59494",
+    "ort": "Soest"
+  },
+  {
+    "name": "Amtsgericht Ahaus",
+    "strasse": "Sümmermannplatz",
+    "hausnummer": "1-5",
+    "plz": "48683",
+    "ort": "Ahaus"
+  },
+  {
+    "name": "Amtsgericht Bochum",
+    "strasse": "Josef-Neuberger-Straße",
+    "hausnummer": "1",
+    "plz": "44787",
+    "ort": "Bochum"
+  },
+  {
+    "name": "Amtsgericht Delbrück",
+    "strasse": "Lohmannstraße",
+    "hausnummer": "28",
+    "plz": "33129",
+    "ort": "Delbrück"
+  },
+  {
+    "name": "Amtsgericht Euskirchen",
+    "strasse": "Kölner Straße",
+    "hausnummer": "40-42",
+    "plz": "53879",
+    "ort": "Euskirchen"
+  },
+  {
+    "name": "Amtsgericht Meschede",
+    "strasse": "Steinstraße",
+    "hausnummer": "35",
+    "plz": "59872",
+    "ort": "Meschede"
+  },
+  {
+    "name": "Amtsgericht Neuss",
+    "strasse": "Breite Straße",
+    "hausnummer": "48",
+    "plz": "41460",
+    "ort": "Neuss"
+  },
+  {
+    "name": "Amtsgericht Aachen",
+    "strasse": "Adalbertsteinweg",
+    "hausnummer": "92",
+    "plz": "52070",
+    "ort": "Aachen"
+  },
+  {
+    "name": "Amtsgericht Halle (Westfalen)",
+    "strasse": "Lange Straße",
+    "hausnummer": "46",
+    "plz": "33790",
+    "ort": "Halle (Westfalen)"
+  },
+  {
+    "name": "Amtsgericht Kempen",
+    "strasse": "Hessenring",
+    "hausnummer": "43",
+    "plz": "47906",
+    "ort": "Kempen"
+  },
+  {
+    "name": "Amtsgericht Kerpen",
+    "strasse": "Nordring",
+    "hausnummer": "2-8",
+    "plz": "50171",
+    "ort": "Kerpen"
+  },
+  {
+    "name": "Amtsgericht Lippstadt",
+    "strasse": "Lipperoder Straße",
+    "hausnummer": "8",
+    "plz": "59555",
+    "ort": "Lippstadt"
+  },
+  {
+    "name": "Amtsgericht Lüdenscheid",
+    "strasse": "Dukatenweg",
+    "hausnummer": "6",
+    "plz": "58507",
+    "ort": "Lüdenscheid"
+  },
+  {
+    "name": "Amtsgericht Mülheim an der Ruhr",
+    "strasse": "Georgstraße",
+    "hausnummer": "13",
+    "plz": "45468",
+    "ort": "Mülheim an der Ruhr"
+  },
+  {
+    "name": "Amtsgericht Olpe",
+    "strasse": "Bruchstraße",
+    "hausnummer": "32",
+    "plz": "57462",
+    "ort": "Olpe"
+  },
+  {
+    "name": "Amtsgericht Rheine",
+    "strasse": "Salzbergener Straße",
+    "hausnummer": "29",
+    "plz": "48431",
+    "ort": "Rheine"
+  },
+  {
+    "name": "Amtsgericht Schwelm",
+    "strasse": "Schulstraße",
+    "hausnummer": "5",
+    "plz": "58332",
+    "ort": "Schwelm"
+  },
+  {
+    "name": "Amtsgericht Schwerte",
+    "strasse": "Hagener Straße",
+    "hausnummer": "40",
+    "plz": "58239",
+    "ort": "Schwerte"
+  },
+  {
+    "name": "Amtsgericht Wermelskirchen",
+    "strasse": "Brückenweg",
+    "hausnummer": "2-4",
+    "plz": "42929",
+    "ort": "Wermelskirchen"
+  },
+  {
+    "name": "Amtsgericht Wetter (Ruhr)",
+    "strasse": "Gustav-Vorsteher-Straße",
+    "hausnummer": "1",
+    "plz": "58300",
+    "ort": "Wetter (Ruhr)"
+  },
+  {
+    "name": "Amtsgericht Bad Oeynhausen",
+    "strasse": "Bismarckstraße",
+    "hausnummer": "12",
+    "plz": "32545",
+    "ort": "Bad Oeynhausen"
+  },
+  {
+    "name": "Amtsgericht Brilon",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "32",
+    "plz": "59929",
+    "ort": "Brilon"
+  },
+  {
+    "name": "Amtsgericht Castrop-Rauxel",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "61-63",
+    "plz": "44575",
+    "ort": "Castrop-Rauxel"
+  },
+  {
+    "name": "Amtsgericht Dinslaken",
+    "strasse": "Schillerstraße",
+    "hausnummer": "76",
+    "plz": "46535",
+    "ort": "Dinslaken"
+  },
+  {
+    "name": "Amtsgericht Hagen",
+    "strasse": "Heinitzstraße",
+    "hausnummer": "42/44",
+    "plz": "58097",
+    "ort": "Hagen"
+  },
+  {
+    "name": "Amtsgericht Langenfeld (Rheinland)",
+    "strasse": "Hauptstraße",
+    "hausnummer": "15",
+    "plz": "40764",
+    "ort": "Langenfeld (Rheinland)"
+  },
+  {
+    "name": "Amtsgericht Monschau",
+    "strasse": "Laufenstraße",
+    "hausnummer": "38",
+    "plz": "52156",
+    "ort": "Monschau"
+  },
+  {
+    "name": "Amtsgericht Rheda-Wiedenbrück",
+    "strasse": "Ostenstraße",
+    "hausnummer": "3",
+    "plz": "33378",
+    "ort": "Rheda-Wiedenbrück"
+  },
+  {
+    "name": "Amtsgericht Ahlen",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "12",
+    "plz": "59227",
+    "ort": "Ahlen"
+  },
+  {
+    "name": "Amtsgericht Essen-Steele",
+    "strasse": "Grendplatz",
+    "hausnummer": "2",
+    "plz": "45276",
+    "ort": "Essen"
+  },
+  {
+    "name": "Amtsgericht Geilenkirchen",
+    "strasse": "Konrad-Adenauer-Straße",
+    "hausnummer": "225",
+    "plz": "52511",
+    "ort": "Geilenkirchen"
+  },
+  {
+    "name": "Amtsgericht Gelsenkirchen",
+    "strasse": "Bochumer Straße",
+    "hausnummer": "79",
+    "plz": "45886",
+    "ort": "Gelsenkirchen"
+  },
+  {
+    "name": "Amtsgericht Grevenbroich",
+    "strasse": "Lindenstraße",
+    "hausnummer": "33-37",
+    "plz": "41515",
+    "ort": "Grevenbroich"
+  },
+  {
+    "name": "Amtsgericht Höxter",
+    "strasse": "Möllingerstraße",
+    "hausnummer": "8",
+    "plz": "37671",
+    "ort": "Höxter"
+  },
+  {
+    "name": "Amtsgericht Leverkusen",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "9",
+    "plz": "51379",
+    "ort": "Leverkusen"
+  },
+  {
+    "name": "Amtsgericht Münster",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2-6",
+    "plz": "48149",
+    "ort": "Münster (Westfalen)"
+  },
+  {
+    "name": "Amtsgericht Nettetal",
+    "strasse": "Steegerstraße",
+    "hausnummer": "61",
+    "plz": "41334",
+    "ort": "Nettetal"
+  },
+  {
+    "name": "Amtsgericht Rahden",
+    "strasse": "Lange Straße",
+    "hausnummer": "18",
+    "plz": "32369",
+    "ort": "Rahden"
+  },
+  {
+    "name": "Amtsgericht Recklinghausen",
+    "strasse": "Reitzensteinstraße",
+    "hausnummer": "17",
+    "plz": "45657",
+    "ort": "Recklinghausen"
+  },
+  {
+    "name": "Amtsgericht Siegburg",
+    "strasse": "Neue Poststraße",
+    "hausnummer": "16",
+    "plz": "53721",
+    "ort": "Siegburg"
+  },
+  {
+    "name": "Amtsgericht Viersen",
+    "strasse": "Dülkener Straße",
+    "hausnummer": "5",
+    "plz": "41747",
+    "ort": "Viersen"
+  },
+  {
+    "name": "Amtsgericht Werl",
+    "strasse": "Soester Straße",
+    "hausnummer": "51",
+    "plz": "59457",
+    "ort": "Werl"
+  },
+  {
+    "name": "Amtsgericht Wipperfürth",
+    "strasse": "Gaulstraße",
+    "hausnummer": "22-22 a",
+    "plz": "51688",
+    "ort": "Wipperfürth"
+  },
+  {
+    "name": "Amtsgericht Bielefeld",
+    "strasse": "Gerichtstraße",
+    "hausnummer": "6",
+    "plz": "33602",
+    "ort": "Bielefeld"
+  },
+  {
+    "name": "Amtsgericht Brakel",
+    "strasse": "Nieheimer Straße",
+    "hausnummer": "17",
+    "plz": "33034",
+    "ort": "Brakel"
+  },
+  {
+    "name": "Amtsgericht Coesfeld",
+    "strasse": "Friedrich-Ebert-Straße",
+    "hausnummer": "6",
+    "plz": "48653",
+    "ort": "Coesfeld"
+  },
+  {
+    "name": "Amtsgericht Duisburg-Ruhrort",
+    "strasse": "Amtsgerichtsstraße",
+    "hausnummer": "36",
+    "plz": "47119",
+    "ort": "Duisburg"
+  },
+  {
+    "name": "Amtsgericht Eschweiler",
+    "strasse": "Kaiserstraße",
+    "hausnummer": "6",
+    "plz": "52249",
+    "ort": "Eschweiler"
+  },
+  {
+    "name": "Amtsgericht Essen-Borbeck",
+    "strasse": "Marktstraße",
+    "hausnummer": "70",
+    "plz": "45355",
+    "ort": "Essen"
+  },
+  {
+    "name": "Amtsgericht Herford",
+    "strasse": "Auf der Freiheit",
+    "hausnummer": "7",
+    "plz": "32052",
+    "ort": "Herford"
+  },
+  {
+    "name": "Amtsgericht Lünen",
+    "strasse": "Spormeckerplatz",
+    "hausnummer": "5",
+    "plz": "44532",
+    "ort": "Lünen"
+  },
+  {
+    "name": "Amtsgericht Marsberg",
+    "strasse": "Hauptstraße",
+    "hausnummer": "3",
+    "plz": "34431",
+    "ort": "Marsberg"
+  },
+  {
+    "name": "Amtsgericht Moers",
+    "strasse": "Haagstraße",
+    "hausnummer": "7",
+    "plz": "47441",
+    "ort": "Moers"
+  },
+  {
+    "name": "Amtsgericht Paderborn",
+    "strasse": "Am Bogen",
+    "hausnummer": "2-4",
+    "plz": "33098",
+    "ort": "Paderborn"
+  },
+  {
+    "name": "Amtsgericht Ratingen",
+    "strasse": "Düsseldorfer Straße",
+    "hausnummer": "54",
+    "plz": "40878",
+    "ort": "Ratingen"
+  },
+  {
+    "name": "Amtsgericht Rheinbach",
+    "strasse": "Schweigelstraße",
+    "hausnummer": "30",
+    "plz": "53359",
+    "ort": "Rheinbach"
+  },
+  {
+    "name": "Amtsgericht Schleiden",
+    "strasse": "Marienplatz",
+    "hausnummer": "10",
+    "plz": "53937",
+    "ort": "Schleiden"
+  },
+  {
+    "name": "Amtsgericht Unna",
+    "strasse": "Friedrich-Ebert-Straße",
+    "hausnummer": "65 a",
+    "plz": "59425",
+    "ort": "Unna"
+  },
+  {
+    "name": "Amtsgericht Warendorf",
+    "strasse": "Dr.-Leve-Straße",
+    "hausnummer": "22",
+    "plz": "48231",
+    "ort": "Warendorf"
+  },
+  {
+    "name": "Amtsgericht Warstein",
+    "strasse": "Bergenthalstraße",
+    "hausnummer": "11",
+    "plz": "59581",
+    "ort": "Warstein"
+  },
+  {
+    "name": "Amtsgericht Wesel",
+    "strasse": "Herzogenring",
+    "hausnummer": "33",
+    "plz": "46483",
+    "ort": "Wesel"
+  },
+  {
+    "name": "Amtsgericht Beckum",
+    "strasse": "Elisabethstraße",
+    "hausnummer": "15/17",
+    "plz": "59269",
+    "ort": "Beckum"
+  },
+  {
+    "name": "Amtsgericht Bocholt",
+    "strasse": "Benölkenplatz",
+    "hausnummer": "2",
+    "plz": "46399",
+    "ort": "Bocholt"
+  },
+  {
+    "name": "Amtsgericht Bünde",
+    "strasse": "Hangbaumstraße",
+    "hausnummer": "19",
+    "plz": "32257",
+    "ort": "Bünde"
+  },
+  {
+    "name": "Amtsgericht Duisburg",
+    "strasse": "König-Heinrich-Platz",
+    "hausnummer": "1",
+    "plz": "47051",
+    "ort": "Duisburg"
+  },
+  {
+    "name": "Amtsgericht Düren",
+    "strasse": "August-Klotz-Straße",
+    "hausnummer": "14",
+    "plz": "52349",
+    "ort": "Düren"
+  },
+  {
+    "name": "Amtsgericht Hattingen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "9",
+    "plz": "45525",
+    "ort": "Hattingen"
+  },
+  {
+    "name": "Amtsgericht Heinsberg",
+    "strasse": "Schafhausener Straße",
+    "hausnummer": "47",
+    "plz": "52525",
+    "ort": "Heinsberg"
+  },
+  {
+    "name": "Amtsgericht Herne-Wanne",
+    "strasse": "Hauptstraße",
+    "hausnummer": "129",
+    "plz": "44651",
+    "ort": "Herne"
+  },
+  {
+    "name": "Amtsgericht Köln",
+    "strasse": "Luxemburger Straße",
+    "hausnummer": "101",
+    "plz": "50939",
+    "ort": "Köln"
+  },
+  {
+    "name": "Amtsgericht Lemgo",
+    "strasse": "Am Lindenhaus",
+    "hausnummer": "2",
+    "plz": "32657",
+    "ort": "Lemgo"
+  },
+  {
+    "name": "Amtsgericht Lüdinghausen",
+    "strasse": "Seppenrader Straße",
+    "hausnummer": "3",
+    "plz": "59348",
+    "ort": "Lüdinghausen"
+  },
+  {
+    "name": "Amtsgericht Meinerzhagen",
+    "strasse": "Gerichtstraße",
+    "hausnummer": "14",
+    "plz": "58540",
+    "ort": "Meinerzhagen"
+  },
+  {
+    "name": "Amtsgericht Menden (Sauerland)",
+    "strasse": "Heimkerweg",
+    "hausnummer": "7",
+    "plz": "58706",
+    "ort": "Menden (Sauerland)"
+  },
+  {
+    "name": "Amtsgericht Mönchengladbach",
+    "strasse": "Hohenzollernstraße",
+    "hausnummer": "157",
+    "plz": "41061",
+    "ort": "Mönchengladbach"
+  },
+  {
+    "name": "Amtsgericht Solingen",
+    "strasse": "Goerdelerstraße",
+    "hausnummer": "10",
+    "plz": "42651",
+    "ort": "Solingen"
+  },
+  {
+    "name": "Amtsgericht Bad Berleburg",
+    "strasse": "Im Herrengarten",
+    "hausnummer": "5",
+    "plz": "57319",
+    "ort": "Bad Berleburg"
+  },
+  {
+    "name": "Amtsgericht Bergheim",
+    "strasse": "Kennedystraße",
+    "hausnummer": "2",
+    "plz": "50126",
+    "ort": "Bergheim"
+  },
+  {
+    "name": "Amtsgericht Bergisch Gladbach",
+    "strasse": "Schloßstraße",
+    "hausnummer": "21",
+    "plz": "51429",
+    "ort": "Bergisch Gladbach"
+  },
+  {
+    "name": "Amtsgericht Dortmund",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "22",
+    "plz": "44135",
+    "ort": "Dortmund"
+  },
+  {
+    "name": "Amtsgericht Gronau (Westfalen)",
+    "strasse": "Alter Markt",
+    "hausnummer": "5-7",
+    "plz": "48599",
+    "ort": "Gronau (Westfalen)"
+  },
+  {
+    "name": "Amtsgericht Gütersloh",
+    "strasse": "Friedrich-Ebert-Straße",
+    "hausnummer": "30",
+    "plz": "33330",
+    "ort": "Gütersloh"
+  },
+  {
+    "name": "Amtsgericht Mettmann",
+    "strasse": "Gartenstraße",
+    "hausnummer": "7",
+    "plz": "40822",
+    "ort": "Mettmann"
+  },
+  {
+    "name": "Amtsgericht Remscheid",
+    "strasse": "Alleestraße",
+    "hausnummer": "119",
+    "plz": "42853",
+    "ort": "Remscheid"
+  },
+  {
+    "name": "Amtsgericht Wuppertal",
+    "strasse": "Eiland",
+    "hausnummer": "2",
+    "plz": "42103",
+    "ort": "Wuppertal"
+  },
+  {
+    "name": "Amtsgericht Bottrop",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "24-26",
+    "plz": "46236",
+    "ort": "Bottrop"
+  },
+  {
+    "name": "Amtsgericht Gummersbach",
+    "strasse": "Steinmüllerallee",
+    "hausnummer": "1 a",
+    "plz": "51643",
+    "ort": "Gummersbach"
+  },
+  {
+    "name": "Amtsgericht Hamm",
+    "strasse": "Borbergstraße",
+    "hausnummer": "1",
+    "plz": "59065",
+    "ort": "Hamm"
+  },
+  {
+    "name": "Amtsgericht Ibbenbüren",
+    "strasse": "Münsterstraße",
+    "hausnummer": "35",
+    "plz": "49477",
+    "ort": "Ibbenbüren"
+  },
+  {
+    "name": "Amtsgericht Krefeld",
+    "strasse": "Nordwall",
+    "hausnummer": "131",
+    "plz": "47798",
+    "ort": "Krefeld"
+  },
+  {
+    "name": "Amtsgericht Bonn",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "21-23",
+    "plz": "53111",
+    "ort": "Bonn"
+  },
+  {
+    "name": "Amtsgericht Königswinter",
+    "strasse": "Drachenfelsstraße",
+    "hausnummer": "39-41",
+    "plz": "53639",
+    "ort": "Königswinter"
+  },
+  {
+    "name": "Amtsgericht Mönchengladbach-Rheydt",
+    "strasse": "Brucknerallee",
+    "hausnummer": "115",
+    "plz": "41236",
+    "ort": "Mönchengladbach"
+  },
+  {
+    "name": "Amtsgericht Altena",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "10",
+    "plz": "58762",
+    "ort": "Altena"
+  },
+  {
+    "name": "Amtsgericht Gladbeck",
+    "strasse": "Schützenstraße",
+    "hausnummer": "21",
+    "plz": "45964",
+    "ort": "Gladbeck"
+  },
+  {
+    "name": "Amtsgericht Erkelenz",
+    "strasse": "Konrad-Adenauer-Platz",
+    "hausnummer": "3",
+    "plz": "41812",
+    "ort": "Erkelenz"
+  },
+  {
+    "name": "Amtsgericht Essen",
+    "strasse": "Zweigertstraße",
+    "hausnummer": "52",
+    "plz": "45130",
+    "ort": "Essen"
+  },
+  {
+    "name": "Amtsgericht Minden",
+    "strasse": "Königswall",
+    "hausnummer": "8",
+    "plz": "32423",
+    "ort": "Minden"
+  },
+  {
+    "name": "Amtsgericht Schmallenberg",
+    "strasse": "Im Ohle",
+    "hausnummer": "6",
+    "plz": "57392",
+    "ort": "Schmallenberg"
+  },
+  {
+    "name": "Amtsgericht Waldbröl",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "1",
+    "plz": "51545",
+    "ort": "Waldbröl"
+  },
+  {
+    "name": "Amtsgericht Borken",
+    "strasse": "Heidener Straße",
+    "hausnummer": "3",
+    "plz": "46325",
+    "ort": "Borken"
+  },
+  {
+    "name": "Amtsgericht Geldern",
+    "strasse": "Nordwall",
+    "hausnummer": "51",
+    "plz": "47608",
+    "ort": "Geldern"
+  },
+  {
+    "name": "Amtsgericht Siegen",
+    "strasse": "Berliner Straße",
+    "hausnummer": "21-22",
+    "plz": "57072",
+    "ort": "Siegen"
+  },
+  {
+    "name": "Amtsgericht Steinfurt",
+    "strasse": "Gerichtstraße",
+    "hausnummer": "2",
+    "plz": "48565",
+    "ort": "Steinfurt"
+  },
+  {
+    "name": "Amtsgericht Dorsten",
+    "strasse": "Alter Postweg",
+    "hausnummer": "36",
+    "plz": "46282",
+    "ort": "Dorsten"
+  },
+  {
+    "name": "Amtsgericht Duisburg-Hamborn",
+    "strasse": "Duisburger Straße",
+    "hausnummer": "220",
+    "plz": "47166",
+    "ort": "Duisburg"
+  },
+  {
+    "name": "Amtsgericht Düsseldorf",
+    "strasse": "Werdener Straße",
+    "hausnummer": "1",
+    "plz": "40227",
+    "ort": "Düsseldorf"
+  },
+  {
+    "name": "Amtsgericht Emmerich am Rhein",
+    "strasse": "Seufzerallee",
+    "hausnummer": "20",
+    "plz": "46446",
+    "ort": "Emmerich am Rhein"
+  },
+  {
+    "name": "Amtsgericht Kamen",
+    "strasse": "Poststraße",
+    "hausnummer": "1",
+    "plz": "59174",
+    "ort": "Kamen"
+  },
+  {
+    "name": "Amtsgericht Lennestadt",
+    "strasse": "Kölner Straße",
+    "hausnummer": "104",
+    "plz": "57368",
+    "ort": "Lennestadt"
+  },
+  {
+    "name": "Amtsgericht Plettenberg",
+    "strasse": "An der Lohmühle",
+    "hausnummer": "5",
+    "plz": "58840",
+    "ort": "Plettenberg"
+  },
+  {
+    "name": "Amtsgericht Tecklenburg",
+    "strasse": "Gerichtsweg",
+    "hausnummer": "1",
+    "plz": "49545",
+    "ort": "Tecklenburg"
+  },
+  {
+    "name": "Amtsgericht Velbert",
+    "strasse": "Nedderstraße",
+    "hausnummer": "40",
+    "plz": "42549",
+    "ort": "Velbert"
+  },
+  {
+    "name": "Amtsgericht Warburg",
+    "strasse": "Puhlplatz",
+    "hausnummer": "1",
+    "plz": "34414",
+    "ort": "Warburg"
+  },
+  {
+    "name": "Amtsgericht Witten",
+    "strasse": "Bergerstraße",
+    "hausnummer": "14",
+    "plz": "58452",
+    "ort": "Witten"
+  },
+  {
+    "name": "Amtsgericht Kleve",
+    "strasse": "Schlossberg 1 (Schwanenburg)",
+    "hausnummer": "",
+    "plz": "47533",
+    "ort": "Kleve"
+  },
+  {
+    "name": "Amtsgericht Zweibrücken",
+    "strasse": "Herzogstraße",
+    "hausnummer": "2",
+    "plz": "66482",
+    "ort": "Zweibrücken"
+  },
+  {
+    "name": "Amtsgericht Frankenthal (Pfalz)",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "33",
+    "plz": "67227",
+    "ort": "Frankenthal (Pfalz)"
+  },
+  {
+    "name": "Amtsgericht Grünstadt",
+    "strasse": "Tiefenthaler Straße",
+    "hausnummer": "8",
+    "plz": "67269",
+    "ort": "Grünstadt"
+  },
+  {
+    "name": "Amtsgericht Montabaur",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "47",
+    "plz": "56410",
+    "ort": "Montabaur"
+  },
+  {
+    "name": "Amtsgericht Neuwied",
+    "strasse": "Hermannstraße",
+    "hausnummer": "39",
+    "plz": "56564",
+    "ort": "Neuwied"
+  },
+  {
+    "name": "Amtsgericht Westerburg",
+    "strasse": "Wörthstraße",
+    "hausnummer": "14",
+    "plz": "56457",
+    "ort": "Westerburg"
+  },
+  {
+    "name": "Amtsgericht Kaiserslautern",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "24",
+    "plz": "67655",
+    "ort": "Kaiserslautern"
+  },
+  {
+    "name": "Amtsgericht Saarburg",
+    "strasse": "Graf-Siegfried-Straße",
+    "hausnummer": "56",
+    "plz": "54439",
+    "ort": "Saarburg"
+  },
+  {
+    "name": "Amtsgericht Altenkirchen (Westerwald)",
+    "strasse": "Hochstraße",
+    "hausnummer": "1",
+    "plz": "57610",
+    "ort": "Altenkirchen (Westerwald)"
+  },
+  {
+    "name": "Amtsgericht Bingen am Rhein",
+    "strasse": "Mainzer Straße",
+    "hausnummer": "52",
+    "plz": "55411",
+    "ort": "Bingen am Rhein"
+  },
+  {
+    "name": "Amtsgericht Prüm",
+    "strasse": "Teichstraße",
+    "hausnummer": "18",
+    "plz": "54595",
+    "ort": "Prüm"
+  },
+  {
+    "name": "Amtsgericht Simmern (Hunsrück)",
+    "strasse": "Schulstraße",
+    "hausnummer": "5",
+    "plz": "55469",
+    "ort": "Simmern (Hunsrück)"
+  },
+  {
+    "name": "Amtsgericht Bad Sobernheim",
+    "strasse": "Gymnasialstraße",
+    "hausnummer": "11",
+    "plz": "55566",
+    "ort": "Bad Sobernheim"
+  },
+  {
+    "name": "Amtsgericht Bad Kreuznach",
+    "strasse": "John-F.-Kennedy-Straße",
+    "hausnummer": "17",
+    "plz": "55543",
+    "ort": "Bad Kreuznach"
+  },
+  {
+    "name": "Amtsgericht Kusel",
+    "strasse": "Trierer Straße",
+    "hausnummer": "71",
+    "plz": "66869",
+    "ort": "Kusel"
+  },
+  {
+    "name": "Amtsgericht Lahnstein",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "25",
+    "plz": "56112",
+    "ort": "Lahnstein"
+  },
+  {
+    "name": "Amtsgericht Ludwigshafen am Rhein",
+    "strasse": "Wittelsbachstraße",
+    "hausnummer": "10",
+    "plz": "67061",
+    "ort": "Ludwigshafen am Rhein"
+  },
+  {
+    "name": "Amtsgericht Neustadt an der Weinstraße",
+    "strasse": "Robert-Stolz-Straße",
+    "hausnummer": "20",
+    "plz": "67433",
+    "ort": "Neustadt an der Weinstraße"
+  },
+  {
+    "name": "Amtsgericht Pirmasens",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "22-26",
+    "plz": "66953",
+    "ort": "Pirmasens"
+  },
+  {
+    "name": "Amtsgericht Speyer",
+    "strasse": "Wormser Straße",
+    "hausnummer": "41",
+    "plz": "67346",
+    "ort": "Speyer"
+  },
+  {
+    "name": "Amtsgericht Diez",
+    "strasse": "Schloßberg",
+    "hausnummer": "11",
+    "plz": "65582",
+    "ort": "Diez"
+  },
+  {
+    "name": "Amtsgericht Germersheim",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "6",
+    "plz": "76726",
+    "ort": "Germersheim"
+  },
+  {
+    "name": "Amtsgericht Mainz",
+    "strasse": "Diether-von-Isenburg-Straße",
+    "hausnummer": "",
+    "plz": "55116",
+    "ort": "Mainz"
+  },
+  {
+    "name": "Amtsgericht Rockenhausen",
+    "strasse": "Kreuznacher Straße",
+    "hausnummer": "37",
+    "plz": "67806",
+    "ort": "Rockenhausen"
+  },
+  {
+    "name": "Amtsgericht Alzey",
+    "strasse": "Schlossgasse",
+    "hausnummer": "32",
+    "plz": "55232",
+    "ort": "Alzey"
+  },
+  {
+    "name": "Amtsgericht Bitburg",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2-4",
+    "plz": "54634",
+    "ort": "Bitburg"
+  },
+  {
+    "name": "Amtsgericht Mayen",
+    "strasse": "Sankt-Veit-Straße",
+    "hausnummer": "38",
+    "plz": "56727",
+    "ort": "Mayen"
+  },
+  {
+    "name": "Amtsgericht Sinzig",
+    "strasse": "Barbarossastraße",
+    "hausnummer": "21",
+    "plz": "53489",
+    "ort": "Sinzig"
+  },
+  {
+    "name": "Amtsgericht Worms",
+    "strasse": "Hardtgasse",
+    "hausnummer": "6",
+    "plz": "67547",
+    "ort": "Worms"
+  },
+  {
+    "name": "Amtsgericht Landau in der Pfalz Zweigstelle Bad Bergzabern",
+    "strasse": "Weinstraße",
+    "hausnummer": "46",
+    "plz": "76887",
+    "ort": "Bad Bergzabern"
+  },
+  {
+    "name": "Amtsgericht Sankt Goar",
+    "strasse": "Bismarckweg",
+    "hausnummer": "3-4",
+    "plz": "56329",
+    "ort": "Sankt Goar"
+  },
+  {
+    "name": "Amtsgericht Bad Dürkheim",
+    "strasse": "Seebacher Straße",
+    "hausnummer": "2",
+    "plz": "67098",
+    "ort": "Bad Dürkheim"
+  },
+  {
+    "name": "Amtsgericht Bad Neuenahr-Ahrweiler",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "55/57",
+    "plz": "53474",
+    "ort": "Bad Neuenahr-Ahrweiler"
+  },
+  {
+    "name": "Amtsgericht Hermeskeil",
+    "strasse": "Trierer Straße",
+    "hausnummer": "43",
+    "plz": "54411",
+    "ort": "Hermeskeil"
+  },
+  {
+    "name": "Amtsgericht Landstuhl",
+    "strasse": "Kaiserstraße",
+    "hausnummer": "55",
+    "plz": "66849",
+    "ort": "Landstuhl"
+  },
+  {
+    "name": "Amtsgericht Andernach",
+    "strasse": "Koblenzer Straße",
+    "hausnummer": "6",
+    "plz": "56626",
+    "ort": "Andernach"
+  },
+  {
+    "name": "Amtsgericht Bernkastel-Kues",
+    "strasse": "Brüningstraße",
+    "hausnummer": "30",
+    "plz": "54470",
+    "ort": "Bernkastel-Kues"
+  },
+  {
+    "name": "Amtsgericht Linz am Rhein",
+    "strasse": "Am Konvikt",
+    "hausnummer": "10",
+    "plz": "53545",
+    "ort": "Linz am Rhein"
+  },
+  {
+    "name": "Amtsgericht Trier",
+    "strasse": "Justizstraße",
+    "hausnummer": "2-6",
+    "plz": "54290",
+    "ort": "Trier"
+  },
+  {
+    "name": "Amtsgericht Cochem",
+    "strasse": "Ravenestraße",
+    "hausnummer": "39",
+    "plz": "56812",
+    "ort": "Cochem"
+  },
+  {
+    "name": "Amtsgericht Koblenz",
+    "strasse": "Karmeliterstraße",
+    "hausnummer": "14",
+    "plz": "56068",
+    "ort": "Koblenz"
+  },
+  {
+    "name": "Amtsgericht Idar-Oberstein",
+    "strasse": "Mainzer Straße",
+    "hausnummer": "180",
+    "plz": "55743",
+    "ort": "Idar-Oberstein"
+  },
+  {
+    "name": "Amtsgericht Landau in der Pfalz",
+    "strasse": "Marienring",
+    "hausnummer": "13",
+    "plz": "76829",
+    "ort": "Landau in der Pfalz"
+  },
+  {
+    "name": "Amtsgericht Betzdorf",
+    "strasse": "Friedrichstraße",
+    "hausnummer": "17",
+    "plz": "57518",
+    "ort": "Betzdorf"
+  },
+  {
+    "name": "Amtsgericht Daun",
+    "strasse": "Berliner Straße",
+    "hausnummer": "3",
+    "plz": "54550",
+    "ort": "Daun"
+  },
+  {
+    "name": "Amtsgericht Kandel",
+    "strasse": "Landauer Straße",
+    "hausnummer": "19",
+    "plz": "76870",
+    "ort": "Kandel"
+  },
+  {
+    "name": "Amtsgericht Wittlich",
+    "strasse": "Kurfürstenstraße",
+    "hausnummer": "63",
+    "plz": "54516",
+    "ort": "Wittlich"
+  },
+  {
+    "name": "Amtsgericht Sankt Ingbert",
+    "strasse": "Ensheimer Straße",
+    "hausnummer": "2",
+    "plz": "66386",
+    "ort": "St. Ingbert"
+  },
+  {
+    "name": "Amtsgericht Merzig Zweigstelle Wadern",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "7",
+    "plz": "66687",
+    "ort": "Wadern"
+  },
+  {
+    "name": "Amtsgericht St. Wendel",
+    "strasse": "Schorlemer Straße",
+    "hausnummer": "33",
+    "plz": "66606",
+    "ort": "St. Wendel"
+  },
+  {
+    "name": "Amtsgericht Völklingen",
+    "strasse": "Karl-Janssen-Straße",
+    "hausnummer": "35",
+    "plz": "66333",
+    "ort": "Völklingen"
+  },
+  {
+    "name": "Amtsgericht Saarbrücken",
+    "strasse": "Franz-Josef-Röder-Straße",
+    "hausnummer": "13",
+    "plz": "66119",
+    "ort": "Saarbrücken"
+  },
+  {
+    "name": "Amtsgericht Homburg",
+    "strasse": "Zweibrücker Straße",
+    "hausnummer": "24",
+    "plz": "66424",
+    "ort": "Homburg"
+  },
+  {
+    "name": "Amtsgericht Lebach",
+    "strasse": "Saarbrücker Straße",
+    "hausnummer": "10",
+    "plz": "66822",
+    "ort": "Lebach"
+  },
+  {
+    "name": "Amtsgericht Ottweiler",
+    "strasse": "Reiherswaldweg",
+    "hausnummer": "2",
+    "plz": "66564",
+    "ort": "Ottweiler"
+  },
+  {
+    "name": "Amtsgericht Saarlouis",
+    "strasse": "Prälat-Subtil-Ring",
+    "hausnummer": "10",
+    "plz": "66740",
+    "ort": "Saarlouis"
+  },
+  {
+    "name": "Amtsgericht Neunkirchen",
+    "strasse": "Knappschaftsstraße",
+    "hausnummer": "16",
+    "plz": "66538",
+    "ort": "Neunkirchen"
+  },
+  {
+    "name": "Amtsgericht Merzig",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "2",
+    "plz": "66663",
+    "ort": "Merzig"
+  },
+  {
+    "name": "Amtsgericht Auerbach",
+    "strasse": "Parkstraße",
+    "hausnummer": "1",
+    "plz": "08209",
+    "ort": "Auerbach/Vogtl."
+  },
+  {
+    "name": "Amtsgericht Dippoldiswalde",
+    "strasse": "Kirchplatz",
+    "hausnummer": "8",
+    "plz": "01744",
+    "ort": "Dippoldiswalde"
+  },
+  {
+    "name": "Amtsgericht Döbeln Zweigstelle Hainichen",
+    "strasse": "Friedelstraße",
+    "hausnummer": "4",
+    "plz": "09661",
+    "ort": "Hainichen"
+  },
+  {
+    "name": "Amtsgericht Kamenz",
+    "strasse": "Macherstraße",
+    "hausnummer": "49",
+    "plz": "01917",
+    "ort": "Kamenz"
+  },
+  {
+    "name": "Amtsgericht Weißwasser",
+    "strasse": "Marktplatz",
+    "hausnummer": "1",
+    "plz": "02943",
+    "ort": "Weißwasser/O.L."
+  },
+  {
+    "name": "Amtsgericht Freiberg",
+    "strasse": "Heinrich-Heine-Straße",
+    "hausnummer": "15",
+    "plz": "09599",
+    "ort": "Freiberg"
+  },
+  {
     "name": "Amtsgericht Leipzig",
     "strasse": "Bernhard-Göring-Straße",
     "hausnummer": "64",
     "plz": "04275",
     "ort": "Leipzig"
+  },
+  {
+    "name": "Amtsgericht Pirna",
+    "strasse": "Schloßhof",
+    "hausnummer": "7",
+    "plz": "01796",
+    "ort": "Pirna"
+  },
+  {
+    "name": "Amtsgericht Zwickau",
+    "strasse": "Humboldtstraße",
+    "hausnummer": "1",
+    "plz": "08056",
+    "ort": "Zwickau"
+  },
+  {
+    "name": "Amtsgericht Zittau",
+    "strasse": "Lessingstraße",
+    "hausnummer": "1",
+    "plz": "02763",
+    "ort": "Zittau"
+  },
+  {
+    "name": "Amtsgericht Borna",
+    "strasse": "Am Gericht",
+    "hausnummer": "2",
+    "plz": "04552",
+    "ort": "Borna"
+  },
+  {
+    "name": "Amtsgericht Zittau Zweigstelle Löbau",
+    "strasse": "Promenadenring",
+    "hausnummer": "3",
+    "plz": "02708",
+    "ort": "Löbau"
+  },
+  {
+    "name": "Amtsgericht Meißen",
+    "strasse": "Domplatz",
+    "hausnummer": "3",
+    "plz": "01662",
+    "ort": "Meißen"
+  },
+  {
+    "name": "Amtsgericht Aue-Bad Schlema Zweigstelle Stollberg",
+    "strasse": "Hauptmarkt",
+    "hausnummer": "10",
+    "plz": "09366",
+    "ort": "Stollberg/Erzgeb."
+  },
+  {
+    "name": "Amtsgericht Bautzen",
+    "strasse": "Lessingstr.",
+    "hausnummer": "7",
+    "plz": "02625",
+    "ort": "Bautzen"
+  },
+  {
+    "name": "Amtsgericht Döbeln",
+    "strasse": "Rosa-Luxemburg-Straße",
+    "hausnummer": "16",
+    "plz": "04720",
+    "ort": "Döbeln"
+  },
+  {
+    "name": "Amtsgericht Marienberg",
+    "strasse": "Zschopauer Straße",
+    "hausnummer": "31",
+    "plz": "09496",
+    "ort": "Marienberg"
+  },
+  {
+    "name": "Amtsgericht Torgau",
+    "strasse": "Rosa-Luxemburg-Platz",
+    "hausnummer": "14",
+    "plz": "04860",
+    "ort": "Torgau"
+  },
+  {
+    "name": "Amtsgericht Dresden",
+    "strasse": "Roßbachstraße",
+    "hausnummer": "6",
+    "plz": "01069",
+    "ort": "Dresden"
+  },
+  {
+    "name": "Amtsgericht Hoyerswerda",
+    "strasse": "Pforzheimer Platz",
+    "hausnummer": "2",
+    "plz": "02977",
+    "ort": "Hoyerswerda"
+  },
+  {
+    "name": "Amtsgericht Plauen",
+    "strasse": "Europaratstraße",
+    "hausnummer": "13",
+    "plz": "08523",
+    "ort": "Plauen"
+  },
+  {
+    "name": "Amtsgericht Eilenburg",
+    "strasse": "Walther-Rathenau-Straße",
+    "hausnummer": "9",
+    "plz": "04838",
+    "ort": "Eilenburg"
+  },
+  {
+    "name": "Amtsgericht Grimma",
+    "strasse": "Klosterstraße",
+    "hausnummer": "9",
+    "plz": "04668",
+    "ort": "Grimma"
+  },
+  {
+    "name": "Amtsgericht Aue-Bad Schlema",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "1",
+    "plz": "08280",
+    "ort": "Aue"
+  },
+  {
+    "name": "Amtsgericht Hohenstein-Ernstthal",
+    "strasse": "Conrad-Clauß-Straße",
+    "hausnummer": "11",
+    "plz": "09337",
+    "ort": "Hohenstein-Ernstthal"
+  },
+  {
+    "name": "Amtsgericht Torgau Zweigstelle Oschatz",
+    "strasse": "Brüderstraße",
+    "hausnummer": "5",
+    "plz": "04758",
+    "ort": "Oschatz"
+  },
+  {
+    "name": "Amtsgericht Görlitz",
+    "strasse": "Postplatz",
+    "hausnummer": "18",
+    "plz": "02826",
+    "ort": "Görlitz"
+  },
+  {
+    "name": "Amtsgericht Riesa",
+    "strasse": "Lauchhammerstraße",
+    "hausnummer": "10",
+    "plz": "01591",
+    "ort": "Riesa"
+  },
+  {
+    "name": "Amtsgericht Chemnitz",
+    "strasse": "Gerichtsstraße",
+    "hausnummer": "2",
+    "plz": "09112",
+    "ort": "Chemnitz"
+  },
+  {
+    "name": "Amtsgericht Wernigerode",
+    "strasse": "Rudolf-Breitscheid-Straße",
+    "hausnummer": "8",
+    "plz": "38855",
+    "ort": "Wernigerode"
+  },
+  {
+    "name": "Amtsgericht Wittenberg",
+    "strasse": "Dessauer Straße",
+    "hausnummer": "291",
+    "plz": "06886",
+    "ort": "Lutherstadt Wittenberg"
+  },
+  {
+    "name": "Amtsgericht Zeitz",
+    "strasse": "Herzog-Moritz-Platz",
+    "hausnummer": "1",
+    "plz": "06712",
+    "ort": "Zeitz"
+  },
+  {
+    "name": "Amtsgericht Dessau-Roßlau",
+    "strasse": "Willy-Lohmann-Straße",
+    "hausnummer": "33",
+    "plz": "06844",
+    "ort": "Dessau-Roßlau"
+  },
+  {
+    "name": "Amtsgericht Halle (Saale)",
+    "strasse": "Thüringer Straße",
+    "hausnummer": "16",
+    "plz": "06112",
+    "ort": "Halle (Saale)"
+  },
+  {
+    "name": "Amtsgericht Köthen",
+    "strasse": "Friedhofstraße",
+    "hausnummer": "48",
+    "plz": "06366",
+    "ort": "Köthen (Anhalt)"
+  },
+  {
+    "name": "Amtsgericht Salzwedel",
+    "strasse": "Burgstraße",
+    "hausnummer": "68",
+    "plz": "29410",
+    "ort": "Hansestadt Salzwedel"
+  },
+  {
+    "name": "Amtsgericht Sangerhausen",
+    "strasse": "Markt",
+    "hausnummer": "3",
+    "plz": "06526",
+    "ort": "Sangerhausen"
+  },
+  {
+    "name": "Amtsgericht Bernburg",
+    "strasse": "Liebknechtstraße",
+    "hausnummer": "2",
+    "plz": "06406",
+    "ort": "Bernburg (Saale)"
+  },
+  {
+    "name": "Amtsgericht Quedlinburg",
+    "strasse": "Adelheidstraße",
+    "hausnummer": "2",
+    "plz": "06484",
+    "ort": "Quedlinburg"
+  },
+  {
+    "name": "Amtsgericht Halberstadt",
+    "strasse": "Richard-Wagner-Straße",
+    "hausnummer": "52",
+    "plz": "38820",
+    "ort": "Halberstadt"
+  },
+  {
+    "name": "Amtsgericht Naumburg",
+    "strasse": "Markt",
+    "hausnummer": "7",
+    "plz": "06618",
+    "ort": "Naumburg (Saale)"
+  },
+  {
+    "name": "Amtsgericht Aschersleben",
+    "strasse": "Theodor-Römer-Weg",
+    "hausnummer": "3",
+    "plz": "06449",
+    "ort": "Aschersleben"
+  },
+  {
+    "name": "Amtsgericht Magdeburg",
+    "strasse": "Breiter Weg",
+    "hausnummer": "203-206",
+    "plz": "39104",
+    "ort": "Magdeburg"
+  },
+  {
+    "name": "Amtsgericht Merseburg",
+    "strasse": "Geusaer Straße",
+    "hausnummer": "88",
+    "plz": "06217",
+    "ort": "Merseburg"
+  },
+  {
+    "name": "Amtsgericht Weißenfels",
+    "strasse": "Friedrichsstraße",
+    "hausnummer": "18",
+    "plz": "06667",
+    "ort": "Weißenfels"
+  },
+  {
+    "name": "Amtsgericht Gardelegen",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "29",
+    "plz": "39638",
+    "ort": "Hansestadt Gardelegen"
+  },
+  {
+    "name": "Amtsgericht Oschersleben",
+    "strasse": "Gartenstraße",
+    "hausnummer": "1",
+    "plz": "39387",
+    "ort": "Oschersleben (Bode)"
+  },
+  {
+    "name": "Amtsgericht Zerbst",
+    "strasse": "Neue Brücke",
+    "hausnummer": "22",
+    "plz": "39261",
+    "ort": "Zerbst/Anhalt"
+  },
+  {
+    "name": "Amtsgericht Bitterfeld-Wolfen",
+    "strasse": "Lindenstraße",
+    "hausnummer": "9",
+    "plz": "06749",
+    "ort": "Bitterfeld-Wolfen"
+  },
+  {
+    "name": "Amtsgericht Burg",
+    "strasse": "In der Alten Kaserne",
+    "hausnummer": "3",
+    "plz": "39288",
+    "ort": "Burg"
+  },
+  {
+    "name": "Amtsgericht Eisleben",
+    "strasse": "Friedensstraße",
+    "hausnummer": "40",
+    "plz": "06295",
+    "ort": "Lutherstadt Eisleben"
+  },
+  {
+    "name": "Amtsgericht Stendal",
+    "strasse": "Scharnhorststraße",
+    "hausnummer": "40",
+    "plz": "39576",
+    "ort": "Hansestadt Stendal"
+  },
+  {
+    "name": "Amtsgericht Schönebeck",
+    "strasse": "Friedrichstraße",
+    "hausnummer": "96",
+    "plz": "39218",
+    "ort": "Schönebeck (Elbe)"
+  },
+  {
+    "name": "Amtsgericht Haldensleben",
+    "strasse": "Stendaler Straße",
+    "hausnummer": "18",
+    "plz": "39340",
+    "ort": "Haldensleben"
+  },
+  {
+    "name": "Amtsgericht Flensburg",
+    "strasse": "Südergraben",
+    "hausnummer": "22",
+    "plz": "24937",
+    "ort": "Flensburg"
+  },
+  {
+    "name": "Amtsgericht Neumünster",
+    "strasse": "Boostedter Straße",
+    "hausnummer": "26",
+    "plz": "24534",
+    "ort": "Neumünster"
+  },
+  {
+    "name": "Amtsgericht Reinbek",
+    "strasse": "Parkallee",
+    "hausnummer": "6",
+    "plz": "21465",
+    "ort": "Reinbek"
+  },
+  {
+    "name": "Amtsgericht Oldenburg (Holstein)",
+    "strasse": "Göhler Straße",
+    "hausnummer": "90",
+    "plz": "23758",
+    "ort": "Oldenburg (Holstein)"
+  },
+  {
+    "name": "Amtsgericht Ahrensburg",
+    "strasse": "Königstraße",
+    "hausnummer": "11",
+    "plz": "22926",
+    "ort": "Ahrensburg"
+  },
+  {
+    "name": "Amtsgericht Plön",
+    "strasse": "Lütjenburger Straße",
+    "hausnummer": "48",
+    "plz": "24306",
+    "ort": "Plön"
+  },
+  {
+    "name": "Amtsgericht Lübeck",
+    "strasse": "Am Burgfeld",
+    "hausnummer": "7",
+    "plz": "23568",
+    "ort": "Lübeck"
+  },
+  {
+    "name": "Amtsgericht Meldorf",
+    "strasse": "Domstraße",
+    "hausnummer": "1",
+    "plz": "25704",
+    "ort": "Meldorf"
+  },
+  {
+    "name": "Amtsgericht Schleswig",
+    "strasse": "Lollfuß",
+    "hausnummer": "78",
+    "plz": "24837",
+    "ort": "Schleswig"
+  },
+  {
+    "name": "Amtsgericht Elmshorn",
+    "strasse": "Bismarckstraße",
+    "hausnummer": "8",
+    "plz": "25335",
+    "ort": "Elmshorn"
+  },
+  {
+    "name": "Amtsgericht Pinneberg",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "17",
+    "plz": "25421",
+    "ort": "Pinneberg"
+  },
+  {
+    "name": "Amtsgericht Rendsburg",
+    "strasse": "Königstraße",
+    "hausnummer": "17",
+    "plz": "24768",
+    "ort": "Rendsburg"
+  },
+  {
+    "name": "Amtsgericht Eckernförde",
+    "strasse": "Reeperbahn",
+    "hausnummer": "45-47",
+    "plz": "24340",
+    "ort": "Eckernförde"
+  },
+  {
+    "name": "Amtsgericht Eutin",
+    "strasse": "Jungfernstieg",
+    "hausnummer": "3",
+    "plz": "23701",
+    "ort": "Eutin"
+  },
+  {
+    "name": "Amtsgericht Husum",
+    "strasse": "Theodor-Storm-Straße",
+    "hausnummer": "5",
+    "plz": "25813",
+    "ort": "Husum"
+  },
+  {
+    "name": "Amtsgericht Itzehoe",
+    "strasse": "Bergstraße",
+    "hausnummer": "5-7",
+    "plz": "25524",
+    "ort": "Itzehoe"
+  },
+  {
+    "name": "Amtsgericht Norderstedt",
+    "strasse": "Rathausallee",
+    "hausnummer": "80",
+    "plz": "22846",
+    "ort": "Norderstedt"
+  },
+  {
+    "name": "Amtsgericht Ratzeburg",
+    "strasse": "Herrenstraße",
+    "hausnummer": "11",
+    "plz": "23909",
+    "ort": "Ratzeburg"
+  },
+  {
+    "name": "Amtsgericht Bad Segeberg",
+    "strasse": "Am Kalkberg",
+    "hausnummer": "18",
+    "plz": "23795",
+    "ort": "Bad Segeberg"
+  },
+  {
+    "name": "Amtsgericht Kiel",
+    "strasse": "Deliusstraße",
+    "hausnummer": "22",
+    "plz": "24114",
+    "ort": "Kiel"
+  },
+  {
+    "name": "Amtsgericht Schwarzenbek",
+    "strasse": "Möllner Straße",
+    "hausnummer": "20",
+    "plz": "21493",
+    "ort": "Schwarzenbek"
+  },
+  {
+    "name": "Amtsgericht Niebüll",
+    "strasse": "Sylter Bogen",
+    "hausnummer": "1 a",
+    "plz": "25899",
+    "ort": "Niebüll"
+  },
+  {
+    "name": "Amtsgericht Hildburghausen",
+    "strasse": "Johann-Sebastian-Bach-Straße",
+    "hausnummer": "2",
+    "plz": "98646",
+    "ort": "Hildburghausen"
+  },
+  {
+    "name": "Amtsgericht Pößneck Zweigstelle Bad Lobenstein",
+    "strasse": "Mühlgasse",
+    "hausnummer": "19 C",
+    "plz": "07356",
+    "ort": "Bad Lobenstein"
+  },
+  {
+    "name": "Amtsgericht Pößneck",
+    "strasse": "Bahnhofstraße",
+    "hausnummer": "18",
+    "plz": "07381",
+    "ort": "Pößneck"
+  },
+  {
+    "name": "Amtsgericht Gera",
+    "strasse": "Rudolf-Diener-Straße",
+    "hausnummer": "1",
+    "plz": "07545",
+    "ort": "Gera"
+  },
+  {
+    "name": "Amtsgericht Greiz",
+    "strasse": "Brunnengasse",
+    "hausnummer": "10",
+    "plz": "07973",
+    "ort": "Greiz"
+  },
+  {
+    "name": "Amtsgericht Erfurt",
+    "strasse": "Rudolfstraße",
+    "hausnummer": "46",
+    "plz": "99092",
+    "ort": "Erfurt"
+  },
+  {
+    "name": "Amtsgericht Sonneberg",
+    "strasse": "Untere Marktstraße",
+    "hausnummer": "2",
+    "plz": "96515",
+    "ort": "Sonneberg"
+  },
+  {
+    "name": "Amtsgericht Apolda",
+    "strasse": "Jenaer Straße",
+    "hausnummer": "8",
+    "plz": "99510",
+    "ort": "Apolda"
+  },
+  {
+    "name": "Amtsgericht Eisenach",
+    "strasse": "Theaterplatz",
+    "hausnummer": "5",
+    "plz": "99817",
+    "ort": "Eisenach"
+  },
+  {
+    "name": "Amtsgericht Gotha",
+    "strasse": "Justus-Perthes-Straße",
+    "hausnummer": "2",
+    "plz": "99867",
+    "ort": "Gotha"
+  },
+  {
+    "name": "Amtsgericht Suhl",
+    "strasse": "Hölderlinstraße",
+    "hausnummer": "1",
+    "plz": "98527",
+    "ort": "Suhl"
+  },
+  {
+    "name": "Amtsgericht Altenburg",
+    "strasse": "Burgstraße",
+    "hausnummer": "11",
+    "plz": "04600",
+    "ort": "Altenburg"
+  },
+  {
+    "name": "Amtsgericht Arnstadt",
+    "strasse": "Längwitzer Straße",
+    "hausnummer": "26",
+    "plz": "99310",
+    "ort": "Arnstadt"
+  },
+  {
+    "name": "Amtsgericht Mühlhausen",
+    "strasse": "Untermarkt",
+    "hausnummer": "17",
+    "plz": "99974",
+    "ort": "Mühlhausen/Thüringen"
+  },
+  {
+    "name": "Amtsgericht Nordhausen",
+    "strasse": "Rudolf-Breitscheid-Straße",
+    "hausnummer": "6",
+    "plz": "99734",
+    "ort": "Nordhausen"
+  },
+  {
+    "name": "Amtsgericht Rudolstadt",
+    "strasse": "Markstraße",
+    "hausnummer": "54",
+    "plz": "07407",
+    "ort": "Rudolstadt"
+  },
+  {
+    "name": "Amtsgericht Jena",
+    "strasse": "Rathenaustraße",
+    "hausnummer": "13",
+    "plz": "07745",
+    "ort": "Jena"
+  },
+  {
+    "name": "Amtsgericht Arnstadt Zweigstelle Ilmenau",
+    "strasse": "Wallgraben",
+    "hausnummer": "8",
+    "plz": "98693",
+    "ort": "Ilmenau"
+  },
+  {
+    "name": "Amtsgericht Sömmerda",
+    "strasse": "Weissenseer Straße",
+    "hausnummer": "52",
+    "plz": "99610",
+    "ort": "Sömmerda"
+  },
+  {
+    "name": "Amtsgericht Stadtroda",
+    "strasse": "Schloßstraße",
+    "hausnummer": "2",
+    "plz": "07646",
+    "ort": "Stadtroda"
+  },
+  {
+    "name": "Amtsgericht Weimar",
+    "strasse": "Ernst-Kohl-Straße",
+    "hausnummer": "23 a",
+    "plz": "99423",
+    "ort": "Weimar"
+  },
+  {
+    "name": "Amtsgericht Sondershausen",
+    "strasse": "Ulrich-von-Hutten-Straße",
+    "hausnummer": "2",
+    "plz": "99706",
+    "ort": "Sondershausen"
+  },
+  {
+    "name": "Amtsgericht Bad Salzungen",
+    "strasse": "Kirchplatz",
+    "hausnummer": "6-8",
+    "plz": "36433",
+    "ort": "Bad Salzungen"
+  },
+  {
+    "name": "Amtsgericht Meiningen",
+    "strasse": "Lindenallee",
+    "hausnummer": "15",
+    "plz": "98617",
+    "ort": "Meiningen"
+  },
+  {
+    "name": "Amtsgericht Heilbad Heiligenstadt",
+    "strasse": "Wilhelmstraße",
+    "hausnummer": "43",
+    "plz": "37308",
+    "ort": "Heilbad Heiligenstadt"
   }
 ]

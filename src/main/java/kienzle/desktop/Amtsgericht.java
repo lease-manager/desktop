@@ -10,7 +10,7 @@ public record Amtsgericht(
 ) {
     public String anschrift() {
         String zustelladresse = postfach == null || postfach.isBlank()
-                ? strasse + " " + hausnummer
+                ? (strasse + (hausnummer == null || hausnummer.isBlank() ? "" : " " + hausnummer)).trim()
                 : "Postfach " + postfach;
         return zustelladresse + ", " + plz + " " + ort;
     }

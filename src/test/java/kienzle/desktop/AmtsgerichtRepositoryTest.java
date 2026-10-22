@@ -37,9 +37,18 @@ class AmtsgerichtRepositoryTest {
     }
 
     @Test
+    void parseCourts_shouldAcceptStreetAddressWithoutHouseNumber() throws IOException {
+        var courts = repository.parseCourts(JsonParser.parseString("""
+                [{"name":"Amtsgericht Test","plz":"12345","ort":"Teststadt","strasse":"Schloss"}]
+                """).getAsJsonArray());
+
+        assertEquals("Schloss, 12345 Teststadt", courts.get(0).anschrift());
+    }
+
+    @Test
     void parseCourts_shouldRejectEntryWithoutCompleteAddress() {
         assertThrows(IOException.class, () -> repository.parseCourts(JsonParser.parseString("""
-                [{"name":"Amtsgericht Test","plz":"12345","ort":"Teststadt","strasse":"Hauptstraße"}]
+                [{"name":"Amtsgericht Test","plz":"12345","ort":"Teststadt"}]
                 """).getAsJsonArray()));
     }
 }

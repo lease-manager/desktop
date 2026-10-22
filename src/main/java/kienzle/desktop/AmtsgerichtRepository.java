@@ -46,7 +46,7 @@ public final class AmtsgerichtRepository {
                     optional(object, "hausnummer"),
                     optional(object, "postfach")
             );
-            boolean hasStreetAddress = !court.strasse().isBlank() && !court.hausnummer().isBlank();
+            boolean hasStreetAddress = !court.strasse().isBlank();
             boolean hasPostfach = !court.postfach().isBlank();
             if (hasStreetAddress == hasPostfach) {
                 throw new IOException("Eintrag " + (index + 1)
