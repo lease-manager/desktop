@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("application")
+    id("jacoco")
 }
 
 group = "kienzle"
@@ -50,7 +51,7 @@ dependencies {
 application {
     // Since we are fully modular, we define the module logic here
     mainModule.set("kienzle.desktop")
-    mainClass.set("kienzle.desktop.HelloApplication")
+    mainClass.set("kienzle.desktop.LeaseManagerApplication")
 }
 
 // NOTE: We removed the 'doFirst' blocks.
@@ -59,4 +60,14 @@ application {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+    finalizedBy(tasks.named("jacocoTestReport"))
+}
+
+tasks.named<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.named("test"))
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
 }

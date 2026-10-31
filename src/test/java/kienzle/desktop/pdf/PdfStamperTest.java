@@ -36,7 +36,8 @@ class PdfStamperTest {
             assertEquals(stamped.payload().encode(), info.getKeywords());
             var renderer = new PDFRenderer(doc);
             for (int page = 0; page < doc.getNumberOfPages(); page++) {
-                var text = QrCodes.decode(renderer.renderImageWithDPI(page, 200f));
+                var image = renderer.renderImageWithDPI(page, 200f);
+                var text = QrCodes.decode(image);
                 assertEquals(stamped.payload(), QrPayload.parse(text.orElseThrow()).orElseThrow());
             }
         }

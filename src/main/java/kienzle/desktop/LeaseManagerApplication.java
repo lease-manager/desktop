@@ -7,7 +7,7 @@ import kienzle.desktop.app.AppContext;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class LeaseManagerApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         I18n.loadFromConfig(I18n.defaultConfigPath());

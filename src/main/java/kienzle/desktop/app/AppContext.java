@@ -10,13 +10,19 @@ import kienzle.desktop.pdf.PdfStorage;
 import java.nio.file.Path;
 
 /** Composition root: wires the services once and hands them to the UI (constructor injection). */
-public record AppContext(ContractWorkflow workflow) {
+public record AppContext(ContractWorkflow workflow, ContractPackageService packages) {
+
+    public AppContext(ContractWorkflow workflow) {
+        this(workflow, new ContractPackageService());
+    }
 
     public static AppContext create(Path dataDir) {
         ContractService contracts = new ContractService(new JsonContractRepository(dataDir));
         ContractPdfService pdfs = new ContractPdfService(contracts, new LeaseContractPdfPreview(),
                 new PdfStamper(), new PdfStorage(dataDir));
-        return new AppContext(new ContractWorkflow(contracts, pdfs));
+        ContractPackageService packages = new ContractPackageService(dataDir);
+        ContractWorkflow workflow = new ContractWorkflow(contracts, pdfs, packages);
+        return new AppContext(workflow, packages);
     }
 
     public static AppContext createDefault() {

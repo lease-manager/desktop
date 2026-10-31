@@ -14,48 +14,61 @@ import java.util.Optional;
 
 /** Facade for the UI: one entry point for contract persistence, PDF creation and status changes. */
 public class ContractWorkflow {
-    private final ContractService contracts;
-    private final ContractPdfService pdfs;
+    private final ContractLifecycleUseCase lifecycle;
+    private final ContractDocumentUseCase documents;
+    private final ContractPackageUseCase packages;
 
     public ContractWorkflow(ContractService contracts, ContractPdfService pdfs) {
-        this.contracts = contracts;
-        this.pdfs = pdfs;
+        this(contracts, pdfs, new ContractPackageService());
+    }
+
+    public ContractWorkflow(ContractService contracts, ContractPdfService pdfs, ContractPackageService packages) {
+        this.lifecycle = new ContractLifecycleUseCase(contracts);
+        this.documents = new ContractDocumentUseCase(pdfs);
+        this.packages = new ContractPackageUseCase(packages);
     }
 
     public List<ContractEntry> list() {
-        return contracts.list();
+        return lifecycle.list();
     }
 
     public List<ContractEntry> listArchived() {
-        return contracts.listArchived();
+        return lifecycle.listArchived();
     }
 
-    /** Creates a new draft, or updates {@code current} when it is not {@code null}. */
     public ContractEntry save(ContractEntry current, LeaseContract contract) {
-        return current == null ? contracts.create(contract) : contracts.update(current.id(), contract);
+        return lifecycle.save(current, contract);
     }
 
     public void archive(ContractEntry entry) {
-        contracts.archive(entry.id());
+        lifecycle.archive(entry);
     }
 
     public ContractEntry restore(ContractEntry entry) {
-        return contracts.restore(entry.id());
+        return lifecycle.restore(entry);
     }
 
     public ContractEntry createPdf(ContractEntry entry) throws IOException {
-        return pdfs.createOriginalPdf(entry);
+        return documents.createOriginalPdf(entry);
     }
 
     public ContractEntry markAwaitingSignature(ContractEntry entry) {
-        return contracts.markAwaitingSignature(entry.id());
+        return lifecycle.markAwaitingSignature(entry);
+    }
+
+    public ContractPackageService.ContractPackage exportPackage(ContractEntry entry, Path targetFile) throws IOException {
+        return packages.exportPackage(entry, targetFile);
+    }
+
+    public ContractEntry importPackage(Path packageFile) throws IOException {
+        return packages.importPackage(packageFile);
+    }
+
+    public ContractPackageService.ContractPackage readPackage(Path packageFile) throws IOException {
+        return packages.readPackage(packageFile);
     }
 
     public Optional<Path> originalPdf(ContractEntry entry) {
-        return entry.documents().stream()
-                .filter(document -> document.kind() == DocumentKind.ORIGINAL)
-                .reduce((first, second) -> second)
-                .map(ContractDocument::path)
-                .map(pdfs::locate);
+        return documents.originalPdf(entry);
     }
 }

@@ -37,6 +37,8 @@
                         <Button mnemonicParsing="false" onAction="#showArchive" text="%contract.archive.view" />
                         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveContract" text="%contract.save" />
                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#archiveContract" text="%contract.archive" />
+                        <Button mnemonicParsing="false" onAction="#exportContractPackage" text="%package.export" />
+                        <Button mnemonicParsing="false" onAction="#importContractPackage" text="%package.import" />
                      </children>
                   </HBox>
                </children>

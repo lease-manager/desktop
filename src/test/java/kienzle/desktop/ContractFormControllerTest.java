@@ -9,10 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.MonthDay;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,15 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ContractFormControllerTest {
-    private static final AtomicBoolean TOOLKIT_STARTED = new AtomicBoolean(false);
-
     @BeforeAll
     static void startToolkit() throws Exception {
-        if (TOOLKIT_STARTED.compareAndSet(false, true)) {
-            CountDownLatch started = new CountDownLatch(1);
-            Platform.startup(started::countDown);
-            assertTrue(started.await(5, TimeUnit.SECONDS), "JavaFX toolkit did not start in time");
-        }
+        JavaFxTestSupport.startToolkit();
     }
 
     @Test

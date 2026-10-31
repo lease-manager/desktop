@@ -17,10 +17,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
 import javafx.util.StringConverter;
@@ -69,16 +71,21 @@ public class MainLayoutController {
 
     private final ObservableList<ContractEntry> entries = FXCollections.observableArrayList();
     private final FilteredList<ContractEntry> visibleEntries = new FilteredList<>(entries);
+    private final ContractScreenCoordinator screenCoordinator = new ContractScreenCoordinator(entries, visibleEntries);
     @FXML
     private ContractFormController contractFormController;
 
     private final AppContext context;
     private final ContractWorkflow workflow;
-    private ContractEntry currentEntry;
+    private final UiFeedback feedback = new UiFeedback();
+    private final PackageFlowFacade packageFlow;
+    private final ContractUiActions uiActions;
 
     public MainLayoutController(AppContext context) {
         this.context = context;
         this.workflow = context.workflow();
+        this.packageFlow = new PackageFlowFacade(workflow, feedback);
+        this.uiActions = new ContractUiActions(workflow);
     }
 
     @FXML
@@ -126,13 +133,13 @@ public class MainLayoutController {
     }
 
     private void applyFilter(StatusFilter filter) {
-        visibleEntries.setPredicate(filter == null ? StatusFilter.ALL : filter);
+        screenCoordinator.applyFilter(filter);
     }
 
     @FXML
     private void startNewContract() {
         contractList.getSelectionModel().clearSelection();
-        currentEntry = null;
+        screenCoordinator.setCurrentEntry(null);
         showContract(ContractDefaults.newContract());
         updateEntryControls();
     }
@@ -145,23 +152,22 @@ public class MainLayoutController {
         }
         try {
             LeaseContract contract = contractFormController.read();
-            show(workflow.save(currentEntry, contract));
+            show(uiActions.save(screenCoordinator.currentEntry(), contract));
         } catch (IllegalArgumentException | IllegalStateException exception) {
-            new Alert(Alert.AlertType.ERROR, exception.getMessage()).showAndWait();
+            feedback.showError(exception.getMessage());
         }
     }
 
     @FXML
     private void archiveContract() {
-        if (currentEntry == null) {
+        if (screenCoordinator.currentEntry() == null) {
             return;
         }
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, I18n.get("contract.archive.confirm"));
-        if (confirm.showAndWait().filter(button -> button == javafx.scene.control.ButtonType.OK).isEmpty()) {
+        if (!feedback.confirm(I18n.get("contract.archive.confirm"))) {
             return;
         }
-        workflow.archive(currentEntry);
-        entries.removeIf(entry -> entry.id().equals(currentEntry.id()));
+        uiActions.archive(screenCoordinator.currentEntry());
+        entries.removeIf(entry -> entry.id().equals(screenCoordinator.currentEntry().id()));
         startNewContract();
     }
 
@@ -171,17 +177,50 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void exportContractPackage() {
+        if (screenCoordinator.currentEntry() == null) {
+            return;
+        }
+        FileChooser chooser = packageFlow.createChooser(I18n.get("package.export.title"),
+                screenCoordinator.currentEntry().contract().name().isBlank() ? "contract.leasepack" : screenCoordinator.currentEntry().contract().name() + ".leasepack");
+        java.io.File file = chooser.showSaveDialog(contractList.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        runOnCurrent(() -> packageFlow.exportPackage(screenCoordinator.currentEntry(), file.toPath()));
+    }
+
+    @FXML
+    private void importContractPackage() {
+        java.io.File file = packageFlow.createChooser(I18n.get("package.import.title"), null)
+                .showOpenDialog(contractList.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        if (!PackageDialogSupport.confirmImport(workflow, (Stage) contractList.getScene().getWindow(), file.toPath())) {
+            return;
+        }
+        runOnCurrent(() -> importSelectedPackage(file.toPath()));
+    }
+
+    private void importSelectedPackage(Path path) throws IOException {
+        ContractEntry imported = packageFlow.importPackage(path);
+        entries.add(imported);
+        show(imported);
+    }
+
+    @FXML
     private void createPdf() {
-        runOnCurrent(() -> show(workflow.createPdf(workflow.save(currentEntry, contractFormController.read()))));
+        runOnCurrent(() -> show(uiActions.createPdf(screenCoordinator.currentEntry(), contractFormController.read())));
     }
 
     @FXML
     private void openPdf() {
-        if (currentEntry == null) {
+        if (screenCoordinator.currentEntry() == null) {
             return;
         }
         runOnCurrent(() -> {
-            java.nio.file.Path pdf = workflow.originalPdf(currentEntry)
+            java.nio.file.Path pdf = uiActions.originalPdf(screenCoordinator.currentEntry())
                     .orElseThrow(() -> new IllegalStateException(I18n.get("pdf.missing")));
             if (!java.awt.Desktop.isDesktopSupported()) {
                 throw new IllegalStateException(I18n.get("pdf.open.unsupported") + pdf);
@@ -192,8 +231,8 @@ public class MainLayoutController {
 
     @FXML
     private void markAwaitingSignature() {
-        if (currentEntry != null) {
-            runOnCurrent(() -> show(workflow.markAwaitingSignature(currentEntry)));
+        if (screenCoordinator.currentEntry() != null) {
+            runOnCurrent(() -> show(uiActions.markAwaitingSignature(screenCoordinator.currentEntry())));
         }
     }
 
@@ -205,7 +244,7 @@ public class MainLayoutController {
         try {
             action.run();
         } catch (IOException | RuntimeException exception) {
-            new Alert(Alert.AlertType.ERROR, exception.getMessage()).showAndWait();
+            feedback.showError(exception.getMessage());
         }
     }
 
@@ -216,17 +255,14 @@ public class MainLayoutController {
     }
 
     private void replaceEntry(ContractEntry saved) {
-        for (int index = 0; index < entries.size(); index++) {
-            if (entries.get(index).id().equals(saved.id())) {
-                entries.set(index, saved);
-                return;
-            }
-        }
-        entries.add(saved);
+        screenCoordinator.replaceEntry(saved);
     }
 
     private void selectEntry(ContractEntry entry) {
-        currentEntry = entry;
+        screenCoordinator.setCurrentEntry(entry);
+        if (entry == null) {
+            return;
+        }
         showContract(entry.contract());
         updateEntryControls();
     }
@@ -238,6 +274,7 @@ public class MainLayoutController {
     }
 
     private void updateEntryControls() {
+        ContractEntry currentEntry = screenCoordinator.currentEntry();
         ContractStatus status = currentEntry == null ? null : currentEntry.status();
         saveButton.setDisable((status != null && status != ContractStatus.DRAFT)
                 || contractFormController.hasValidationErrors());
@@ -269,28 +306,12 @@ public class MainLayoutController {
     }
 
     private void switchLanguage(Locale locale) {
-        if (locale.getLanguage().equals(I18n.locale().getLanguage())) {
-            return;
-        }
-        I18n.setLocale(locale);
-        try {
-            I18n.saveToConfig(I18n.defaultConfigPath());
-        } catch (IOException ignored) {
-            // The language still changes for this session if the config cannot be written.
-        }
-        Scene scene = contractList.getScene();
-        int selectedIndex = contractList.getSelectionModel().getSelectedIndex();
-        try {
-            ViewLoader.Loaded loaded = ViewLoader.load(context);
-            loaded.controller().contractList.getSelectionModel().select(Math.max(selectedIndex, 0));
-            Parent root = loaded.root();
-            scene.setRoot(root);
-            if (scene.getWindow() instanceof Stage stage) {
-                stage.setTitle(I18n.get("app.title"));
-            }
-        } catch (IOException exception) {
-            throw new IllegalStateException(exception);
-        }
+        ContractViewUiSupport.switchLanguage(context, contractList.getScene(),
+                locale, contractList.getSelectionModel().getSelectedIndex());
+    }
+
+    public void selectListIndex(int index) {
+        contractList.getSelectionModel().select(Math.max(index, 0));
     }
 
     @FXML
@@ -316,8 +337,7 @@ public class MainLayoutController {
             previewStage.setScene(new Scene(scrollPane, 900.0, 850.0));
             previewStage.show();
         } catch (IOException | IllegalArgumentException exception) {
-            new Alert(Alert.AlertType.ERROR,
-                    I18n.get("preview.error") + exception.getMessage()).showAndWait();
+            feedback.showError(I18n.get("preview.error") + exception.getMessage());
         }
     }
 

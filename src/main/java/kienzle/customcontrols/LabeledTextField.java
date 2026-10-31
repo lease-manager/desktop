@@ -7,7 +7,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 public class LabeledTextField extends StackPane {
 
@@ -28,7 +31,7 @@ public class LabeledTextField extends StackPane {
     }
 
     private void loadFXML() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("LabeledTextField.fxml"));
+        FXMLLoader loader = new FXMLLoader(requireResource("/kienzle/desktop/LabeledTextField.fxml"));
 
         // WICHTIG: Wir sagen dem Loader: "Ich bin selbst die Wurzel und der Controller"
         loader.setRoot(this);
@@ -46,6 +49,11 @@ public class LabeledTextField extends StackPane {
         } else {
             System.err.println("ACHTUNG: hintLabel ist null! FXML wurde nicht korrekt injiziert.");
         }
+    }
+
+    private static URL requireResource(String path) {
+        URL url = LabeledTextField.class.getResource(path);
+        return Objects.requireNonNull(url, () -> "Missing JavaFX resource: " + path);
     }
 
     // === Getter und Setter für FXML ===
