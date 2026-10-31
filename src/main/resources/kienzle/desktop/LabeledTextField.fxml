@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.geometry.Insets?>
 
-<!-- WICHTIG: type="..." definiert, wovon die Java-Klasse erbt -->
+<!-- IMPORTANT: type="..." defines which class the Java class extends -->
 <!-- KEIN fx:controller Attribut hier! -->
 <fx:root type="javafx.scene.layout.StackPane"
          xmlns="http://javafx.com/javafx/17"

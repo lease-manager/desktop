@@ -17,14 +17,14 @@ public class LabeledTextField extends StackPane {
     @FXML private TextField textField;
     @FXML private Label hintLabel;
 
-    // Die Property für den Text
+    // Property holding the hint text
     private final StringProperty hintTextProperty = new SimpleStringProperty("");
 
     public LabeledTextField() {
         loadFXML();
     }
 
-    // Konstruktor für manuelle Erstellung im Code (optional)
+    // Constructor for manual creation in code (optional)
     public LabeledTextField(String hint) {
         this();
         setHintText(hint);
@@ -33,21 +33,21 @@ public class LabeledTextField extends StackPane {
     private void loadFXML() {
         FXMLLoader loader = new FXMLLoader(requireResource("/kienzle/desktop/LabeledTextField.fxml"));
 
-        // WICHTIG: Wir sagen dem Loader: "Ich bin selbst die Wurzel und der Controller"
+        // IMPORTANT: tell the loader that this instance is both the root and the controller
         loader.setRoot(this);
         loader.setController(this);
 
         try {
             loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("Konnte LabeledTextField.fxml nicht laden", e);
+            throw new RuntimeException("Could not load LabeledTextField.fxml", e);
         }
 
-        // Binding: Verbindet Variable mit Label
+        // Binding: connects the property to the label
         if (hintLabel != null) {
             hintLabel.textProperty().bind(hintTextProperty);
         } else {
-            System.err.println("ACHTUNG: hintLabel ist null! FXML wurde nicht korrekt injiziert.");
+            System.err.println("WARNING: hintLabel is null! The FXML was not injected correctly.");
         }
     }
 
@@ -56,7 +56,7 @@ public class LabeledTextField extends StackPane {
         return Objects.requireNonNull(url, () -> "Missing JavaFX resource: " + path);
     }
 
-    // === Getter und Setter für FXML ===
+    // === Getters and setters for FXML ===
 
     public String getHintText() {
         return hintTextProperty.get();
