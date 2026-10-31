@@ -138,7 +138,12 @@
                                     <Label text="%bank" GridPane.rowIndex="8" />
                                     <TextField fx:id="bankField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                     <Label text="%iban" GridPane.rowIndex="9" />
-                                    <TextField fx:id="ibanField" promptText="DE00 0000 0000 0000 0000 00" style="-fx-font-family: monospace; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                       <children>
+                                          <TextField fx:id="ibanField" promptText="DE00 0000 0000 0000 0000 00" style="-fx-font-family: monospace; -fx-font-size: 14px;" />
+                                          <Label fx:id="ibanErrorLabel" style="-fx-text-fill: #b00020; -fx-font-size: 11px;" text="%error.iban.inline" visible="false" managed="false" wrapText="true" />
+                                       </children>
+                                    </VBox>
                                     <Label text="%bic" GridPane.rowIndex="10" />
                                     <TextField fx:id="bicField" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                  </children>

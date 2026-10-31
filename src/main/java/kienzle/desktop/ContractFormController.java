@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.Objects;
 
 /** The contract input form: configures the controls, reads them into a {@link LeaseContract} and fills them from one. */
 public class ContractFormController {
@@ -124,6 +125,9 @@ public class ContractFormController {
     private TextField ibanField;
 
     @FXML
+    private Label ibanErrorLabel;
+
+    @FXML
     private TextField bicField;
 
     @FXML
@@ -140,6 +144,10 @@ public class ContractFormController {
 
     @FXML
     private TextField rentDueDayField;
+
+    private Runnable onValidationChanged = () -> {
+    };
+    private boolean ibanInvalid;
 
     @FXML
     public void initialize() {
@@ -161,6 +169,7 @@ public class ContractFormController {
         configureDatePickers();
         ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
         ibanField.setTextFormatter(IbanFormatter.textFormatter());
+        configureIbanValidation();
         loadAmtsgerichte();
         courtComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldCourt, court) ->
             courtAddressLabel.setText(court == null ? "" : court.anschrift()));
@@ -168,11 +177,18 @@ public class ContractFormController {
             setIntroductoryRentFieldsVisible(selected));
         durationField.valueProperty().addListener((observable, oldValue, duration) ->
             updateLeaseEndDateVisibility(duration));
-
     }
 
     public String contractName() {
         return get(contractNameField);
+    }
+
+    public void setOnValidationChanged(Runnable callback) {
+        this.onValidationChanged = Objects.requireNonNull(callback);
+    }
+
+    public boolean hasValidationErrors() {
+        return ibanInvalid;
     }
 
     public LeaseContract read() {
@@ -229,6 +245,7 @@ public class ContractFormController {
 
     private String validatedIban() {
         String iban = get(ibanField);
+        updateIbanValidation();
         if (iban.isEmpty()) {
             return "";
         }
@@ -281,6 +298,7 @@ public class ContractFormController {
         recipientField.setText(contract.rentRecipient());
         bankField.setText(contract.bankName());
         ibanField.setText(contract.iban());
+        updateIbanValidation();
         bicField.setText(contract.bic());
     }
 
@@ -347,6 +365,20 @@ public class ContractFormController {
         boolean fixedTerm = ContractDefaults.DURATION_FIXED.equals(duration);
         leaseEndDateRow.setVisible(fixedTerm);
         leaseEndDateRow.setManaged(fixedTerm);
+    }
+
+    private void configureIbanValidation() {
+        ibanField.textProperty().addListener((observable, oldValue, newValue) -> updateIbanValidation());
+        updateIbanValidation();
+    }
+
+    private void updateIbanValidation() {
+        String iban = get(ibanField);
+        boolean invalid = !iban.isEmpty() && !IbanFormatter.isValid(iban);
+        ibanInvalid = invalid;
+        ibanErrorLabel.setVisible(invalid);
+        ibanErrorLabel.setManaged(invalid);
+        onValidationChanged.run();
     }
 
     private String get(TextInputControl control) {

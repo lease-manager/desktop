@@ -83,6 +83,7 @@ public class MainLayoutController {
 
     @FXML
     public void initialize() {
+        contractFormController.setOnValidationChanged(this::updateEntryControls);
         germanButton.setGraphic(FlagIcons.germany());
         germanButton.setTooltip(new Tooltip(I18n.get("language.de")));
         englishButton.setGraphic(FlagIcons.unitedKingdom());
@@ -138,6 +139,10 @@ public class MainLayoutController {
 
     @FXML
     private void saveContract() {
+        if (contractFormController.hasValidationErrors()) {
+            updateEntryControls();
+            return;
+        }
         try {
             LeaseContract contract = contractFormController.read();
             show(workflow.save(currentEntry, contract));
@@ -234,7 +239,8 @@ public class MainLayoutController {
 
     private void updateEntryControls() {
         ContractStatus status = currentEntry == null ? null : currentEntry.status();
-        saveButton.setDisable(status != null && status != ContractStatus.DRAFT);
+        saveButton.setDisable((status != null && status != ContractStatus.DRAFT)
+                || contractFormController.hasValidationErrors());
         createPdfButton.setDisable(status != null && status != ContractStatus.DRAFT && status != ContractStatus.PDF_CREATED);
         openPdfButton.setDisable(status == null || status == ContractStatus.DRAFT);
         awaitingButton.setDisable(status != ContractStatus.PDF_CREATED);

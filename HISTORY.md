@@ -24,6 +24,8 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
   `rentIncreaseDate` bei deaktivierter Checkbox konsistent `null` bleiben.
 - IBAN-Validierung ergänzt (ISO-13616-Modulo-97) inkl. lokalisierter Fehlermeldung; ungültige IBANs werden
   beim Speichern abgelehnt.
+- IBAN-Fehler jetzt zusätzlich als roter Inline-Hinweis direkt unter dem Feld; Speichern ist bei ungültiger
+  IBAN deaktiviert.
 - Tests sichern Archivierung mit Dokumentverweisen und den Erhalt älterer PDF-Versionen ab.
 
 ## 2026-10-31 – Schritt 2: PDF mit QR-Code/Hash + Aufräumen

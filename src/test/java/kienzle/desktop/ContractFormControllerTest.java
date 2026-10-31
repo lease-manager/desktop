@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ContractFormControllerTest {
     private static final AtomicBoolean TOOLKIT_STARTED = new AtomicBoolean(false);
@@ -151,11 +152,33 @@ class ContractFormControllerTest {
             Parent ignored = loader.load();
             ContractFormController form = loader.getController();
             form.fill(invalidIban);
+            assertTrue(form.hasValidationErrors());
             IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, form::read);
             return thrown.getMessage();
         });
 
         assertEquals(I18n.get("error.iban") + "DE12 0000", message);
+    }
+
+    @Test
+    void fill_withValidIban_hasNoValidationErrors() throws Exception {
+        LeaseContract validIban = LeaseContract.builder()
+                .name("Gültige IBAN")
+                .lessor("Lessor")
+                .tenant("Tenant")
+                .iban("DE89 3704 0044 0532 0130 00")
+                .build();
+
+        boolean hasErrors = onFxThread(() -> {
+            FXMLLoader loader = new FXMLLoader(ContractFormController.class.getResource("ContractForm.fxml"),
+                    I18n.bundle());
+            Parent ignored = loader.load();
+            ContractFormController form = loader.getController();
+            form.fill(validIban);
+            return form.hasValidationErrors();
+        });
+
+        assertFalse(hasErrors);
     }
 
     private static <T> T onFxThread(ThrowingSupplier<T> supplier) throws Exception {
