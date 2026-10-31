@@ -173,6 +173,23 @@ class ContractFormControllerTest {
         assertFalse(hasErrors);
     }
 
+    @Test
+    void headerCallback_followsEditsOfNameAndLessor() throws Exception {
+        java.util.List<String> seen = onFxThread(() -> {
+            FXMLLoader loader = new FXMLLoader(ContractFormController.class.getResource("ContractForm.fxml"),
+                    I18n.bundle());
+            Parent ignored = loader.load();
+            ContractFormController form = loader.getController();
+            java.util.List<String> calls = new java.util.ArrayList<>();
+            form.setOnHeaderChanged((name, lessor) -> calls.add(name + "|" + lessor));
+            form.fill(TestContracts.sampleContract("Neu").toBuilder().lessor("Müller").build());
+            return calls;
+        });
+
+        assertEquals("|", seen.get(0));
+        assertEquals("Neu|Müller", seen.get(seen.size() - 1));
+    }
+
     private static <T> T onFxThread(ThrowingSupplier<T> supplier) throws Exception {
         FutureTask<T> task = new FutureTask<>(supplier::get);
         Platform.runLater(task);

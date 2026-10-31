@@ -183,6 +183,14 @@ public class ContractFormController {
         return get(contractNameField);
     }
 
+    /** Calls the callback with the current contract name and lessor now and on every edit of either field. */
+    public void setOnHeaderChanged(java.util.function.BiConsumer<String, String> callback) {
+        Runnable notify = () -> callback.accept(contractNameField.getText(), textField.getText());
+        contractNameField.textProperty().addListener((observable, oldValue, newValue) -> notify.run());
+        textField.textProperty().addListener((observable, oldValue, newValue) -> notify.run());
+        notify.run();
+    }
+
     public void setOnValidationChanged(Runnable callback) {
         this.onValidationChanged = Objects.requireNonNull(callback);
     }

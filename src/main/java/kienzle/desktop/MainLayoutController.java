@@ -101,6 +101,7 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         contractFormController.setOnValidationChanged(this::updateEntryControls);
+        contractFormController.setOnHeaderChanged(this::updateHeader);
         configureLanguageButtons();
         listState.setAll(workflow.list());
         configureStatusFilter();
@@ -464,8 +465,14 @@ public class MainLayoutController {
 
     private void showContract(LeaseContract contract) {
         contractFormController.fill(contract);
-        lblTitle.setText(contract.name());
-        lblVerpaechterTxt.setText(I18n.get("lessor.prefix") + contract.lessor());
+    }
+
+    private void updateHeader(String name, String lessor) {
+        lblTitle.setText(name == null ? "" : name);
+        boolean hasLessor = lessor != null && !lessor.isBlank();
+        lblVerpaechterTxt.setText(hasLessor ? I18n.get("lessor.prefix") + lessor : "");
+        lblVerpaechterTxt.setVisible(hasLessor);
+        lblVerpaechterTxt.setManaged(hasLessor);
     }
 
     private void updateEntryControls() {
