@@ -1,179 +1,180 @@
 # History – Desktop
 
-Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
-Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
+Work log so that work can be resumed without starting from scratch.
+Newest entries first. Overall concept: `docs/concept/README.md`.
 
-## 2026-10-31 – Verträge endgültig löschen
+## 2026-10-31 – Permanently delete contracts
 
-- Neuer Button „Löschen“ (neben „Archivieren“): entfernt einen falsch angelegten Vertrag samt Dokumenten
-  endgültig (mit Sicherheitsabfrage). Nur für Verträge, die noch nicht unterschrieben sind; unterschriebene
-  Verträge lassen sich weiterhin nur archivieren (Button deaktiviert, `ContractService.delete` lehnt ab).
-- `ContractRepository.delete` (Datensatz + `documents/<id>/`), durchgereicht über Lifecycle/Workflow/UiActions.
+- New "Delete" button (next to "Archive"): permanently removes a wrongly created contract together with its
+  documents (after a confirmation prompt). Only for contracts that are not signed yet; signed contracts can
+  still only be archived (button disabled, `ContractService.delete` rejects them).
+- `ContractRepository.delete` (record + `documents/<id>/`), passed through Lifecycle/Workflow/UiActions.
 - Tests in `ContractServiceTest`.
 
-## 2026-10-31 – Hash-Abgleich beim Scan-Import
+## 2026-10-31 – Hash check on scan import
 
-- Der Hash im QR-Code des Scans wird mit dem im Original-PDF eingebetteten Hash (`LeaseContentHash`)
-  verglichen (`ScanImportService.matchesOriginal`, `ContractDocumentUseCase.isCurrentScan`).
-- Weicht er ab (Scan stammt von einer älteren Fassung, z. B. nach erneutem PDF-Erzeugen), erscheint eine
-  Warnung (`scan.outdated`); der Nutzer kann trotzdem übernehmen oder abbrechen. Originale ohne
-  eingebetteten Hash (Altbestand) werden nicht beanstandet.
-- `detectContractId` → `detectPayload` (liefert `QrPayload`). Tests in `ScanImportServiceTest` ergänzt.
+- The hash in the scan's QR code is compared with the hash embedded in the original PDF (`LeaseContentHash`)
+  (`ScanImportService.matchesOriginal`, `ContractDocumentUseCase.isCurrentScan`).
+- If it differs (the scan comes from an older version, e.g. after regenerating the PDF), a warning is shown
+  (`scan.outdated`); the user can still accept or cancel. Originals without an embedded hash (legacy data)
+  are not rejected.
+- `detectContractId` → `detectPayload` (returns `QrPayload`). Tests added to `ScanImportServiceTest`.
 
-## 2026-10-31 – Scan-Import (Schritt 3, Pfad B)
+## 2026-10-31 – Scan import (step 3, path B)
 
-- Neuer Button „Scan importieren“: Datei (PDF, PNG, JPG) wählen → QR-Code wird gelesen → Vertrag wird
-  zugeordnet (Bestätigung durch den Nutzer); ohne erkannten QR-Code Auswahl aus den Verträgen im Status
-  „wartet auf Unterschrift“. Der Scan wird **unverändert** unter `documents/<id>/signed-scan-<uuid>.<ext>`
-  gespeichert, SHA-256 notiert, Status → `SIGNED` (`attachSigned(..., SCAN, ...)`).
-- `pdf/ScanImportService` (`detectPayload`, `attachScan`; erlaubte Endungen, Größenlimit 50 MB);
-  Durchreichung über `ContractDocumentUseCase`, `ContractWorkflow`, `ContractUiActions`.
-- QR-Erkennung läuft im Hintergrund-Task (Warte-Cursor), damit die UI nicht blockiert.
-- „PDF öffnen“ öffnet jetzt das unterschriebene Dokument, falls vorhanden (sonst das Original-PDF);
-  Drucken nutzt weiter das Original.
-- **Fehler behoben:** Der QR-Code lag unten links und überdeckte auf Seite 1 den IBAN-Kasten → dort nicht
-  lesbar. Er sitzt jetzt oben rechts (inkl. ID-Text links daneben) auf jeder Seite.
-- `QrCodes.decode`: Ecken-Suche (oben rechts, für ältere PDFs unten links) statt Suche über die ganze untere
-  Hälfte (Treffer ~1 s statt >30 s Fehlversuch).
-- Tests: `ScanImportServiceTest` (PDF-/Bild-Scan, kein QR, falsche Endung, falscher Status, Dokumentwahl).
-- Bekannt: verdrehte oder stark verrauschte Scans werden evtl. nicht erkannt (dann manuelle Auswahl). Praxistest mit echtem Scan steht aus.
+- New "Import scan" button: choose a file (PDF, PNG, JPG) → the QR code is read → the contract is matched
+  (confirmed by the user); without a detected QR code the user picks from the contracts in status
+  "awaiting signature". The scan is stored **unchanged** as `documents/<id>/signed-scan-<uuid>.<ext>`,
+  its SHA-256 is recorded, status → `SIGNED` (`attachSigned(..., SCAN, ...)`).
+- `pdf/ScanImportService` (`detectPayload`, `attachScan`; allowed extensions, 50 MB size limit);
+  passed through `ContractDocumentUseCase`, `ContractWorkflow`, `ContractUiActions`.
+- QR detection runs in a background task (wait cursor) so the UI does not block.
+- "Open PDF" now opens the signed document if present (otherwise the original PDF);
+  printing still uses the original.
+- **Bug fixed:** The QR code was at the bottom left and covered the IBAN box on page 1 → not readable there.
+  It is now at the top right (with the ID text next to it) on every page.
+- `QrCodes.decode`: corner search (top right, bottom left for older PDFs) instead of searching the whole
+  lower half (hit in ~1 s instead of a >30 s failed attempt).
+- Tests: `ScanImportServiceTest` (PDF/image scan, no QR, wrong extension, wrong status, document choice).
+- Known: rotated or very noisy scans may not be detected (manual selection then). Real-world test with a
+  real scan is still pending.
 
-## 2026-10-31 – Unterschrift zurücknehmen, PDF drucken, Linux-Fixes
+## 2026-10-31 – Revoke signature, print PDF, Linux fixes
 
-- „Zur Unterschrift gegeben“ ist umkehrbar: `ContractService.revokeAwaitingSignature` setzt
-  `AWAITING_SIGNATURE` zurück auf `PDF_CREATED` (nur aus diesem Status; `SIGNED` bleibt gesperrt).
-  Durchgereicht über `ContractLifecycleUseCase`, `ContractWorkflow`, `ContractUiActions`; neuer Button
-  „Unterschrift zurücknehmen“ (DE/EN). Test in `ContractServiceTest`.
-- PDF drucken: neuer Button; `PdfPrinter` zeigt den JavaFX-`PrinterJob`-Druckdialog (betriebssystemunabhängig),
-  rendert die Seiten per PDFBox (200 dpi) und druckt sie als Bild. Abbruch im Dialog ist ein No-Op,
-  fehlender Drucker/Fehlschlag liefert lokalisierte Fehlermeldung. Dieselbe Pfadprüfung wie bei „PDF öffnen“.
-- „PDF öffnen“: unter Linux `xdg-open`, unter macOS `open`, sonst Fallback `Desktop.open`.
-- FXML-Namespace-Version auf `17.0.17` vereinheitlicht (behebt die Warnung „FXML 23.0.1 vs. Runtime 17.0.17“).
-- Bekannt/harmlos: Unter Linux erscheint `Gdk-WARNING XSetErrorHandler() called with a GDK error trap pushed`
-  (AWT und JavaFX/GTK im selben Prozess). `java.awt.headless=true` ist **keine** Lösung: Es verhindert den
-  Druckdialog und wurde wieder entfernt.
-- Nicht umgesetzt: Übertragung aufs Smartphone (Roadmap Schritt 5/7); bisher nur manueller
-  `.leasepack`-Export/Import.
-- Druckdialog und Druckausgabe sind nicht automatisiert getestet (benötigen Drucker/Display).
+- "Given for signature" is reversible: `ContractService.revokeAwaitingSignature` resets
+  `AWAITING_SIGNATURE` to `PDF_CREATED` (only from this status; `SIGNED` stays locked).
+  Passed through `ContractLifecycleUseCase`, `ContractWorkflow`, `ContractUiActions`; new button
+  "Revoke signature" (DE/EN). Test in `ContractServiceTest`.
+- Print PDF: new button; `PdfPrinter` shows the JavaFX `PrinterJob` print dialog (OS independent),
+  renders the pages via PDFBox (200 dpi) and prints them as images. Cancelling the dialog is a no-op,
+  a missing printer/failure yields a localized error message. Same path validation as "Open PDF".
+- "Open PDF": `xdg-open` on Linux, `open` on macOS, otherwise fallback `Desktop.open`.
+- FXML namespace version unified to `17.0.17` (fixes the "FXML 23.0.1 vs. runtime 17.0.17" warning).
+- Known/harmless: On Linux, `Gdk-WARNING XSetErrorHandler() called with a GDK error trap pushed` appears
+  (AWT and JavaFX/GTK in the same process). `java.awt.headless=true` is **not** a fix: it prevents the
+  print dialog and was removed again.
+- Not implemented: transfer to smartphone (roadmap step 5/7); so far only manual `.leasepack`
+  export/import.
+- Print dialog and print output are not covered by automated tests (they need a printer/display).
 
-## 2026-10-31 – UI-State-Refactoring + Testabdeckung erhöht
+## 2026-10-31 – UI state refactoring + increased test coverage
 
-- Nachlaufendes Stabilitäts-Refactoring im Listen-State:
-  - `ContractListState` behandelt Austausch per gleicher ID konsistent (`addEntry` ersetzt statt zu duplizieren).
-  - `currentEntry` wird bei Filter-/Sichtbarkeitswechseln und entfernten Einträgen sauber bereinigt.
-  - `ensureVisible(...)` prüft Sichtbarkeit über IDs in der gefilterten Liste und hält Selection-State konsistent.
-- Tests an das aktuelle `ContractEntry`-Modell angepasst (`documents`/`signature` statt Alt-Felder).
-- JavaFX-Testinitialisierung in `ContractListStateTest` vereinheitlicht (`JavaFxTestSupport.startToolkit()` via `@BeforeAll`).
-- Test-Fixtures konsolidiert:
-  - zentrale Testhilfe `TestContracts` eingeführt.
-  - neue API `sampleContract(String name)` ergänzt; bestehendes `sampleContract()` delegiert darauf.
-  - mehrere Tests auf die gemeinsame Fixture + `toBuilder()`-Overrides umgestellt.
-- Lesbarkeit verbessert:
-  - manuelle 37-Parameter-Testkonstruktionen weiter reduziert.
-  - Einrückung in `LeaseContract.toBuilder()` bereinigt.
-- Validierung: nach Refactoring vollständige Testsuite erfolgreich (`./gradlew test`).
+- Follow-up stability refactoring in the list state:
+  - `ContractListState` handles replacement by the same ID consistently (`addEntry` replaces instead of duplicating).
+  - `currentEntry` is cleaned up properly on filter/visibility changes and removed entries.
+  - `ensureVisible(...)` checks visibility via IDs in the filtered list and keeps the selection state consistent.
+- Tests adapted to the current `ContractEntry` model (`documents`/`signature` instead of legacy fields).
+- JavaFX test initialization unified in `ContractListStateTest` (`JavaFxTestSupport.startToolkit()` via `@BeforeAll`).
+- Test fixtures consolidated:
+  - central test helper `TestContracts` introduced.
+  - new API `sampleContract(String name)` added; existing `sampleContract()` delegates to it.
+  - several tests switched to the shared fixture + `toBuilder()` overrides.
+- Readability improved:
+  - manual 37-parameter test constructions reduced further.
+  - indentation in `LeaseContract.toBuilder()` cleaned up.
+- Validation: full test suite passed after the refactoring (`./gradlew test`).
 
-- `MainLayoutController` weiter entschlackt: Listen-/Filter-/Selection-State in neue Klasse
-  `ContractListState` ausgelagert.
-- `ContractScreenCoordinator` entfernt; doppelte Zustandslogik bereinigt.
-- Restore-Flow aus dem Archiv stabilisiert:
-  - Wiederhergestellten Vertrag sofort im Hauptscreen sichtbar/ausgewählt.
-  - Bei aktivem Filter, der den Vertrag ausblendet, wird konsistent auf `ALL` gewechselt.
-- Zusätzliche Tests:
-  - `ContractListStateTest` (Filter-, Sichtbarkeits-, Remove-/Selection-Fälle).
-  - `ArchiveDialogTest` (Archivliste laden, Restore ohne Selektion als No-Op).
-  - `MainLayoutControllerTest` (Restore setzt Filter zurück und selektiert Eintrag).
-- Coverage verbessert (JaCoCo):
-  - Gesamt: Instruktionen **77% → 80%**, Branches **54% → 58%**.
+- `MainLayoutController` slimmed down further: list/filter/selection state moved to the new class
+  `ContractListState`.
+- `ContractScreenCoordinator` removed; duplicate state logic cleaned up.
+- Restore flow from the archive stabilized:
+  - A restored contract is immediately visible/selected in the main screen.
+  - If an active filter hides the contract, the filter consistently switches to `ALL`.
+- Additional tests:
+  - `ContractListStateTest` (filter, visibility, remove/selection cases).
+  - `ArchiveDialogTest` (load archive list, restore without selection is a no-op).
+  - `MainLayoutControllerTest` (restore resets the filter and selects the entry).
+- Coverage improved (JaCoCo):
+  - Overall: instructions **77% → 80%**, branches **54% → 58%**.
   - `ArchiveDialog`: **0% → 74%**.
   - `MainLayoutController`: **27% → 38%**.
   - `ContractListState`: **31% → 67%**.
 
-## 2026-10-31 – Vertragsarchiv und PDF-Versionen
+## 2026-10-31 – Contract archive and PDF versions
 
-- Archivieren verschiebt den Vertragsdatensatz nach `archive/contracts/<uuid>.json` und seine Dokumente
-  nach `archive/documents/<uuid>/`; der Vertrag wird dadurch aus der aktiven Liste entfernt.
-- Archivansicht in der Desktop-UI zeigt archivierte Verträge; Wiederherstellen verschiebt Datensatz und
-  Dokumente zurück in die aktive Ablage.
-- Bestätigungsdialog und Button benennen den Vorgang in Deutsch und Englisch als Archivierung.
-- Jedes neu erzeugte Original-PDF erhält einen eindeutigen Dateinamen; erneutes Erzeugen überschreibt
-  keine frühere Version und macht deren Hash nicht ungültig.
-- Clean Code: `JsonContractRepository` nur noch Orchestrierung (`relocate`); Dateiverschiebung in
-  `FileMoveTransaction` (Command mit Undo/Rollback), Pfadprüfung und Zielnamen in `DocumentRelocator`
-  (Strategy-Enum `Direction` ARCHIVE/RESTORE); Archivfenster als `ArchiveDialog` aus dem Controller ausgelagert.
-- Formular ausgelagert: `ContractForm.fxml` (per `fx:include`) + `ContractFormController` (`read()`/`fill()`,
-  Feldkonfiguration, Datumsformate, Amtsgericht-Auswahl). `MainLayoutController` schrumpft von ~690 auf ~320 Zeilen;
-  `ViewLoader` erzeugt den Haupt-Controller per Injektion, Unter-Controller per Standardkonstruktor.
-- Neuer JavaFX-Round-Trip-Test `ContractFormControllerTest`: lädt `ContractForm.fxml` headless, füllt den
-  Vertrag per `fill()` und verifiziert die Rücklese per `read()`.
-- Zusätzlicher Round-Trip-Fall ohne Einführungszins: prüft, dass `introductoryRent*` und
-  `rentIncreaseDate` bei deaktivierter Checkbox konsistent `null` bleiben.
-- IBAN-Validierung ergänzt (ISO-13616-Modulo-97) inkl. lokalisierter Fehlermeldung; ungültige IBANs werden
-  beim Speichern abgelehnt.
-- IBAN-Fehler jetzt zusätzlich als roter Inline-Hinweis direkt unter dem Feld; Speichern ist bei ungültiger
-  IBAN deaktiviert.
-- `ContractFormController` bietet jetzt `hasValidationErrors()` und Callback-Hook
-  `setOnValidationChanged(...)`, damit der übergeordnete Controller den Speichern-Button reaktiv
-  steuern kann, ohne Formularlogik zu duplizieren.
-- IBAN-Validierung bleibt zweistufig: Inline-Feedback während der Eingabe **und** harte Prüfung beim
-  finalen Lesen/Speichern (`read()`), damit auch programmatisch gesetzte Werte nicht ungeprüft bleiben.
-- JavaFX-Tests erweitert: ungültige IBAN erzeugt weiterhin `IllegalArgumentException` mit lokalisierter
-  Meldung; gültige IBAN setzt keinen Validierungsfehlerstatus.
-- Tests sichern Archivierung mit Dokumentverweisen und den Erhalt älterer PDF-Versionen ab.
+- Archiving moves the contract record to `archive/contracts/<uuid>.json` and its documents to
+  `archive/documents/<uuid>/`; the contract is thereby removed from the active list.
+- Archive view in the desktop UI shows archived contracts; restoring moves the record and documents back
+  to the active store.
+- Confirmation dialog and button name the operation as archiving in German and English.
+- Every newly generated original PDF gets a unique file name; regenerating does not overwrite an earlier
+  version and does not invalidate its hash.
+- Clean code: `JsonContractRepository` is now only orchestration (`relocate`); file moving lives in
+  `FileMoveTransaction` (command with undo/rollback), path validation and target names in `DocumentRelocator`
+  (strategy enum `Direction` ARCHIVE/RESTORE); archive window extracted from the controller as `ArchiveDialog`.
+- Form extracted: `ContractForm.fxml` (via `fx:include`) + `ContractFormController` (`read()`/`fill()`,
+  field configuration, date formats, district court selection). `MainLayoutController` shrinks from ~690 to
+  ~320 lines; `ViewLoader` creates the main controller via injection, sub-controllers via default constructor.
+- New JavaFX round-trip test `ContractFormControllerTest`: loads `ContractForm.fxml` headless, fills the
+  contract via `fill()` and verifies reading it back via `read()`.
+- Additional round-trip case without introductory rent: verifies that `introductoryRent*` and
+  `rentIncreaseDate` consistently stay `null` when the checkbox is disabled.
+- IBAN validation added (ISO 13616 modulo 97) including a localized error message; invalid IBANs are
+  rejected on save.
+- IBAN errors are now also shown as a red inline hint directly below the field; saving is disabled for an
+  invalid IBAN.
+- `ContractFormController` now offers `hasValidationErrors()` and the callback hook
+  `setOnValidationChanged(...)` so the parent controller can drive the save button reactively without
+  duplicating form logic.
+- IBAN validation stays two-stage: inline feedback while typing **and** a hard check on the final
+  read/save (`read()`), so programmatically set values are not left unchecked either.
+- JavaFX tests extended: an invalid IBAN still raises `IllegalArgumentException` with a localized
+  message; a valid IBAN sets no validation error state.
+- Tests cover archiving with document references and the preservation of older PDF versions.
 
-## 2026-10-31 – Schritt 2: PDF mit QR-Code/Hash + Aufräumen
+## 2026-10-31 – Step 2: PDF with QR code/hash + cleanup
 
 **PDF (`kienzle.desktop.pdf`)**
-- `PdfStamper` stempelt auf jede Seite einen QR-Code (ZXing; ab 2026-10-31 „Scan-Import“ oben rechts,
-  vorher unten links) und setzt PDF-Metadaten
+- `PdfStamper` stamps a QR code on every page (ZXing; top right since the 2026-10-31 "scan import" entry,
+  bottom left before) and sets PDF metadata
   (`/Keywords`, `LeaseContractId`, `LeaseContentHash`).
-- QR-Payload: `lease:v1:<contractId>:<contentHash>` (`QrPayload`); `contentHash` = SHA-256 des PDFs
-  *vor* dem Stempeln. SHA-256 der fertigen Datei steht in `Document.sha256` (`Hashing`).
-- `QrCodes` kann encodieren und decodieren (Decode ist für den Scan-Import vorbereitet, noch ungenutzt).
-- `PdfStorage` legt Dateien unter `<dataDir>/documents/<contractId>/` ab (relative Pfade).
-- `ContractPdfService`: rendern → stempeln → speichern → Status `PDF_CREATED`.
-- UI: Buttons „PDF erstellen“, „PDF öffnen“, „Zur Unterschrift gegeben“ (`AWAITING_SIGNATURE`).
-- Neue Abhängigkeiten: `com.google.zxing:core` und `:javase` 3.5.3.
+- QR payload: `lease:v1:<contractId>:<contentHash>` (`QrPayload`); `contentHash` = SHA-256 of the PDF
+  *before* stamping. The SHA-256 of the finished file is stored in `Document.sha256` (`Hashing`).
+- `QrCodes` can encode and decode (decoding was prepared for the scan import, still unused at that point).
+- `PdfStorage` stores files under `<dataDir>/documents/<contractId>/` (relative paths).
+- `ContractPdfService`: render → stamp → store → status `PDF_CREATED`.
+- UI: buttons "Create PDF", "Open PDF", "Given for signature" (`AWAITING_SIGNATURE`).
+- New dependencies: `com.google.zxing:core` and `:javase` 3.5.3.
 
-**Aufräumen (Clean Code)**
-- Builder: `LeaseContract.builder()` / `toBuilder()` statt 37-Parameter-Konstruktor.
-- Facade: `app.ContractWorkflow` ist der einzige Einstieg der UI.
-- Dependency Injection: `app.AppContext` (Composition Root), `ViewLoader` mit `controllerFactory`,
-  Konstruktor-Injektion in `MainLayoutController` und `ContractPdfService`.
-- Aus dem Controller ausgelagert: `ContractDefaults`, `ContractDetailRows`, `IbanFormatter`,
+**Cleanup (clean code)**
+- Builder: `LeaseContract.builder()` / `toBuilder()` instead of the 37-parameter constructor.
+- Facade: `app.ContractWorkflow` is the only entry point for the UI.
+- Dependency injection: `app.AppContext` (composition root), `ViewLoader` with `controllerFactory`,
+  constructor injection in `MainLayoutController` and `ContractPdfService`.
+- Extracted from the controller: `ContractDefaults`, `ContractDetailRows`, `IbanFormatter`,
   `StatusFilter`, `ContractStatusText`, `ContractPdfValues`.
-- Bewusst kein Singleton (DI ersetzt es) und kein Proxy (kein Anwendungsfall); `toBuilder()` deckt Prototype ab.
-- Neue Tests: Builder, Defaults, IBAN, PDF-Werte, StatusFilter, PdfStamper (QR lesbar auf jeder Seite),
+- Deliberately no singleton (DI replaces it) and no proxy (no use case); `toBuilder()` covers prototype.
+- New tests: builder, defaults, IBAN, PDF values, StatusFilter, PdfStamper (QR readable on every page),
   ContractPdfService.
 
-## 2026-10-31 – Schritt 1: Datenmodell, Persistenz, UI-Anbindung
+## 2026-10-31 – Step 1: data model, persistence, UI integration
 
-**Modell/Persistenz (`kienzle.desktop.contract`)**
-- `ContractEntry` (UUID, `LeaseContract`, Status, Zeitstempel, Dokumente, Signatur),
+**Model/persistence (`kienzle.desktop.contract`)**
+- `ContractEntry` (UUID, `LeaseContract`, status, timestamps, documents, signature),
   `ContractStatus` (`DRAFT → PDF_CREATED → AWAITING_SIGNATURE → SIGNED`), `SignatureSource`,
   `DocumentKind`, `ContractDocument`, `SignatureInfo`.
-- `ContractRepository` + `JsonContractRepository`: eine Datei pro Vertrag unter
-  `~/.lease-manager/contracts/<uuid>.json` (atomar geschrieben).
-- `ContractService` erzwingt den Statusablauf; bearbeiten nur im Status `DRAFT`.
+- `ContractRepository` + `JsonContractRepository`: one file per contract under
+  `~/.lease-manager/contracts/<uuid>.json` (written atomically).
+- `ContractService` enforces the status flow; editing only in status `DRAFT`.
 
-**Typisierung**
-- `LeaseContract`: `LocalDate`, `MonthDay` (Gartenjahr-Ende), `BigDecimal` (Größe, Pachtzins);
-  Feld `id` entfernt. `ContractFormats` formatiert/parst deutsche Zahlen und Daten.
+**Typing**
+- `LeaseContract`: `LocalDate`, `MonthDay` (end of garden year), `BigDecimal` (size, rent); field `id`
+  removed. `ContractFormats` formats/parses German numbers and dates.
 
 **UI**
-- Beispielverträge entfernt; Liste kommt aus dem Repository. Buttons Neu/Speichern/Löschen,
-  Filter Alle/Offen/Unterschrieben, Statuszeile (inkl. Quelle Mobil/Scan). Texte in DE und EN.
-- `module-info`: neue Pakete exportiert, Gson-Reflection auf `kienzle.desktop(.contract)`.
+- Sample contracts removed; the list comes from the repository. Buttons New/Save/Delete,
+  filter All/Open/Signed, status line (incl. source Mobile/Scan). Texts in DE and EN.
+- `module-info`: new packages exported, Gson reflection on `kienzle.desktop(.contract)`.
 
-## Offen / nächste Schritte
-- Scan-Import (Schritt 3) ist umgesetzt, siehe oben; Praxistest mit echtem Scan steht aus.
-- Drucken-Funktion (Pfad B Schritt 1): als JavaFX-Druckdialog umgesetzt, siehe oben; Praxistest steht aus.
-- Optional: Hash-Abgleich des Scans mit dem Original (QR enthält `contentHash` des ungestempelten PDFs).
-- Schritt 4: `.leasepack`-Export/Import (Schema in `shared/`), dann Mobile-Apps.
-- Sprachwechsel lädt die Ansicht neu → ungespeicherte Eingaben gehen verloren.
-- Bekannt: Der Startordner `~/.lease-manager` wird beim ersten Start angelegt; Liste ist anfangs leer.
-- Rechtlich klären: Schriftform § 585a BGB (Pfad B evtl. Standardfall).
+## Open / next steps
+- Scan import (step 3) is implemented, see above; real-world test with a real scan is still pending.
+- Print function (path B step 1): implemented as a JavaFX print dialog, see above; real-world test pending.
+- Hash comparison of the scan with the original: done (see "Hash check on scan import").
+- Step 4: `.leasepack` export/import (schema in `shared/`), then mobile apps.
+- Switching the language reloads the view → unsaved input is lost.
+- Known: The start folder `~/.lease-manager` is created on first start; the list is empty at first.
+- Legal clarification needed: written form § 585a BGB (path B possibly the standard case).
 
-## Hinweise
-- Tests: `./gradlew test` (ZXing muss einmal online geladen werden, danach `--offline` möglich).
-- Starten ohne Display: `xvfb-run -a ./gradlew run`.
+## Notes
+- Tests: `./gradlew test` (ZXing must be downloaded online once, `--offline` possible afterwards).
+- Start without a display: `xvfb-run -a ./gradlew run`.
