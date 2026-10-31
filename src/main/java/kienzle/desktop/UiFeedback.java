@@ -18,4 +18,12 @@ public final class UiFeedback {
                 .filter(button -> button == javafx.scene.control.ButtonType.OK)
                 .isPresent();
     }
+
+    public java.util.Optional<Integer> choose(String title, String message, java.util.List<String> options) {
+        javafx.scene.control.ChoiceDialog<String> dialog =
+                new javafx.scene.control.ChoiceDialog<>(options.get(0), options);
+        dialog.setTitle(title);
+        dialog.setHeaderText(message);
+        return dialog.showAndWait().map(options::indexOf);
+    }
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /** Facade for the UI: one entry point for contract persistence, PDF creation and status changes. */
 public class ContractWorkflow {
@@ -74,5 +75,17 @@ public class ContractWorkflow {
 
     public Optional<Path> originalPdf(ContractEntry entry) {
         return documents.originalPdf(entry);
+    }
+
+    public Optional<Path> currentDocument(ContractEntry entry) {
+        return documents.currentDocument(entry);
+    }
+
+    public Optional<UUID> detectScanTarget(Path scan) throws IOException {
+        return documents.detectScanTarget(scan);
+    }
+
+    public ContractEntry attachScan(ContractEntry entry, Path scan) throws IOException {
+        return documents.attachScan(entry, scan);
     }
 }

@@ -47,20 +47,25 @@ public final class QrCodes {
             return thresholded;
         }
 
-        return scanLowerHalf(image);
-    }
-
-    private static Optional<String> scanLowerHalf(BufferedImage image) {
+        // The stamper places the code top right; PDFs stamped by older versions have it bottom left.
         int width = image.getWidth();
         int height = image.getHeight();
-        int step = Math.max(10, width / 80);
+        Optional<String> topRight = scanRegion(image, width * 3 / 5, 0, width, height / 4);
+        if (topRight.isPresent()) {
+            return topRight;
+        }
+        return scanRegion(image, 0, height * 3 / 4, width * 2 / 5, height);
+    }
+
+    private static Optional<String> scanRegion(BufferedImage image, int left, int top, int right, int bottom) {
+        int step = Math.max(10, image.getWidth() / 80);
 
         for (int size : SEARCH_SIZES) {
-            if (size > Math.min(width, height)) {
+            if (size > Math.min(right - left, bottom - top)) {
                 continue;
             }
-            for (int x = 0; x + size <= width; x += step) {
-                for (int y = height / 2; y + size <= height; y += step) {
+            for (int x = left; x + size <= right; x += step) {
+                for (int y = top; y + size <= bottom; y += step) {
                     BufferedImage crop = image.getSubimage(x, y, size, size);
                     Optional<String> decoded = tryDecode(threshold(crop, 180));
                     if (decoded.isPresent()) {

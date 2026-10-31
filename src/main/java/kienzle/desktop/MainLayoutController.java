@@ -1,8 +1,10 @@
 package kienzle.desktop;
 
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -21,12 +23,16 @@ import kienzle.desktop.app.AppContext;
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractStatus;
+import kienzle.desktop.pdf.ScanImportService;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class MainLayoutController {
 
@@ -193,12 +199,82 @@ public class MainLayoutController {
     }
 
     private void handleRestoredArchivedEntry(ContractEntry restored) {
-        replaceEntry(restored);
-        if (listState.isFilteredOut(restored)) {
+        revealEntry(restored);
+    }
+
+    private void revealEntry(ContractEntry entry) {
+        replaceEntry(entry);
+        if (listState.isFilteredOut(entry)) {
             statusFilter.setValue(StatusFilter.ALL);
         }
-        listState.ensureVisible(contractList, restored);
-        show(restored);
+        listState.ensureVisible(contractList, entry);
+        show(entry);
+    }
+
+    @FXML
+    private void importScan() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(I18n.get("scan.import.title"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                I18n.get("scan.filetype"), "*.pdf", "*.png", "*.jpg", "*.jpeg"));
+        java.io.File file = chooser.showOpenDialog(contractList.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        List<ContractEntry> awaiting = uiActions.awaitingSignature();
+        if (awaiting.isEmpty()) {
+            feedback.showError(I18n.get("scan.none.awaiting"));
+            return;
+        }
+        detectScanTargetInBackground(file.toPath(), awaiting);
+    }
+
+    // QR detection on a full page can take seconds, so it must not block the UI thread.
+    private void detectScanTargetInBackground(Path scan, List<ContractEntry> awaiting) {
+        Scene scene = contractList.getScene();
+        scene.setCursor(Cursor.WAIT);
+        Task<Optional<UUID>> task = new Task<>() {
+            @Override
+            protected Optional<UUID> call() throws Exception {
+                return uiActions.detectScanTarget(scan);
+            }
+        };
+        task.setOnSucceeded(event -> {
+            scene.setCursor(Cursor.DEFAULT);
+            runOnCurrent(() -> attachScan(scan, awaiting, task.getValue()));
+        });
+        task.setOnFailed(event -> {
+            scene.setCursor(Cursor.DEFAULT);
+            feedback.showError(task.getException().getMessage());
+        });
+        Thread worker = new Thread(task, "scan-detect");
+        worker.setDaemon(true);
+        worker.start();
+    }
+
+    private void attachScan(Path scan, List<ContractEntry> awaiting, Optional<UUID> detectedId) throws IOException {
+        ContractEntry target = matchScanTarget(awaiting, detectedId);
+        if (target != null) {
+            revealEntry(uiActions.attachScan(target, scan));
+        }
+    }
+
+    /** Uses the QR code to find the contract (user confirms); falls back to a manual choice. */
+    private ContractEntry matchScanTarget(List<ContractEntry> awaiting, Optional<UUID> detectedId) {
+        Optional<ContractEntry> detected = detectedId
+                .flatMap(id -> awaiting.stream().filter(entry -> entry.id().equals(id)).findFirst());
+        if (detected.isPresent()) {
+            String message = I18n.get("scan.confirm") + detected.get().contract().name();
+            return feedback.confirm(message) ? detected.get() : null;
+        }
+        List<String> labels = awaiting.stream().map(MainLayoutController::scanChoiceLabel).toList();
+        return feedback.choose(I18n.get("scan.import.title"), I18n.get("scan.choose"), labels)
+                .map(awaiting::get)
+                .orElse(null);
+    }
+
+    private static String scanChoiceLabel(ContractEntry entry) {
+        return entry.contract().name() + " (" + entry.id().toString().substring(0, 8) + ")";
     }
 
     @FXML
@@ -252,7 +328,9 @@ public class MainLayoutController {
     }
 
     private void openSelectedPdf() {
-        openDocument(allowedCurrentPdf());
+        Path document = uiActions.currentDocument(listState.currentEntry())
+                .orElseThrow(() -> new IllegalStateException(I18n.get("pdf.missing")));
+        openDocument(validateAllowedDocumentPath(document));
     }
 
     private Path allowedCurrentPdf() {
@@ -307,7 +385,9 @@ public class MainLayoutController {
             if (!Files.isRegularFile(realPath, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
                 throw new IllegalStateException(I18n.get("pdf.missing"));
             }
-            if (!realPath.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+            String fileName = realPath.getFileName().toString().toLowerCase(Locale.ROOT);
+            String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (!ScanImportService.SUPPORTED_EXTENSIONS.contains(extension)) {
                 throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
             }
             return realPath;

@@ -34,4 +34,8 @@ public class ContractPdfService {
     public Path locate(String relativePath) {
         return storage.resolve(relativePath);
     }
+
+    public ScanImportService scanImporter() {
+        return new ScanImportService(contracts, storage);
+    }
 }

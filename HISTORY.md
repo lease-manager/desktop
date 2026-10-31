@@ -3,6 +3,25 @@
 Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
 Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
+## 2026-10-31 – Scan-Import (Schritt 3, Pfad B)
+
+- Neuer Button „Scan importieren“: Datei (PDF, PNG, JPG) wählen → QR-Code wird gelesen → Vertrag wird
+  zugeordnet (Bestätigung durch den Nutzer); ohne erkannten QR-Code Auswahl aus den Verträgen im Status
+  „wartet auf Unterschrift“. Der Scan wird **unverändert** unter `documents/<id>/signed-scan-<uuid>.<ext>`
+  gespeichert, SHA-256 notiert, Status → `SIGNED` (`attachSigned(..., SCAN, ...)`).
+- `pdf/ScanImportService` (`detectContractId`, `attachScan`; erlaubte Endungen, Größenlimit 50 MB);
+  Durchreichung über `ContractDocumentUseCase`, `ContractWorkflow`, `ContractUiActions`.
+- QR-Erkennung läuft im Hintergrund-Task (Warte-Cursor), damit die UI nicht blockiert.
+- „PDF öffnen“ öffnet jetzt das unterschriebene Dokument, falls vorhanden (sonst das Original-PDF);
+  Drucken nutzt weiter das Original.
+- **Fehler behoben:** Der QR-Code lag unten links und überdeckte auf Seite 1 den IBAN-Kasten → dort nicht
+  lesbar. Er sitzt jetzt oben rechts (inkl. ID-Text links daneben) auf jeder Seite.
+- `QrCodes.decode`: Ecken-Suche (oben rechts, für ältere PDFs unten links) statt Suche über die ganze untere
+  Hälfte (Treffer ~1 s statt >30 s Fehlversuch).
+- Tests: `ScanImportServiceTest` (PDF-/Bild-Scan, kein QR, falsche Endung, falscher Status, Dokumentwahl).
+- Bekannt: Der Hash im QR-Code wird beim Import noch nicht gegen das Original geprüft; verdrehte oder stark
+  verrauschte Scans werden evtl. nicht erkannt (dann manuelle Auswahl). Praxistest mit echtem Scan steht aus.
+
 ## 2026-10-31 – Unterschrift zurücknehmen, PDF drucken, Linux-Fixes
 
 - „Zur Unterschrift gegeben“ ist umkehrbar: `ContractService.revokeAwaitingSignature` setzt
@@ -89,7 +108,8 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 ## 2026-10-31 – Schritt 2: PDF mit QR-Code/Hash + Aufräumen
 
 **PDF (`kienzle.desktop.pdf`)**
-- `PdfStamper` stempelt auf jede Seite unten links einen QR-Code (ZXing) und setzt PDF-Metadaten
+- `PdfStamper` stempelt auf jede Seite einen QR-Code (ZXing; ab 2026-10-31 „Scan-Import“ oben rechts,
+  vorher unten links) und setzt PDF-Metadaten
   (`/Keywords`, `LeaseContractId`, `LeaseContentHash`).
 - QR-Payload: `lease:v1:<contractId>:<contentHash>` (`QrPayload`); `contentHash` = SHA-256 des PDFs
   *vor* dem Stempeln. SHA-256 der fertigen Datei steht in `Document.sha256` (`Hashing`).
@@ -130,10 +150,9 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 - `module-info`: neue Pakete exportiert, Gson-Reflection auf `kienzle.desktop(.contract)`.
 
 ## Offen / nächste Schritte
-- **Schritt 3 – Scan-Import (Pfad B):** PDF/Bild importieren, QR via `QrCodes.decode` erkennen,
-  automatisch zuordnen, sonst manuell aus offenen Verträgen wählen; unverändert speichern,
-  Hash notieren, `ContractService.attachSigned(..., SCAN, ...)`.
+- Scan-Import (Schritt 3) ist umgesetzt, siehe oben; Praxistest mit echtem Scan steht aus.
 - Drucken-Funktion (Pfad B Schritt 1): als JavaFX-Druckdialog umgesetzt, siehe oben; Praxistest steht aus.
+- Optional: Hash-Abgleich des Scans mit dem Original (QR enthält `contentHash` des ungestempelten PDFs).
 - Schritt 4: `.leasepack`-Export/Import (Schema in `shared/`), dann Mobile-Apps.
 - Sprachwechsel lädt die Ansicht neu → ungespeicherte Eingaben gehen verloren.
 - Bekannt: Der Startordner `~/.lease-manager` wird beim ersten Start angelegt; Liste ist anfangs leer.
