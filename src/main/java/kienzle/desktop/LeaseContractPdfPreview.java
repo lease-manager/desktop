@@ -124,7 +124,7 @@ public final class LeaseContractPdfPreview {
                 y = editableParagraph(content, value(values, "paragraphFour"), y);
 
             y -= 20;
-            y = sectionHeading(content, "", "Sonstige Vereinbarungen", y);
+            y = sectionHeading(content, "§ 5", "Sonstige Vereinbarungen", y);
             y -= 10;
                 y = editableParagraph(content, value(values, "paragraphFive"), y);
             String description = value(values, "description");
