@@ -7,6 +7,7 @@ import java.util.Locale;
 /** Groups an IBAN in blocks of four characters while typing. */
 public final class IbanFormatter {
     private static final int MAX_LENGTH = 34;
+    private static final int MIN_LENGTH = 15;
 
     private IbanFormatter() {
     }
@@ -45,5 +46,31 @@ public final class IbanFormatter {
             change.setAnchor(formattedCaret);
             return change;
         });
+    }
+
+    /** Validates an IBAN using ISO 13616 (rearrange + A=10..Z=35 + mod 97 == 1). */
+    public static boolean isValid(String text) {
+        String iban = normalize(text);
+        if (iban.length() < MIN_LENGTH || iban.length() > MAX_LENGTH) {
+            return false;
+        }
+        if (!iban.matches("^[A-Z]{2}\\d{2}[A-Z0-9]+$")) {
+            return false;
+        }
+        String rearranged = iban.substring(4) + iban.substring(0, 4);
+        int remainder = 0;
+        for (int i = 0; i < rearranged.length(); i++) {
+            char c = rearranged.charAt(i);
+            if (Character.isDigit(c)) {
+                remainder = (remainder * 10 + (c - '0')) % 97;
+            } else if (c >= 'A' && c <= 'Z') {
+                int value = c - 'A' + 10;
+                remainder = (remainder * 10 + value / 10) % 97;
+                remainder = (remainder * 10 + value % 10) % 97;
+            } else {
+                return false;
+            }
+        }
+        return remainder == 1;
     }
 }

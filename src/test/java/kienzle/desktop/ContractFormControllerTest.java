@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ContractFormControllerTest {
     private static final AtomicBoolean TOOLKIT_STARTED = new AtomicBoolean(false);
@@ -63,7 +64,7 @@ class ContractFormControllerTest {
                 .firstRentDate(LocalDate.of(2025, 2, 1))
                 .rentRecipient("Müller GmbH")
                 .bankName("Raiffeisenbank Ost")
-                .iban("DE12345678901234567890")
+                .iban("DE89 3704 0044 0532 0130 00")
                 .bic("GENODEF1RFS")
                 .court("")
                 .terminationNotice("6 Monate")
@@ -133,6 +134,28 @@ class ContractFormControllerTest {
         assertNull(roundTripped.introductoryRentFrom());
         assertNull(roundTripped.introductoryRentUntil());
         assertNull(roundTripped.rentIncreaseDate());
+    }
+
+    @Test
+    void read_rejectsInvalidIban() throws Exception {
+        LeaseContract invalidIban = LeaseContract.builder()
+                .name("Ungültige IBAN")
+                .lessor("Lessor")
+                .tenant("Tenant")
+                .iban("DE12 0000")
+                .build();
+
+        String message = onFxThread(() -> {
+            FXMLLoader loader = new FXMLLoader(ContractFormController.class.getResource("ContractForm.fxml"),
+                    I18n.bundle());
+            Parent ignored = loader.load();
+            ContractFormController form = loader.getController();
+            form.fill(invalidIban);
+            IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, form::read);
+            return thrown.getMessage();
+        });
+
+        assertEquals(I18n.get("error.iban") + "DE12 0000", message);
     }
 
     private static <T> T onFxThread(ThrowingSupplier<T> supplier) throws Exception {

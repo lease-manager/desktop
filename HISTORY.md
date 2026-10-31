@@ -22,6 +22,8 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
   Vertrag per `fill()` und verifiziert die Rücklese per `read()`.
 - Zusätzlicher Round-Trip-Fall ohne Einführungszins: prüft, dass `introductoryRent*` und
   `rentIncreaseDate` bei deaktivierter Checkbox konsistent `null` bleiben.
+- IBAN-Validierung ergänzt (ISO-13616-Modulo-97) inkl. lokalisierter Fehlermeldung; ungültige IBANs werden
+  beim Speichern abgelehnt.
 - Tests sichern Archivierung mit Dokumentverweisen und den Erhalt älterer PDF-Versionen ab.
 
 ## 2026-10-31 – Schritt 2: PDF mit QR-Code/Hash + Aufräumen

@@ -208,7 +208,7 @@ public class ContractFormController {
                 .firstRentDate(firstRentDateField.getValue())
                 .rentRecipient(get(recipientField))
                 .bankName(get(bankField))
-                .iban(get(ibanField))
+                .iban(validatedIban())
                 .bic(get(bicField))
                 .court(selectedCourtAddress())
                 .terminationNotice(get(noticeField))
@@ -225,6 +225,17 @@ public class ContractFormController {
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException(I18n.get("error.number") + control.getText(), exception);
         }
+    }
+
+    private String validatedIban() {
+        String iban = get(ibanField);
+        if (iban.isEmpty()) {
+            return "";
+        }
+        if (!IbanFormatter.isValid(iban)) {
+            throw new IllegalArgumentException(I18n.get("error.iban") + iban);
+        }
+        return IbanFormatter.format(IbanFormatter.normalize(iban));
     }
 
     public void fill(LeaseContract contract) {
