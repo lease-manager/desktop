@@ -5,7 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.CheckBox;
@@ -27,6 +31,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javafx.util.StringConverter;
 
@@ -34,8 +39,17 @@ public class MainLayoutController {
     private static final DateTimeFormatter DISPLAY_DATE = DateTimeFormatter.ofPattern("dd.MM.uuuu");
     private static final DateTimeFormatter DISPLAY_ANNUAL_DATE = DateTimeFormatter.ofPattern("dd.MM.");
 
+    private static final String DURATION_INDEFINITE = "Unbestimmte Dauer";
+    private static final String DURATION_FIXED = "Bestimmte Dauer";
+
     @FXML
     private ListView<LeaseContract> contractList;
+
+    @FXML
+    private Button germanButton;
+
+    @FXML
+    private Button englishButton;
 
     @FXML
     private Label lblTitle;
@@ -291,7 +305,25 @@ public class MainLayoutController {
 
     @FXML
     public void initialize() {
-        durationField.setItems(FXCollections.observableArrayList("Unbestimmte Dauer", "Bestimmte Dauer"));
+        germanButton.setGraphic(FlagIcons.germany());
+        germanButton.setTooltip(new Tooltip(I18n.get("language.de")));
+        englishButton.setGraphic(FlagIcons.unitedKingdom());
+        englishButton.setTooltip(new Tooltip(I18n.get("language.en")));
+        durationField.setItems(FXCollections.observableArrayList(DURATION_INDEFINITE, DURATION_FIXED));
+        durationField.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String duration) {
+                if (DURATION_INDEFINITE.equals(duration)) {
+                    return I18n.get("duration.indefinite");
+                }
+                return DURATION_FIXED.equals(duration) ? I18n.get("duration.fixed") : duration;
+            }
+
+            @Override
+            public String fromString(String text) {
+                return text;
+            }
+        });
         configureDatePickers();
         configureIbanField();
         loadAmtsgerichte();
@@ -324,41 +356,41 @@ public class MainLayoutController {
 
     public List<ContractDetailRow> buildDetailRows(LeaseContract contract) {
         return List.of(
-                new ContractDetailRow("Vertragsname", contract.name()),
-                new ContractDetailRow("Verpächter", contract.lessor()),
-                new ContractDetailRow("Anschrift Verpächter", contract.lessorAddress()),
-                new ContractDetailRow("Ort / Datum Verpächter", contract.lessorLocation() + " / " + contract.lessorDate()),
-                new ContractDetailRow("Pächter", contract.tenant()),
-                new ContractDetailRow("Anschrift Pächter", contract.tenantAddress()),
-                new ContractDetailRow("Ort / Datum Pächter", contract.tenantLocation() + " / " + contract.tenantDate()),
-                new ContractDetailRow("Flurstück", contract.parcelNumber()),
-                new ContractDetailRow("Gemarkung", contract.district()),
-                new ContractDetailRow("Größe m²", contract.size()),
-                new ContractDetailRow("Wirtschaftsart", contract.type()),
-                new ContractDetailRow("Regulärer Pachtzins in Euro", contract.rent()),
-                new ContractDetailRow("Pachtverhältnis", contract.leaseDuration()),
-                new ContractDetailRow("Beginn Pachtverhältnis", contract.startDate()),
-                new ContractDetailRow("Ende Pachtverhältnis", contract.leaseEndDate()),
-                new ContractDetailRow("Günstiger Pachtzins vorhanden", contract.hasIntroductoryRent() ? "Ja" : "Nein"),
-                new ContractDetailRow("Einführungspachtzins in Euro", contract.introductoryRent()),
-                new ContractDetailRow("Einführungspachtzins von", contract.introductoryRentFrom()),
-                new ContractDetailRow("Einführungspachtzins bis", contract.introductoryRentUntil()),
-                new ContractDetailRow("Einführungspachtzins in Worten", contract.introductoryRentWords()),
-                new ContractDetailRow("Regulärer Pachtzins ab", contract.rentIncreaseDate()),
-                new ContractDetailRow("Regulärer Pachtzins in Worten", contract.rentWords()),
-                new ContractDetailRow("Pachtzins fällig alle", contract.rentDueInterval()),
-                new ContractDetailRow("Fälligkeitstermin", contract.rentDueDay()),
-                new ContractDetailRow("Erste Zahlung am", contract.firstRentDate()),
-                new ContractDetailRow("Zahlungsempfänger", contract.rentRecipient()),
-                new ContractDetailRow("Geldinstitut", contract.bankName()),
-                new ContractDetailRow("IBAN", contract.iban()),
-                new ContractDetailRow("BIC", contract.bic()),
-                new ContractDetailRow("Amtsgericht", contract.court()),
-                new ContractDetailRow("Kündigungsfrist", contract.terminationNotice()),
-                new ContractDetailRow("Ende Gartenjahr", contract.gardeningYearEnd()),
+                new ContractDetailRow(I18n.get("detail.name"), contract.name()),
+                new ContractDetailRow(I18n.get("lessor"), contract.lessor()),
+                new ContractDetailRow(I18n.get("detail.lessor.address"), contract.lessorAddress()),
+                new ContractDetailRow(I18n.get("detail.lessor.placeDate"), contract.lessorLocation() + " / " + contract.lessorDate()),
+                new ContractDetailRow(I18n.get("detail.tenant"), contract.tenant()),
+                new ContractDetailRow(I18n.get("detail.tenant.address"), contract.tenantAddress()),
+                new ContractDetailRow(I18n.get("detail.tenant.placeDate"), contract.tenantLocation() + " / " + contract.tenantDate()),
+                new ContractDetailRow(I18n.get("parcel"), contract.parcelNumber()),
+                new ContractDetailRow(I18n.get("district"), contract.district()),
+                new ContractDetailRow(I18n.get("detail.size"), contract.size()),
+                new ContractDetailRow(I18n.get("detail.land.use"), contract.type()),
+                new ContractDetailRow(I18n.get("rent.regular.eur"), contract.rent()),
+                new ContractDetailRow(I18n.get("detail.lease"), contract.leaseDuration()),
+                new ContractDetailRow(I18n.get("detail.lease.start"), contract.startDate()),
+                new ContractDetailRow(I18n.get("detail.lease.end"), contract.leaseEndDate()),
+                new ContractDetailRow(I18n.get("detail.intro.exists"), contract.hasIntroductoryRent() ? "Ja" : "Nein"),
+                new ContractDetailRow(I18n.get("detail.intro.eur"), contract.introductoryRent()),
+                new ContractDetailRow(I18n.get("detail.intro.from"), contract.introductoryRentFrom()),
+                new ContractDetailRow(I18n.get("detail.intro.until"), contract.introductoryRentUntil()),
+                new ContractDetailRow(I18n.get("detail.intro.words"), contract.introductoryRentWords()),
+                new ContractDetailRow(I18n.get("rent.regular.from"), contract.rentIncreaseDate()),
+                new ContractDetailRow(I18n.get("rent.regular.words"), contract.rentWords()),
+                new ContractDetailRow(I18n.get("detail.rent.due.interval"), contract.rentDueInterval()),
+                new ContractDetailRow(I18n.get("detail.rent.due.day"), contract.rentDueDay()),
+                new ContractDetailRow(I18n.get("rent.first.payment"), contract.firstRentDate()),
+                new ContractDetailRow(I18n.get("rent.recipient"), contract.rentRecipient()),
+                new ContractDetailRow(I18n.get("bank"), contract.bankName()),
+                new ContractDetailRow(I18n.get("iban"), contract.iban()),
+                new ContractDetailRow(I18n.get("bic"), contract.bic()),
+                new ContractDetailRow(I18n.get("court"), contract.court()),
+                new ContractDetailRow(I18n.get("notice"), contract.terminationNotice()),
+                new ContractDetailRow(I18n.get("detail.gardening.end"), contract.gardeningYearEnd()),
                 new ContractDetailRow("§ 4", contract.paragraphFour()),
                 new ContractDetailRow("§ 5", contract.paragraphFive()),
-                new ContractDetailRow("Beschreibung", contract.description())
+                new ContractDetailRow(I18n.get("detail.description"), contract.description())
         );
     }
 
@@ -368,7 +400,7 @@ public class MainLayoutController {
         }
 
         lblTitle.setText(contract.name());
-        lblVerpaechterTxt.setText("Verpächter: " + contract.lessor());
+        lblVerpaechterTxt.setText(I18n.get("lessor.prefix") + contract.lessor());
         contractNameField.setText(contract.name());
         textField.setText(contract.lessor());
         lessorAddressField.setText(contract.lessorAddress());
@@ -414,7 +446,7 @@ public class MainLayoutController {
         try {
             courtComboBox.setItems(FXCollections.observableArrayList(new AmtsgerichtRepository().load()));
         } catch (IOException exception) {
-            throw new IllegalStateException("Die Amtsgericht-Liste konnte nicht geladen werden.", exception);
+            throw new IllegalStateException(I18n.get("court.load.error"), exception);
         }
     }
 
@@ -468,7 +500,7 @@ public class MainLayoutController {
 
     private void configureDatePicker(DatePicker picker, boolean annualDate) {
         picker.setEditable(false);
-        picker.setPromptText(annualDate ? "TT.MM." : "TT.MM.JJJJ");
+        picker.setPromptText(I18n.get(annualDate ? "date.prompt.annual" : "date.prompt"));
         picker.setConverter(new StringConverter<>() {
             @Override
             public String toString(LocalDate date) {
@@ -571,9 +603,46 @@ public class MainLayoutController {
     }
 
     private void updateLeaseEndDateVisibility(String duration) {
-        boolean fixedTerm = "Bestimmte Dauer".equals(duration);
+        boolean fixedTerm = DURATION_FIXED.equals(duration);
         leaseEndDateRow.setVisible(fixedTerm);
         leaseEndDateRow.setManaged(fixedTerm);
+    }
+
+    @FXML
+    private void switchToGerman() {
+        switchLanguage(Locale.GERMAN);
+    }
+
+    @FXML
+    private void switchToEnglish() {
+        switchLanguage(Locale.ENGLISH);
+    }
+
+    private void switchLanguage(Locale locale) {
+        if (locale.getLanguage().equals(I18n.locale().getLanguage())) {
+            return;
+        }
+        I18n.setLocale(locale);
+        try {
+            I18n.saveToConfig(I18n.defaultConfigPath());
+        } catch (IOException ignored) {
+            // The language still changes for this session if the config cannot be written.
+        }
+        Scene scene = contractList.getScene();
+        int selectedIndex = contractList.getSelectionModel().getSelectedIndex();
+        try {
+            FXMLLoader loader = new FXMLLoader(MainLayoutController.class.getResource("ContractView.fxml"),
+                    I18n.bundle());
+            Parent root = loader.load();
+            MainLayoutController controller = loader.getController();
+            controller.contractList.getSelectionModel().select(Math.max(selectedIndex, 0));
+            scene.setRoot(root);
+            if (scene.getWindow() instanceof Stage stage) {
+                stage.setTitle(I18n.get("app.title"));
+            }
+        } catch (IOException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
     @FXML
@@ -630,14 +699,14 @@ public class MainLayoutController {
             ScrollPane scrollPane = new ScrollPane(pages);
             scrollPane.setFitToWidth(true);
             Stage previewStage = new Stage();
-            previewStage.setTitle("Vertragsvorschau - " + get(contractNameField));
+            previewStage.setTitle(I18n.get("preview.title") + get(contractNameField));
             previewStage.initModality(Modality.WINDOW_MODAL);
             previewStage.initOwner(contractList.getScene().getWindow());
             previewStage.setScene(new Scene(scrollPane, 900.0, 850.0));
             previewStage.show();
         } catch (IOException exception) {
             new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Die Vertragsvorschau konnte nicht erstellt werden: " + exception.getMessage()).showAndWait();
+                    I18n.get("preview.error") + exception.getMessage()).showAndWait();
         }
     }
 

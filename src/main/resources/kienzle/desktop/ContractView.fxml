@@ -27,7 +27,7 @@
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </padding>
                <children>
-                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Pachtverträge" />
+                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="%contract.list" />
                   <ListView fx:id="contractList" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
@@ -42,45 +42,47 @@
                            <children>
                               <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="lblTitle" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Pachtvertrag" />
-                                    <Label fx:id="lblVerpaechterTxt" style="-fx-font-size: 14px;" text="Verpächter" />
+                                    <Label fx:id="lblTitle" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="%contract.title" />
+                                    <Label fx:id="lblVerpaechterTxt" style="-fx-font-size: 14px;" text="%lessor" />
                                  </children>
                               </VBox>
-                              <Button mnemonicParsing="false" onAction="#showPreview" text="Vorschau" />
+                              <Button fx:id="germanButton" mnemonicParsing="false" onAction="#switchToGerman" />
+                              <Button fx:id="englishButton" mnemonicParsing="false" onAction="#switchToEnglish" />
+                              <Button mnemonicParsing="false" onAction="#showPreview" text="%preview" />
                            </children>
                         </HBox>
 
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>
-                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Vertragsparteien und Grundstück" />
+                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="%section.parties" />
                               <GridPane hgap="12.0" vgap="8.0">
                                  <columnConstraints>
                                     <ColumnConstraints minWidth="190.0" />
                                     <ColumnConstraints hgrow="ALWAYS" />
                                  </columnConstraints>
                                  <children>
-                                    <Label text="Vertragsbezeichnung" GridPane.rowIndex="0" />
+                                    <Label text="%contract.name" GridPane.rowIndex="0" />
                                     <TextField fx:id="contractNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Verpächter / vollständiger Name" GridPane.rowIndex="1" />
+                                    <Label text="%lessor.name" GridPane.rowIndex="1" />
                                     <TextField fx:id="textField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Anschrift Verpächter" GridPane.rowIndex="2" />
+                                    <Label text="%lessor.address" GridPane.rowIndex="2" />
                                     <TextField fx:id="lessorAddressField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Pächter / vollständiger Name" GridPane.rowIndex="3" />
+                                    <Label text="%tenant.name" GridPane.rowIndex="3" />
                                     <TextField fx:id="tenantField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Anschrift Pächter" GridPane.rowIndex="4" />
+                                    <Label text="%tenant.address" GridPane.rowIndex="4" />
                                     <TextField fx:id="tenantAddressField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label text="Flurstück" GridPane.rowIndex="5" />
+                                    <Label text="%parcel" GridPane.rowIndex="5" />
                                     <TextField fx:id="parcelField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label text="Gemarkung" GridPane.rowIndex="6" />
+                                    <Label text="%district" GridPane.rowIndex="6" />
                                     <TextField fx:id="districtField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                    <Label text="Größe in m²" GridPane.rowIndex="7" />
+                                    <Label text="%size" GridPane.rowIndex="7" />
                                     <TextField fx:id="sizeField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <Label text="Wirtschaftsart / Nutzung" GridPane.rowIndex="8" />
+                                    <Label text="%land.use" GridPane.rowIndex="8" />
                                     <TextField fx:id="typeField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                    <Label text="Amtsgericht" GridPane.rowIndex="9" />
+                                    <Label text="%court" GridPane.rowIndex="9" />
                                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                        <children>
-                                          <ComboBox fx:id="courtComboBox" maxWidth="Infinity" promptText="Amtsgericht auswählen" />
+                                          <ComboBox fx:id="courtComboBox" maxWidth="Infinity" promptText="%court.prompt" />
                                           <Label fx:id="courtAddressLabel" style="-fx-text-fill: #555555; -fx-font-size: 11px;" wrapText="true" />
                                        </children>
                                     </VBox>
@@ -95,26 +97,26 @@
 
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>
-                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Laufzeit und Kündigung (§ 4)" />
+                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="%section.term" />
                               <GridPane hgap="12.0" vgap="8.0">
                                  <columnConstraints>
                                     <ColumnConstraints minWidth="190.0" />
                                     <ColumnConstraints hgrow="ALWAYS" />
                                  </columnConstraints>
                                  <children>
-                                    <Label text="Dauer" GridPane.rowIndex="0" />
+                                    <Label text="%duration" GridPane.rowIndex="0" />
                                     <ComboBox fx:id="durationField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Beginn des Pachtverhältnisses" GridPane.rowIndex="1" />
+                                    <Label text="%lease.start" GridPane.rowIndex="1" />
                                     <DatePicker fx:id="startDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <HBox fx:id="leaseEndDateRow" spacing="12.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                        <children>
-                                          <Label minWidth="190.0" text="Ende bei bestimmter Dauer" />
+                                          <Label minWidth="190.0" text="%lease.end.fixed" />
                                           <DatePicker fx:id="leaseEndDateField" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <Label text="Kündigungsfrist" GridPane.rowIndex="3" />
+                                    <Label text="%notice" GridPane.rowIndex="3" />
                                     <TextField fx:id="noticeField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Vertragstext § 4 (bearbeitbar)" GridPane.rowIndex="4" />
+                                    <Label text="%paragraph4" GridPane.rowIndex="4" />
                                     <TextArea fx:id="paragraphFourArea" prefRowCount="7" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                  </children>
                                  <rowConstraints>
@@ -126,16 +128,16 @@
 
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>
-                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Pachtzins und Zahlung" />
+                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="%section.rent" />
                               <GridPane hgap="12.0" vgap="8.0">
                                  <columnConstraints>
                                     <ColumnConstraints minWidth="190.0" />
                                     <ColumnConstraints hgrow="ALWAYS" />
                                  </columnConstraints>
                                  <children>
-                                    <Label text="Regulärer Pachtzins in Euro" GridPane.rowIndex="0" />
+                                    <Label text="%rent.regular.eur" GridPane.rowIndex="0" />
                                     <TextField fx:id="rentField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <CheckBox fx:id="hasIntroductoryRentCheckBox" text="Es gibt einen günstigeren Pachtzins" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                    <CheckBox fx:id="hasIntroductoryRentCheckBox" text="%rent.intro.checkbox" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                     <VBox fx:id="introductoryRentFields" spacing="8.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                        <children>
                                           <GridPane hgap="12.0" vgap="8.0">
@@ -144,15 +146,15 @@
                                                 <ColumnConstraints hgrow="ALWAYS" />
                                              </columnConstraints>
                                              <children>
-                                                <Label text="Günstiger Pachtzins in Euro" GridPane.rowIndex="0" />
+                                                <Label text="%rent.intro.eur" GridPane.rowIndex="0" />
                                                 <TextField fx:id="introRentField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                                <Label text="Günstiger Pachtzins von" GridPane.rowIndex="1" />
+                                                <Label text="%rent.intro.from" GridPane.rowIndex="1" />
                                                 <DatePicker fx:id="introductoryRentFromField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label text="Günstiger Pachtzins bis" GridPane.rowIndex="2" />
+                                                <Label text="%rent.intro.until" GridPane.rowIndex="2" />
                                                 <DatePicker fx:id="introductoryRentUntilField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label text="Günstiger Pachtzins in Worten" GridPane.rowIndex="3" />
+                                                <Label text="%rent.intro.words" GridPane.rowIndex="3" />
                                                 <TextField fx:id="introductoryRentWordsField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Label text="Regulärer Pachtzins ab" GridPane.rowIndex="4" />
+                                                <Label text="%rent.regular.from" GridPane.rowIndex="4" />
                                                 <DatePicker fx:id="rentIncreaseDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                              </children>
                                              <rowConstraints>
@@ -161,21 +163,21 @@
                                           </GridPane>
                                        </children>
                                     </VBox>
-                                    <Label text="Regulärer Pachtzins in Worten" GridPane.rowIndex="3" />
+                                    <Label text="%rent.regular.words" GridPane.rowIndex="3" />
                                     <TextField fx:id="rentWordsField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Pachtzins zahlbar: Intervall" GridPane.rowIndex="4" />
+                                    <Label text="%rent.interval" GridPane.rowIndex="4" />
                                     <TextField fx:id="rentDueIntervalField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label text="Fälligkeitstag / Zahlungszeitpunkt" GridPane.rowIndex="5" />
+                                    <Label text="%rent.due.day" GridPane.rowIndex="5" />
                                     <TextField fx:id="rentDueDayField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label text="Erste Zahlung am" GridPane.rowIndex="6" />
+                                    <Label text="%rent.first.payment" GridPane.rowIndex="6" />
                                     <DatePicker fx:id="firstRentDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                    <Label text="Zahlungsempfänger" GridPane.rowIndex="7" />
+                                    <Label text="%rent.recipient" GridPane.rowIndex="7" />
                                     <TextField fx:id="recipientField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <Label text="Geldinstitut" GridPane.rowIndex="8" />
+                                    <Label text="%bank" GridPane.rowIndex="8" />
                                     <TextField fx:id="bankField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                    <Label text="IBAN" GridPane.rowIndex="9" />
+                                    <Label text="%iban" GridPane.rowIndex="9" />
                                     <TextField fx:id="ibanField" promptText="DE00 0000 0000 0000 0000 00" style="-fx-font-family: monospace; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                                    <Label text="BIC" GridPane.rowIndex="10" />
+                                    <Label text="%bic" GridPane.rowIndex="10" />
                                     <TextField fx:id="bicField" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                  </children>
                                  <rowConstraints>
@@ -188,18 +190,18 @@
 
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>
-                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Sonstige Vereinbarungen" />
+                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="%section.other" />
                               <GridPane hgap="12.0" vgap="8.0">
                                  <columnConstraints>
                                     <ColumnConstraints minWidth="190.0" />
                                     <ColumnConstraints hgrow="ALWAYS" />
                                  </columnConstraints>
                                  <children>
-                                    <Label text="Ende des Gartenjahres" GridPane.rowIndex="0" />
+                                    <Label text="%gardening.year.end" GridPane.rowIndex="0" />
                                     <DatePicker fx:id="gardeningYearField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Vertragstext § 5 (bearbeitbar)" GridPane.rowIndex="1" />
+                                    <Label text="%paragraph5" GridPane.rowIndex="1" />
                                     <TextArea fx:id="paragraphFiveArea" prefRowCount="14" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Sonstige Vereinbarungen" GridPane.rowIndex="2" />
+                                    <Label text="%section.other" GridPane.rowIndex="2" />
                                     <TextArea fx:id="descriptionArea" prefRowCount="4" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                  </children>
                                  <rowConstraints>
@@ -211,20 +213,20 @@
 
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>
-                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ort, Datum und Unterschriften" />
+                              <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="%section.signatures" />
                               <GridPane hgap="12.0" vgap="8.0">
                                  <columnConstraints>
                                     <ColumnConstraints minWidth="190.0" />
                                     <ColumnConstraints hgrow="ALWAYS" />
                                  </columnConstraints>
                                  <children>
-                                    <Label text="Ort Verpächter" GridPane.rowIndex="0" />
+                                    <Label text="%lessor.place" GridPane.rowIndex="0" />
                                     <TextField fx:id="lessorLocationField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Datum Verpächter" GridPane.rowIndex="1" />
+                                    <Label text="%lessor.date" GridPane.rowIndex="1" />
                                     <DatePicker fx:id="lessorDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Ort Pächter" GridPane.rowIndex="2" />
+                                    <Label text="%tenant.place" GridPane.rowIndex="2" />
                                     <TextField fx:id="tenantLocationField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Datum Pächter" GridPane.rowIndex="3" />
+                                    <Label text="%tenant.date" GridPane.rowIndex="3" />
                                     <DatePicker fx:id="tenantDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                  </children>
                                  <rowConstraints><RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints /></rowConstraints>

@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,15 @@ public final class AmtsgerichtRepository {
     public List<Amtsgericht> load() throws IOException {
         try (InputStream stream = AmtsgerichtRepository.class.getResourceAsStream(RESOURCE)) {
             if (stream == null) {
-                throw new IOException("Die Amtsgericht-Liste " + RESOURCE + " wurde nicht gefunden.");
+                throw new IOException(message("court.error.notFound", RESOURCE));
             }
             JsonElement root = JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
             if (!root.isJsonArray()) {
-                throw new IOException("Die Amtsgericht-Liste muss ein JSON-Array sein.");
+                throw new IOException(message("court.error.notArray"));
             }
             return parseCourts(root.getAsJsonArray());
         } catch (IllegalStateException exception) {
-            throw new IOException("Die Amtsgericht-Liste enthält ungültige JSON-Daten.", exception);
+            throw new IOException(message("court.error.invalidJson"), exception);
         }
     }
 
@@ -35,7 +36,7 @@ public final class AmtsgerichtRepository {
         for (int index = 0; index < entries.size(); index++) {
             JsonElement entry = entries.get(index);
             if (!entry.isJsonObject()) {
-                throw new IOException("Eintrag " + (index + 1) + " muss ein JSON-Objekt sein.");
+                throw new IOException(message("court.error.notObject", index + 1));
             }
             JsonObject object = entry.getAsJsonObject();
             Amtsgericht court = new Amtsgericht(
@@ -49,18 +50,21 @@ public final class AmtsgerichtRepository {
             boolean hasStreetAddress = !court.strasse().isBlank();
             boolean hasPostfach = !court.postfach().isBlank();
             if (hasStreetAddress == hasPostfach) {
-                throw new IOException("Eintrag " + (index + 1)
-                        + " benötigt entweder Straße und Hausnummer oder ein Postfach.");
+                throw new IOException(message("court.error.address", index + 1));
             }
             courts.add(court);
         }
         return List.copyOf(courts);
     }
 
+    private static String message(String key, Object... arguments) {
+        return MessageFormat.format(I18n.get(key), arguments);
+    }
+
     private String required(JsonObject object, String key, int index) throws IOException {
         String value = optional(object, key);
         if (value.isBlank()) {
-            throw new IOException("Pflichtfeld '" + key + "' fehlt in Eintrag " + (index + 1) + ".");
+            throw new IOException(message("court.error.required", key, index + 1));
         }
         return value;
     }

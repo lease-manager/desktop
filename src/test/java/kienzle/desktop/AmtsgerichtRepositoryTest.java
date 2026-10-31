@@ -51,4 +51,21 @@ class AmtsgerichtRepositoryTest {
                 [{"name":"Amtsgericht Test","plz":"12345","ort":"Teststadt"}]
                 """).getAsJsonArray()));
     }
+
+    @Test
+    void parseCourts_shouldLocalizeErrorMessages() {
+        String json = "[{\"name\":\"Amtsgericht Test\",\"plz\":\"12345\",\"ort\":\"Teststadt\"}]";
+        try {
+            I18n.setLocale(java.util.Locale.ENGLISH);
+            IOException english = assertThrows(IOException.class,
+                    () -> repository.parseCourts(JsonParser.parseString(json).getAsJsonArray()));
+            assertEquals("Entry 1 requires either street and house number or a P.O. box.", english.getMessage());
+            I18n.setLocale(java.util.Locale.GERMAN);
+            IOException german = assertThrows(IOException.class,
+                    () -> repository.parseCourts(JsonParser.parseString(json).getAsJsonArray()));
+            assertEquals("Eintrag 1 benötigt entweder Straße und Hausnummer oder ein Postfach.", german.getMessage());
+        } finally {
+            I18n.setLocale(java.util.Locale.GERMAN);
+        }
+    }
 }
