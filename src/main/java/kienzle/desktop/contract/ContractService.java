@@ -6,7 +6,7 @@ import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
-/** Workflow rules: DRAFT → PDF_CREATED → AWAITING_SIGNATURE → SIGNED. */
+/** Workflow rules: DRAFT → PDF_CREATED → AWAITING_SIGNATURE → SIGNED; AWAITING_SIGNATURE can be revoked. */
 public class ContractService {
     private final ContractRepository repository;
     private final Clock clock;
@@ -53,6 +53,12 @@ public class ContractService {
         ContractEntry entry = get(id);
         requireStatus(entry, ContractStatus.PDF_CREATED);
         return store(entry.withStatus(ContractStatus.AWAITING_SIGNATURE, clock.instant()));
+    }
+
+    public ContractEntry revokeAwaitingSignature(UUID id) {
+        ContractEntry entry = get(id);
+        requireStatus(entry, ContractStatus.AWAITING_SIGNATURE);
+        return store(entry.withStatus(ContractStatus.PDF_CREATED, clock.instant()));
     }
 
     public ContractEntry attachSigned(UUID id, SignatureSource source, String relativePath, String sha256,

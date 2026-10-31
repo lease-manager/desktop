@@ -3,6 +3,24 @@
 Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
 Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
+## 2026-10-31 – Unterschrift zurücknehmen, PDF drucken, Linux-Fixes
+
+- „Zur Unterschrift gegeben“ ist umkehrbar: `ContractService.revokeAwaitingSignature` setzt
+  `AWAITING_SIGNATURE` zurück auf `PDF_CREATED` (nur aus diesem Status; `SIGNED` bleibt gesperrt).
+  Durchgereicht über `ContractLifecycleUseCase`, `ContractWorkflow`, `ContractUiActions`; neuer Button
+  „Unterschrift zurücknehmen“ (DE/EN). Test in `ContractServiceTest`.
+- PDF drucken: neuer Button; `PdfPrinter` zeigt den JavaFX-`PrinterJob`-Druckdialog (betriebssystemunabhängig),
+  rendert die Seiten per PDFBox (200 dpi) und druckt sie als Bild. Abbruch im Dialog ist ein No-Op,
+  fehlender Drucker/Fehlschlag liefert lokalisierte Fehlermeldung. Dieselbe Pfadprüfung wie bei „PDF öffnen“.
+- „PDF öffnen“: unter Linux `xdg-open`, unter macOS `open`, sonst Fallback `Desktop.open`.
+- FXML-Namespace-Version auf `17.0.17` vereinheitlicht (behebt die Warnung „FXML 23.0.1 vs. Runtime 17.0.17“).
+- Bekannt/harmlos: Unter Linux erscheint `Gdk-WARNING XSetErrorHandler() called with a GDK error trap pushed`
+  (AWT und JavaFX/GTK im selben Prozess). `java.awt.headless=true` ist **keine** Lösung: Es verhindert den
+  Druckdialog und wurde wieder entfernt.
+- Nicht umgesetzt: Übertragung aufs Smartphone (Roadmap Schritt 5/7); bisher nur manueller
+  `.leasepack`-Export/Import.
+- Druckdialog und Druckausgabe sind nicht automatisiert getestet (benötigen Drucker/Display).
+
 ## 2026-10-31 – UI-State-Refactoring + Testabdeckung erhöht
 
 - Nachlaufendes Stabilitäts-Refactoring im Listen-State:
@@ -115,7 +133,7 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 - **Schritt 3 – Scan-Import (Pfad B):** PDF/Bild importieren, QR via `QrCodes.decode` erkennen,
   automatisch zuordnen, sonst manuell aus offenen Verträgen wählen; unverändert speichern,
   Hash notieren, `ContractService.attachSigned(..., SCAN, ...)`.
-- Drucken-Funktion (Pfad B Schritt 1).
+- Drucken-Funktion (Pfad B Schritt 1): als JavaFX-Druckdialog umgesetzt, siehe oben; Praxistest steht aus.
 - Schritt 4: `.leasepack`-Export/Import (Schema in `shared/`), dann Mobile-Apps.
 - Sprachwechsel lädt die Ansicht neu → ungespeicherte Eingaben gehen verloren.
 - Bekannt: Der Startordner `~/.lease-manager` wird beim ersten Start angelegt; Liste ist anfangs leer.

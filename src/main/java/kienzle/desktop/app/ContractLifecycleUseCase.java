@@ -37,4 +37,8 @@ public final class ContractLifecycleUseCase {
     public ContractEntry markAwaitingSignature(ContractEntry entry) {
         return contracts.markAwaitingSignature(entry.id());
     }
+
+    public ContractEntry revokeAwaitingSignature(ContractEntry entry) {
+        return contracts.revokeAwaitingSignature(entry.id());
+    }
 }

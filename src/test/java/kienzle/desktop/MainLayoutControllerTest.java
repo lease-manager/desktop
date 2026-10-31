@@ -125,6 +125,8 @@ class MainLayoutControllerTest {
         setField(controller, "createPdfButton", new Button());
         setField(controller, "openPdfButton", new Button());
         setField(controller, "awaitingButton", new Button());
+        setField(controller, "revokeAwaitingButton", new Button());
+        setField(controller, "printPdfButton", new Button());
         setField(controller, "germanButton", new Button());
         setField(controller, "englishButton", new Button());
         setField(controller, "lblTitle", new Label());

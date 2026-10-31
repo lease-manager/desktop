@@ -34,4 +34,8 @@ public final class ContractUiActions {
     public ContractEntry markAwaitingSignature(ContractEntry current) {
         return workflow.markAwaitingSignature(current);
     }
+
+    public ContractEntry revokeAwaitingSignature(ContractEntry current) {
+        return workflow.revokeAwaitingSignature(current);
+    }
 }

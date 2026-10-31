@@ -56,6 +56,10 @@ public class ContractWorkflow {
         return lifecycle.markAwaitingSignature(entry);
     }
 
+    public ContractEntry revokeAwaitingSignature(ContractEntry entry) {
+        return lifecycle.revokeAwaitingSignature(entry);
+    }
+
     public ContractPackageService.ContractPackage exportPackage(ContractEntry entry, Path targetFile) throws IOException {
         return packages.exportPackage(entry, targetFile);
     }

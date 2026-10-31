@@ -55,6 +55,12 @@ public class MainLayoutController {
     private Button awaitingButton;
 
     @FXML
+    private Button revokeAwaitingButton;
+
+    @FXML
+    private Button printPdfButton;
+
+    @FXML
     private Button germanButton;
 
     @FXML
@@ -246,21 +252,48 @@ public class MainLayoutController {
     }
 
     private void openSelectedPdf() {
+        openDocument(allowedCurrentPdf());
+    }
+
+    private Path allowedCurrentPdf() {
         Path pdf = uiActions.originalPdf(listState.currentEntry())
                 .orElseThrow(() -> new IllegalStateException(I18n.get("pdf.missing")));
-        Path allowedPdf = validateAllowedDocumentPath(pdf);
-        openDocument(allowedPdf);
+        return validateAllowedDocumentPath(pdf);
+    }
+
+    @FXML
+    private void printPdf() {
+        if (!listState.hasCurrentEntry()) {
+            return;
+        }
+        runOnCurrent(() -> new PdfPrinter().print(allowedCurrentPdf(), contractList.getScene().getWindow()));
     }
 
     private void openDocument(Path documentPath) {
-        if (!java.awt.Desktop.isDesktopSupported()) {
-            throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
-        }
         try {
+            if (tryOpenWithPlatformLauncher(documentPath)) {
+                return;
+            }
+            if (!java.awt.Desktop.isDesktopSupported()) {
+                throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
+            }
             java.awt.Desktop.getDesktop().open(documentPath.toFile());
         } catch (IOException e) {
             throw new IllegalStateException(I18n.get("pdf.missing"), e);
         }
+    }
+
+    private boolean tryOpenWithPlatformLauncher(Path documentPath) throws IOException {
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        if (osName.contains("linux")) {
+            new ProcessBuilder("xdg-open", documentPath.toString()).start();
+            return true;
+        }
+        if (osName.contains("mac")) {
+            new ProcessBuilder("open", documentPath.toString()).start();
+            return true;
+        }
+        return false;
     }
 
     private Path validateAllowedDocumentPath(Path documentPath) {
@@ -287,6 +320,13 @@ public class MainLayoutController {
     private void markAwaitingSignature() {
         if (listState.hasCurrentEntry()) {
             runOnCurrent(() -> show(uiActions.markAwaitingSignature(listState.currentEntry())));
+        }
+    }
+
+    @FXML
+    private void revokeAwaitingSignature() {
+        if (listState.hasCurrentEntry()) {
+            runOnCurrent(() -> show(uiActions.revokeAwaitingSignature(listState.currentEntry())));
         }
     }
 
@@ -334,7 +374,9 @@ public class MainLayoutController {
         saveButton.setDisable(isLockedForEditing(status) || contractFormController.hasValidationErrors());
         createPdfButton.setDisable(!canCreatePdf(status));
         openPdfButton.setDisable(!canOpenPdf(status));
+        printPdfButton.setDisable(!canOpenPdf(status));
         awaitingButton.setDisable(!isAwaitingSignatureEligible(status));
+        revokeAwaitingButton.setDisable(status != ContractStatus.AWAITING_SIGNATURE);
         deleteButton.setDisable(currentEntry == null);
         statusLabel.setText(currentEntry == null
                 ? I18n.get("status.new") : ContractStatusText.describe(currentEntry));

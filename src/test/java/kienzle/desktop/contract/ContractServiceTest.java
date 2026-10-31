@@ -59,6 +59,22 @@ class ContractServiceTest {
     }
 
     @Test
+    void revokeAwaitingSignature_returnsToPdfCreatedOnlyFromAwaiting() {
+        var service = new ContractService(new JsonContractRepository(dir));
+        var entry = service.create(sample());
+        assertThrows(IllegalStateException.class, () -> service.revokeAwaitingSignature(entry.id()));
+        service.registerOriginalPdf(entry.id(), "p", "h");
+        service.markAwaitingSignature(entry.id());
+
+        assertEquals(ContractStatus.PDF_CREATED, service.revokeAwaitingSignature(entry.id()).status());
+        assertEquals(ContractStatus.PDF_CREATED, service.list().get(0).status());
+
+        service.markAwaitingSignature(entry.id());
+        service.attachSigned(entry.id(), SignatureSource.SCAN, "p2", "h2", null, null);
+        assertThrows(IllegalStateException.class, () -> service.revokeAwaitingSignature(entry.id()));
+    }
+
+    @Test
     void invalidTransitions_areRejected() {
         var service = new ContractService(new JsonContractRepository(dir));
         var entry = service.create(sample());

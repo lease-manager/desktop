@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="14.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.ContractFormController">
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/17.0.17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.ContractFormController">
    <children>
                         <VBox spacing="8.0" style="-fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;">
                            <children>

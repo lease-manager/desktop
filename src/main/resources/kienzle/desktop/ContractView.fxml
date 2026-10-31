@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.MainLayoutController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kienzle.desktop.MainLayoutController">
    <children>
       <SplitPane dividerPositions="0.28" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -63,7 +63,9 @@
                               <Button mnemonicParsing="false" onAction="#showPreview" text="%preview" />
                               <Button fx:id="createPdfButton" mnemonicParsing="false" onAction="#createPdf" text="%pdf.create" />
                               <Button fx:id="openPdfButton" mnemonicParsing="false" onAction="#openPdf" text="%pdf.open" />
+                              <Button fx:id="printPdfButton" mnemonicParsing="false" onAction="#printPdf" text="%pdf.print" />
                               <Button fx:id="awaitingButton" mnemonicParsing="false" onAction="#markAwaitingSignature" text="%pdf.awaiting" />
+                              <Button fx:id="revokeAwaitingButton" mnemonicParsing="false" onAction="#revokeAwaitingSignature" text="%pdf.awaiting.revoke" />
                            </children>
                         </HBox>
 
