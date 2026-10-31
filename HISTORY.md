@@ -26,6 +26,13 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
   beim Speichern abgelehnt.
 - IBAN-Fehler jetzt zusätzlich als roter Inline-Hinweis direkt unter dem Feld; Speichern ist bei ungültiger
   IBAN deaktiviert.
+- `ContractFormController` bietet jetzt `hasValidationErrors()` und Callback-Hook
+  `setOnValidationChanged(...)`, damit der übergeordnete Controller den Speichern-Button reaktiv
+  steuern kann, ohne Formularlogik zu duplizieren.
+- IBAN-Validierung bleibt zweistufig: Inline-Feedback während der Eingabe **und** harte Prüfung beim
+  finalen Lesen/Speichern (`read()`), damit auch programmatisch gesetzte Werte nicht ungeprüft bleiben.
+- JavaFX-Tests erweitert: ungültige IBAN erzeugt weiterhin `IllegalArgumentException` mit lokalisierter
+  Meldung; gültige IBAN setzt keinen Validierungsfehlerstatus.
 - Tests sichern Archivierung mit Dokumentverweisen und den Erhalt älterer PDF-Versionen ab.
 
 ## 2026-10-31 – Schritt 2: PDF mit QR-Code/Hash + Aufräumen
