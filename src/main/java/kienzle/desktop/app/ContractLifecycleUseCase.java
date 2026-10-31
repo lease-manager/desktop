@@ -26,6 +26,10 @@ public final class ContractLifecycleUseCase {
         return current == null ? contracts.create(contract) : contracts.update(current.id(), contract);
     }
 
+    public void delete(ContractEntry entry) {
+        contracts.delete(entry.id());
+    }
+
     public void archive(ContractEntry entry) {
         contracts.archive(entry.id());
     }

@@ -49,6 +49,9 @@ public class MainLayoutController {
     private Button saveButton;
 
     @FXML
+    private Button archiveButton;
+
+    @FXML
     private Button deleteButton;
 
     @FXML
@@ -190,6 +193,21 @@ public class MainLayoutController {
         uiActions.archive(listState.currentEntry());
         listState.removeCurrentEntry();
         startNewContract();
+    }
+
+    @FXML
+    private void deleteContract() {
+        if (!listState.hasCurrentEntry()) {
+            return;
+        }
+        if (!feedback.confirm(I18n.get("contract.delete.confirm"))) {
+            return;
+        }
+        runOnCurrent(() -> {
+            uiActions.delete(listState.currentEntry());
+            listState.removeCurrentEntry();
+            startNewContract();
+        });
     }
 
     @FXML
@@ -460,7 +478,8 @@ public class MainLayoutController {
         printPdfButton.setDisable(!canOpenPdf(status));
         awaitingButton.setDisable(!isAwaitingSignatureEligible(status));
         revokeAwaitingButton.setDisable(status != ContractStatus.AWAITING_SIGNATURE);
-        deleteButton.setDisable(currentEntry == null);
+        archiveButton.setDisable(currentEntry == null);
+        deleteButton.setDisable(currentEntry == null || status == ContractStatus.SIGNED);
         statusLabel.setText(currentEntry == null
                 ? I18n.get("status.new") : ContractStatusText.describe(currentEntry));
     }

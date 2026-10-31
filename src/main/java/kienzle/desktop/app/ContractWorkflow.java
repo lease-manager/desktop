@@ -41,6 +41,10 @@ public class ContractWorkflow {
         return lifecycle.save(current, contract);
     }
 
+    public void delete(ContractEntry entry) {
+        lifecycle.delete(entry);
+    }
+
     public void archive(ContractEntry entry) {
         lifecycle.archive(entry);
     }

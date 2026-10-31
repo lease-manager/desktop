@@ -3,6 +3,14 @@
 Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
 Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
+## 2026-10-31 – Verträge endgültig löschen
+
+- Neuer Button „Löschen“ (neben „Archivieren“): entfernt einen falsch angelegten Vertrag samt Dokumenten
+  endgültig (mit Sicherheitsabfrage). Nur für Verträge, die noch nicht unterschrieben sind; unterschriebene
+  Verträge lassen sich weiterhin nur archivieren (Button deaktiviert, `ContractService.delete` lehnt ab).
+- `ContractRepository.delete` (Datensatz + `documents/<id>/`), durchgereicht über Lifecycle/Workflow/UiActions.
+- Tests in `ContractServiceTest`.
+
 ## 2026-10-31 – Hash-Abgleich beim Scan-Import
 
 - Der Hash im QR-Code des Scans wird mit dem im Original-PDF eingebetteten Hash (`LeaseContentHash`)

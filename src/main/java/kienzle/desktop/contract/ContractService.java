@@ -72,6 +72,13 @@ public class ContractService {
                 .withStatus(ContractStatus.SIGNED, now));
     }
 
+    /** Deletes a contract for good; signed contracts must be archived instead. */
+    public void delete(UUID id) {
+        ContractEntry entry = get(id);
+        requireStatus(entry, ContractStatus.DRAFT, ContractStatus.PDF_CREATED, ContractStatus.AWAITING_SIGNATURE);
+        repository.delete(id);
+    }
+
     public void archive(UUID id) {
         repository.archive(get(id));
     }

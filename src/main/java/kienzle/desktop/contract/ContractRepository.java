@@ -16,4 +16,7 @@ public interface ContractRepository {
     void archive(ContractEntry entry);
 
     ContractEntry restore(UUID id);
+
+    /** Permanently removes the contract record and its documents. */
+    void delete(UUID id);
 }

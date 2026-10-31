@@ -122,6 +122,7 @@ class MainLayoutControllerTest {
         setField(controller, "statusLabel", new Label());
         setField(controller, "saveButton", new Button());
         setField(controller, "deleteButton", new Button());
+        setField(controller, "archiveButton", new Button());
         setField(controller, "createPdfButton", new Button());
         setField(controller, "openPdfButton", new Button());
         setField(controller, "awaitingButton", new Button());

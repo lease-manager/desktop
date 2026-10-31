@@ -22,6 +22,10 @@ public final class ContractUiActions {
         return workflow.save(current, contract);
     }
 
+    public void delete(ContractEntry current) {
+        workflow.delete(current);
+    }
+
     public void archive(ContractEntry current) {
         workflow.archive(current);
     }

@@ -86,6 +86,35 @@ class ContractServiceTest {
     }
 
     @Test
+    void delete_removesContractRecordAndDocumentsForGood() throws Exception {
+        var service = new ContractService(new JsonContractRepository(dir));
+        var entry = service.create(sample());
+        Path document = dir.resolve("documents").resolve(entry.id().toString()).resolve("original.pdf");
+        Files.createDirectories(document.getParent());
+        Files.writeString(document, "pdf");
+        service.registerOriginalPdf(entry.id(), dir.relativize(document).toString(), "abc");
+
+        service.delete(entry.id());
+
+        assertTrue(service.list().isEmpty());
+        assertTrue(service.listArchived().isEmpty());
+        assertFalse(Files.exists(document.getParent()));
+        assertFalse(Files.exists(dir.resolve("contracts").resolve(entry.id() + ".json")));
+    }
+
+    @Test
+    void delete_isRejectedForSignedContracts() {
+        var service = new ContractService(new JsonContractRepository(dir));
+        var entry = service.create(sample());
+        service.registerOriginalPdf(entry.id(), "documents/x/original.pdf", "abc");
+        service.markAwaitingSignature(entry.id());
+        service.attachSigned(entry.id(), SignatureSource.SCAN, "documents/x/scan.pdf", "def", null, null);
+
+        assertThrows(IllegalStateException.class, () -> service.delete(entry.id()));
+        assertEquals(1, service.list().size());
+    }
+
+    @Test
     void archive_removesContractFromActiveListAndPreservesRecordAndDocuments() throws Exception {
         var repository = new JsonContractRepository(dir);
         var service = new ContractService(repository);

@@ -26,6 +26,7 @@ import java.util.function.Function;
 /** Stores active contracts under {@code contracts/} and archives records with their documents. */
 public class JsonContractRepository implements ContractRepository {
 
+    private final Path root;
     private final DocumentRelocator documents;
     private final Path contractsDir;
     private final Path archivedContractsDir;
@@ -37,7 +38,7 @@ public class JsonContractRepository implements ContractRepository {
             .create();
 
     public JsonContractRepository(Path dataDir) {
-        Path root = dataDir.toAbsolutePath().normalize();
+        this.root = dataDir.toAbsolutePath().normalize();
         this.documents = new DocumentRelocator(root);
         this.contractsDir = root.resolve("contracts");
         this.archivedContractsDir = root.resolve("archive").resolve("contracts");
@@ -105,6 +106,23 @@ public class JsonContractRepository implements ContractRepository {
     public ContractEntry restore(UUID id) {
         ContractEntry archived = read(archivedFileFor(id));
         return relocate(archived, DocumentRelocator.Direction.RESTORE, archivedFileFor(id), fileFor(id));
+    }
+
+    @Override
+    public void delete(UUID id) {
+        Path folder = root.resolve("documents").resolve(id.toString());
+        try {
+            if (Files.exists(folder)) {
+                try (var paths = Files.walk(folder)) {
+                    for (Path path : paths.sorted(java.util.Comparator.reverseOrder()).toList()) {
+                        Files.delete(path);
+                    }
+                }
+            }
+            Files.deleteIfExists(fileFor(id));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     /** Moves the documents and the record from one store to the other; either everything moves or nothing. */
