@@ -1,8 +1,6 @@
 package kienzle.desktop;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -22,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
@@ -69,9 +68,7 @@ public class MainLayoutController {
     @FXML
     private Label lblVerpaechterTxt;
 
-    private final ObservableList<ContractEntry> entries = FXCollections.observableArrayList();
-    private final FilteredList<ContractEntry> visibleEntries = new FilteredList<>(entries);
-    private final ContractScreenCoordinator screenCoordinator = new ContractScreenCoordinator(entries, visibleEntries);
+    private final ContractListState listState = new ContractListState();
     @FXML
     private ContractFormController contractFormController;
 
@@ -95,7 +92,7 @@ public class MainLayoutController {
         germanButton.setTooltip(new Tooltip(I18n.get("language.de")));
         englishButton.setGraphic(FlagIcons.unitedKingdom());
         englishButton.setTooltip(new Tooltip(I18n.get("language.en")));
-        entries.setAll(workflow.list());
+        listState.setAll(workflow.list());
         statusFilter.setItems(FXCollections.observableArrayList(StatusFilter.values()));
         statusFilter.setConverter(new StringConverter<>() {
             @Override
@@ -111,7 +108,7 @@ public class MainLayoutController {
         statusFilter.valueProperty().addListener((obs, oldValue, filter) -> applyFilter(filter));
         statusFilter.setValue(StatusFilter.ALL);
 
-        contractList.setItems(visibleEntries);
+        contractList.setItems(listState.visibleEntries());
         contractList.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(ContractEntry entry, boolean empty) {
@@ -125,7 +122,7 @@ public class MainLayoutController {
             }
         });
 
-        if (entries.isEmpty()) {
+        if (listState.isEmpty()) {
             startNewContract();
         } else {
             contractList.getSelectionModel().selectFirst();
@@ -133,13 +130,13 @@ public class MainLayoutController {
     }
 
     private void applyFilter(StatusFilter filter) {
-        screenCoordinator.applyFilter(filter);
+        listState.applyFilter(filter);
     }
 
     @FXML
     private void startNewContract() {
         contractList.getSelectionModel().clearSelection();
-        screenCoordinator.setCurrentEntry(null);
+        listState.clearCurrentEntry();
         showContract(ContractDefaults.newContract());
         updateEntryControls();
     }
@@ -152,7 +149,7 @@ public class MainLayoutController {
         }
         try {
             LeaseContract contract = contractFormController.read();
-            show(uiActions.save(screenCoordinator.currentEntry(), contract));
+            show(uiActions.save(listState.currentEntry(), contract));
         } catch (IllegalArgumentException | IllegalStateException exception) {
             feedback.showError(exception.getMessage());
         }
@@ -160,34 +157,44 @@ public class MainLayoutController {
 
     @FXML
     private void archiveContract() {
-        if (screenCoordinator.currentEntry() == null) {
+        if (!listState.hasCurrentEntry()) {
             return;
         }
         if (!feedback.confirm(I18n.get("contract.archive.confirm"))) {
             return;
         }
-        uiActions.archive(screenCoordinator.currentEntry());
-        entries.removeIf(entry -> entry.id().equals(screenCoordinator.currentEntry().id()));
+        uiActions.archive(listState.currentEntry());
+        listState.removeCurrentEntry();
         startNewContract();
     }
 
     @FXML
     private void showArchive() {
-        new ArchiveDialog(workflow, (Stage) contractList.getScene().getWindow(), entries::add).showAndWait();
+        new ArchiveDialog(workflow, (Stage) contractList.getScene().getWindow(), this::handleRestoredArchivedEntry)
+                .showAndWait();
+    }
+
+    private void handleRestoredArchivedEntry(ContractEntry restored) {
+        replaceEntry(restored);
+        if (listState.isFilteredOut(restored)) {
+            statusFilter.setValue(StatusFilter.ALL);
+        }
+        listState.ensureVisible(contractList, restored);
+        show(restored);
     }
 
     @FXML
     private void exportContractPackage() {
-        if (screenCoordinator.currentEntry() == null) {
+        if (!listState.hasCurrentEntry()) {
             return;
         }
         FileChooser chooser = packageFlow.createChooser(I18n.get("package.export.title"),
-                screenCoordinator.currentEntry().contract().name().isBlank() ? "contract.leasepack" : screenCoordinator.currentEntry().contract().name() + ".leasepack");
+                listState.currentEntry().contract().name().isBlank() ? "contract.leasepack" : listState.currentEntry().contract().name() + ".leasepack");
         java.io.File file = chooser.showSaveDialog(contractList.getScene().getWindow());
         if (file == null) {
             return;
         }
-        runOnCurrent(() -> packageFlow.exportPackage(screenCoordinator.currentEntry(), file.toPath()));
+        runOnCurrent(() -> packageFlow.exportPackage(listState.currentEntry(), file.toPath()));
     }
 
     @FXML
@@ -205,34 +212,65 @@ public class MainLayoutController {
 
     private void importSelectedPackage(Path path) throws IOException {
         ContractEntry imported = packageFlow.importPackage(path);
-        entries.add(imported);
+        listState.addEntry(imported);
         show(imported);
     }
 
     @FXML
     private void createPdf() {
-        runOnCurrent(() -> show(uiActions.createPdf(screenCoordinator.currentEntry(), contractFormController.read())));
+        runOnCurrent(() -> show(uiActions.createPdf(listState.currentEntry(), contractFormController.read())));
     }
 
     @FXML
     private void openPdf() {
-        if (screenCoordinator.currentEntry() == null) {
+        if (!listState.hasCurrentEntry()) {
             return;
         }
-        runOnCurrent(() -> {
-            java.nio.file.Path pdf = uiActions.originalPdf(screenCoordinator.currentEntry())
-                    .orElseThrow(() -> new IllegalStateException(I18n.get("pdf.missing")));
-            if (!java.awt.Desktop.isDesktopSupported()) {
-                throw new IllegalStateException(I18n.get("pdf.open.unsupported") + pdf);
+        runOnCurrent(() -> openSelectedPdf());
+    }
+
+    private void openSelectedPdf() {
+        Path pdf = uiActions.originalPdf(listState.currentEntry())
+                .orElseThrow(() -> new IllegalStateException(I18n.get("pdf.missing")));
+        Path allowedPdf = validateAllowedDocumentPath(pdf);
+        openDocument(allowedPdf);
+    }
+
+    private void openDocument(Path documentPath) {
+        if (!java.awt.Desktop.isDesktopSupported()) {
+            throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
+        }
+        try {
+            java.awt.Desktop.getDesktop().open(documentPath.toFile());
+        } catch (IOException e) {
+            throw new IllegalStateException(I18n.get("pdf.missing"), e);
+        }
+    }
+
+    private Path validateAllowedDocumentPath(Path documentPath) {
+        Path root = context.dataDir().toAbsolutePath().normalize();
+        Path resolved = documentPath.toAbsolutePath().normalize();
+        if (!resolved.startsWith(root)) {
+            throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
+        }
+        try {
+            Path realPath = resolved.toRealPath(java.nio.file.LinkOption.NOFOLLOW_LINKS);
+            if (!Files.isRegularFile(realPath, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+                throw new IllegalStateException(I18n.get("pdf.missing"));
             }
-            java.awt.Desktop.getDesktop().open(pdf.toFile());
-        });
+            if (!realPath.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                throw new IllegalStateException(I18n.get("pdf.open.unsupported") + documentPath);
+            }
+            return realPath;
+        } catch (IOException e) {
+            throw new IllegalStateException(I18n.get("pdf.missing"), e);
+        }
     }
 
     @FXML
     private void markAwaitingSignature() {
-        if (screenCoordinator.currentEntry() != null) {
-            runOnCurrent(() -> show(uiActions.markAwaitingSignature(screenCoordinator.currentEntry())));
+        if (listState.hasCurrentEntry()) {
+            runOnCurrent(() -> show(uiActions.markAwaitingSignature(listState.currentEntry())));
         }
     }
 
@@ -255,11 +293,11 @@ public class MainLayoutController {
     }
 
     private void replaceEntry(ContractEntry saved) {
-        screenCoordinator.replaceEntry(saved);
+        listState.replaceEntry(saved);
     }
 
     private void selectEntry(ContractEntry entry) {
-        screenCoordinator.setCurrentEntry(entry);
+        listState.setCurrentEntry(entry);
         if (entry == null) {
             return;
         }
@@ -274,7 +312,7 @@ public class MainLayoutController {
     }
 
     private void updateEntryControls() {
-        ContractEntry currentEntry = screenCoordinator.currentEntry();
+        ContractEntry currentEntry = listState.currentEntry();
         ContractStatus status = currentEntry == null ? null : currentEntry.status();
         saveButton.setDisable((status != null && status != ContractStatus.DRAFT)
                 || contractFormController.hasValidationErrors());

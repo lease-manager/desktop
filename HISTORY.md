@@ -3,6 +3,24 @@
 Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
 Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
+## 2026-10-31 – UI-State-Refactoring + Testabdeckung erhöht
+
+- `MainLayoutController` weiter entschlackt: Listen-/Filter-/Selection-State in neue Klasse
+  `ContractListState` ausgelagert.
+- `ContractScreenCoordinator` entfernt; doppelte Zustandslogik bereinigt.
+- Restore-Flow aus dem Archiv stabilisiert:
+  - Wiederhergestellten Vertrag sofort im Hauptscreen sichtbar/ausgewählt.
+  - Bei aktivem Filter, der den Vertrag ausblendet, wird konsistent auf `ALL` gewechselt.
+- Zusätzliche Tests:
+  - `ContractListStateTest` (Filter-, Sichtbarkeits-, Remove-/Selection-Fälle).
+  - `ArchiveDialogTest` (Archivliste laden, Restore ohne Selektion als No-Op).
+  - `MainLayoutControllerTest` (Restore setzt Filter zurück und selektiert Eintrag).
+- Coverage verbessert (JaCoCo):
+  - Gesamt: Instruktionen **77% → 80%**, Branches **54% → 58%**.
+  - `ArchiveDialog`: **0% → 74%**.
+  - `MainLayoutController`: **27% → 38%**.
+  - `ContractListState`: **31% → 67%**.
+
 ## 2026-10-31 – Vertragsarchiv und PDF-Versionen
 
 - Archivieren verschiebt den Vertragsdatensatz nach `archive/contracts/<uuid>.json` und seine Dokumente

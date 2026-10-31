@@ -51,6 +51,7 @@ final class ArchiveDialog {
 
     private void refreshEntries() {
         list.setItems(FXCollections.observableArrayList(archivedEntries()));
+        list.getSelectionModel().clearSelection();
     }
 
     private List<ContractEntry> archivedEntries() {
@@ -59,10 +60,17 @@ final class ArchiveDialog {
                 .toList();
     }
 
+    private static String entrySummary(ContractEntry entry) {
+        return entry.contract().name() + "\n" + ContractStatusText.describe(entry);
+    }
+
     private VBox createContent() {
         configureList();
         configureActions();
+        return createArchivePanel();
+    }
 
+    private VBox createArchivePanel() {
         VBox content = new VBox(10.0,
                 new Label(I18n.get("contract.archive.description")),
                 list,
@@ -74,22 +82,28 @@ final class ArchiveDialog {
 
     private void configureList() {
         list.setPlaceholder(new Label(I18n.get("contract.archive.empty")));
-        list.setCellFactory(listView -> new ListCell<>() {
-            @Override
-            protected void updateItem(ContractEntry entry, boolean empty) {
-                super.updateItem(entry, empty);
-                if (empty || entry == null) {
-                    setText(null);
-                    return;
-                }
-                setText(entry.contract().name() + "\n" + ContractStatusText.describe(entry));
-            }
-        });
+        list.setCellFactory(listView -> new ArchiveListCell());
+        bindRestoreButton();
+    }
+
+    private void bindRestoreButton() {
         restoreButton.disableProperty().bind(list.getSelectionModel().selectedItemProperty().isNull());
     }
 
     private void configureActions() {
         restoreButton.setOnAction(event -> restoreSelected());
+    }
+
+    private final class ArchiveListCell extends ListCell<ContractEntry> {
+        @Override
+        protected void updateItem(ContractEntry entry, boolean empty) {
+            super.updateItem(entry, empty);
+            if (empty || entry == null) {
+                setText(null);
+                return;
+            }
+            setText(entrySummary(entry));
+        }
     }
 
     private Button closeButton() {
@@ -99,19 +113,39 @@ final class ArchiveDialog {
     }
 
     private void restoreSelected() {
-        ContractEntry selected = list.getSelectionModel().getSelectedItem();
+        ContractEntry selected = selectedEntry();
         if (selected == null) {
             return;
         }
-        if (!feedback.confirm(I18n.get("contract.archive.restore.confirm"))) {
+        restoreEntry(selected);
+    }
+
+    private ContractEntry selectedEntry() {
+        return list.getSelectionModel().getSelectedItem();
+    }
+
+    private void restoreEntry(ContractEntry selected) {
+        if (!confirmRestore()) {
             return;
         }
         try {
             ContractEntry restored = workflow.restore(selected);
             onRestored.accept(restored);
-            stage.close();
+            close();
         } catch (RuntimeException exception) {
-            feedback.showError(exception.getMessage());
+            reportRestoreFailure(exception);
         }
+    }
+
+    private boolean confirmRestore() {
+        return feedback.confirm(I18n.get("contract.archive.restore.confirm"));
+    }
+
+    private void reportRestoreFailure(RuntimeException exception) {
+        feedback.showError(exception.getMessage());
+    }
+
+    private void close() {
+        stage.close();
     }
 }

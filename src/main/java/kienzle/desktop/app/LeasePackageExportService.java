@@ -43,11 +43,21 @@ public class LeasePackageExportService {
                 Instant.now(),
                 sha256,
                 entry.contract().name(),
-                LeasePackageSerializer.serialize(entry.contract()));
+                LeasePackageSerializer.serialize(entry.contract()),
+                "");
+        String signature = PackageSecurity.sign(dataDir, manifest);
+        ContractPackageService.LeasePackageManifest signedManifest = new ContractPackageService.LeasePackageManifest(
+                manifest.schemaVersion(),
+                manifest.contractId(),
+                manifest.createdAt(),
+                manifest.originalPdfSha256(),
+                manifest.contractName(),
+                manifest.contractJson(),
+                signature);
 
         Files.createDirectories(targetFile.toAbsolutePath().getParent());
-        codec.writePackage(targetFile, manifest, pdfBytes);
-        return new ContractPackageService.ContractPackage(manifest, pdfBytes);
+        codec.writePackage(targetFile, signedManifest, pdfBytes);
+        return new ContractPackageService.ContractPackage(signedManifest, pdfBytes);
     }
 
     private Path resolveRelativePath(String relativePath) {

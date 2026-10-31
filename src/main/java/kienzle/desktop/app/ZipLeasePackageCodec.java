@@ -68,7 +68,8 @@ public class ZipLeasePackageCodec implements LeasePackageCodec {
                 Instant.parse(object.get("createdAt").getAsString()),
                 object.get("originalPdfSha256").getAsString(),
                 object.get("contractName").getAsString(),
-                object.has("contractJson") ? object.get("contractJson").getAsString() : "");
+                object.has("contractJson") ? object.get("contractJson").getAsString() : "",
+                object.has("packageSignature") ? object.get("packageSignature").getAsString() : "");
     }
 
     private static String manifestJson(ContractPackageService.LeasePackageManifest manifest) {
@@ -78,7 +79,8 @@ public class ZipLeasePackageCodec implements LeasePackageCodec {
                 + "  \"createdAt\": \"" + manifest.createdAt() + "\",\n"
                 + "  \"originalPdfSha256\": \"" + escape(manifest.originalPdfSha256()) + "\",\n"
                 + "  \"contractName\": \"" + escape(manifest.contractName()) + "\",\n"
-                + "  \"contractJson\": \"" + escape(manifest.contractJson()) + "\"\n"
+                + "  \"contractJson\": \"" + escape(manifest.contractJson()) + "\",\n"
+                + "  \"packageSignature\": \"" + escape(manifest.packageSignature()) + "\"\n"
                 + "}";
     }
 

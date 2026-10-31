@@ -12,6 +12,10 @@ import java.nio.file.Path;
 /** Composition root: wires the services once and hands them to the UI (constructor injection). */
 public record AppContext(ContractWorkflow workflow, ContractPackageService packages) {
 
+    public Path dataDir() {
+        return packages.dataDir();
+    }
+
     public AppContext(ContractWorkflow workflow) {
         this(workflow, new ContractPackageService());
     }

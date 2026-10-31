@@ -43,11 +43,16 @@ public class ContractPackageService {
     public ContractPackage readPackage(Path packageFile) throws IOException {
         ContractPackage packageData = codec.readPackage(packageFile);
         packageData.validate();
+        PackageSecurity.validate(dataDir, packageData.manifest());
         return packageData;
     }
 
     public ContractEntry importPackage(Path packageFile) throws IOException {
         return importService.importPackage(packageFile);
+    }
+
+    public Path dataDir() {
+        return dataDir;
     }
 
     public String storeImportedPdf(UUID contractId, byte[] pdfBytes) throws IOException {
@@ -63,7 +68,8 @@ public class ContractPackageService {
             Instant createdAt,
             String originalPdfSha256,
             String contractName,
-            String contractJson
+            String contractJson,
+            String packageSignature
     ) {
         public LeasePackageManifest {
             Objects.requireNonNull(schemaVersion, "schemaVersion");
@@ -72,10 +78,26 @@ public class ContractPackageService {
             Objects.requireNonNull(originalPdfSha256, "originalPdfSha256");
             Objects.requireNonNull(contractName, "contractName");
             Objects.requireNonNull(contractJson, "contractJson");
+            packageSignature = packageSignature == null ? "" : packageSignature;
         }
 
         public LeaseContract contract() {
             return LeasePackageSerializer.deserialize(contractJson);
+        }
+
+        public String signedPayload() {
+            return String.join("|",
+                    schemaVersion,
+                    contractId.toString(),
+                    createdAt.toString(),
+                    originalPdfSha256,
+                    contractName,
+                    contractJson);
+        }
+
+        public LeasePackageManifest withoutSignature() {
+            return new LeasePackageManifest(schemaVersion, contractId, createdAt, originalPdfSha256, contractName,
+                    contractJson, "");
         }
     }
 

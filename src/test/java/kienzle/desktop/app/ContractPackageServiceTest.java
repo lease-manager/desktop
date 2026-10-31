@@ -60,6 +60,43 @@ class ContractPackageServiceTest {
     }
 
     @Test
+    void exportPackage_signsManifestAndRejectsTamperedSignature() throws Exception {
+        Path dataDir = dir.resolve("data");
+        JsonContractRepository repository = new JsonContractRepository(dataDir);
+        ContractService service = new ContractService(repository);
+        ContractEntry entry = service.create(sample());
+
+        Path pdfPath = dataDir.resolve("documents").resolve(entry.id().toString()).resolve("original.pdf");
+        Files.createDirectories(pdfPath.getParent());
+        byte[] pdfBytes = "contract-pdf-content".getBytes(StandardCharsets.UTF_8);
+        Files.write(pdfPath, pdfBytes);
+
+        ContractEntry withPdf = service.registerOriginalPdf(
+                entry.id(), dataDir.relativize(pdfPath).toString(), Hashing.sha256(pdfBytes));
+
+        Path archive = dir.resolve("signed.leasepack");
+        ContractPackageService serviceUnderTest = new ContractPackageService(dataDir);
+        ContractPackageService.ContractPackage exported = serviceUnderTest.exportPackage(withPdf, archive);
+
+        assertFalse(exported.manifest().packageSignature().isBlank());
+        assertEquals(exported.manifest().packageSignature(),
+                PackageSecurity.sign(dataDir, exported.manifest().withoutSignature()));
+
+        ContractPackageService.LeasePackageManifest tampered = new ContractPackageService.LeasePackageManifest(
+                exported.manifest().schemaVersion(),
+                exported.manifest().contractId(),
+                exported.manifest().createdAt(),
+                exported.manifest().originalPdfSha256(),
+                exported.manifest().contractName(),
+                exported.manifest().contractJson(),
+                exported.manifest().packageSignature() + "0");
+        Path tamperedArchive = dir.resolve("tampered-signature.leasepack");
+        new ZipLeasePackageCodec().writePackage(tamperedArchive, tampered, exported.pdfBytes());
+
+        assertThrows(Exception.class, () -> serviceUnderTest.readPackage(tamperedArchive));
+    }
+
+    @Test
     void readPackage_rejectsTamperedArchive() throws Exception {
         Path dataDir = dir.resolve("data");
         JsonContractRepository repository = new JsonContractRepository(dataDir);

@@ -1,15 +1,39 @@
 package kienzle.desktop;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import kienzle.desktop.app.AppContext;
+import kienzle.desktop.contract.ContractEntry;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.math.BigDecimal;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.util.List;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainLayoutControllerTest {
+    @TempDir
+    Path tempDir;
+
+    @BeforeAll
+    static void startToolkit() throws Exception {
+        JavaFxTestSupport.startToolkit();
+    }
 
     @Test
     void buildDetailRows_shouldContainSelectedContractDetails() {
@@ -81,5 +105,82 @@ class MainLayoutControllerTest {
         assertEquals("123/4", flurstueck.value());
         assertEquals("2.350,00 €", pachtzins.value());
         assertEquals("Erbpachtfläche für landwirtschaftliche Nutzung", beschreibung.value());
+    }
+
+    @Test
+    void handleRestoredArchivedEntry_resetsFilterAndSelectsRestoredEntry() throws Exception {
+        AppContext context = AppContext.create(tempDir);
+        ContractEntry restored = context.workflow().save(null, LeaseContract.builder().name("Restored").build());
+
+        MainLayoutController controller = new MainLayoutController(context);
+        onFxThread(() -> {
+            wireUiFields(controller);
+            controller.initialize();
+            controller.selectListIndex(0);
+            return null;
+        });
+
+        onFxThread(() -> {
+            ComboBox<StatusFilter> filter = getField(controller, "statusFilter", ComboBox.class);
+            filter.setValue(StatusFilter.SIGNED);
+            invoke(controller, "handleRestoredArchivedEntry", ContractEntry.class, restored);
+            return null;
+        });
+
+        ComboBox<StatusFilter> filter = getField(controller, "statusFilter", ComboBox.class);
+        ListView<ContractEntry> list = getField(controller, "contractList", ListView.class);
+        assertEquals(StatusFilter.ALL, filter.getValue());
+        assertEquals(restored.id(), list.getSelectionModel().getSelectedItem().id());
+    }
+
+    private static void wireUiFields(MainLayoutController controller) throws Exception {
+        setField(controller, "contractList", new ListView<ContractEntry>());
+        setField(controller, "statusFilter", new ComboBox<StatusFilter>());
+        setField(controller, "statusLabel", new Label());
+        setField(controller, "saveButton", new Button());
+        setField(controller, "deleteButton", new Button());
+        setField(controller, "createPdfButton", new Button());
+        setField(controller, "openPdfButton", new Button());
+        setField(controller, "awaitingButton", new Button());
+        setField(controller, "germanButton", new Button());
+        setField(controller, "englishButton", new Button());
+        setField(controller, "lblTitle", new Label());
+        setField(controller, "lblVerpaechterTxt", new Label());
+        setField(controller, "contractFormController", loadedFormController());
+    }
+
+    private static ContractFormController loadedFormController() throws Exception {
+        FXMLLoader loader = new FXMLLoader(ContractFormController.class.getResource("ContractForm.fxml"), I18n.bundle());
+        Parent ignored = loader.load();
+        return loader.getController();
+    }
+
+    private static <T> T onFxThread(ThrowingSupplier<T> supplier) throws Exception {
+        FutureTask<T> task = new FutureTask<>(supplier::get);
+        Platform.runLater(task);
+        return task.get(10, TimeUnit.SECONDS);
+    }
+
+    private static void setField(Object target, String name, Object value) throws Exception {
+        Field field = target.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(target, value);
+    }
+
+    private static <T> T getField(Object target, String name, Class<T> type) throws Exception {
+        Field field = target.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        return type.cast(field.get(target));
+    }
+
+    private static void invoke(Object target, String methodName, Class<?> parameterType, Object arg) throws Exception {
+        Method method = target.getClass().getDeclaredMethod(methodName, parameterType);
+        method.setAccessible(true);
+        method.invoke(target, arg);
+    }
+
+    @FunctionalInterface
+    private interface ThrowingSupplier<T> {
+        T get() throws Exception;
     }
 }
