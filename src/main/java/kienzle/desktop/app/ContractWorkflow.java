@@ -6,12 +6,12 @@ import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractService;
 import kienzle.desktop.contract.DocumentKind;
 import kienzle.desktop.pdf.ContractPdfService;
+import kienzle.desktop.pdf.QrPayload;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /** Facade for the UI: one entry point for contract persistence, PDF creation and status changes. */
 public class ContractWorkflow {
@@ -81,8 +81,12 @@ public class ContractWorkflow {
         return documents.currentDocument(entry);
     }
 
-    public Optional<UUID> detectScanTarget(Path scan) throws IOException {
+    public Optional<QrPayload> detectScanTarget(Path scan) throws IOException {
         return documents.detectScanTarget(scan);
+    }
+
+    public boolean isCurrentScan(ContractEntry entry, QrPayload payload) throws IOException {
+        return documents.isCurrentScan(entry, payload);
     }
 
     public ContractEntry attachScan(ContractEntry entry, Path scan) throws IOException {

@@ -31,8 +31,8 @@ public class ScanImportService {
         this.storage = storage;
     }
 
-    /** @return the contract ID found in the QR code of the scan, if any page or the image contains one */
-    public Optional<UUID> detectContractId(Path scan) throws IOException {
+    /** @return the QR payload found in the scan, if any page or the image contains one */
+    public Optional<QrPayload> detectPayload(Path scan) throws IOException {
         String extension = requireSupportedFile(scan);
         if (extension.equals("pdf")) {
             return detectInPdf(scan);
@@ -51,21 +51,33 @@ public class ScanImportService {
         return contracts.attachSigned(contractId, SignatureSource.SCAN, path, Hashing.sha256(bytes), null, null);
     }
 
-    private static Optional<UUID> detectInPdf(Path scan) throws IOException {
+    private static Optional<QrPayload> detectInPdf(Path scan) throws IOException {
         try (PDDocument document = Loader.loadPDF(scan.toFile())) {
             PDFRenderer renderer = new PDFRenderer(document);
             for (int page = 0; page < document.getNumberOfPages(); page++) {
-                Optional<UUID> id = detectInImage(renderer.renderImageWithDPI(page, RENDER_DPI));
-                if (id.isPresent()) {
-                    return id;
+                Optional<QrPayload> payload = detectInImage(renderer.renderImageWithDPI(page, RENDER_DPI));
+                if (payload.isPresent()) {
+                    return payload;
                 }
             }
         }
         return Optional.empty();
     }
 
-    private static Optional<UUID> detectInImage(BufferedImage image) {
-        return QrCodes.decode(image).flatMap(QrPayload::parse).map(QrPayload::contractId);
+    private static Optional<QrPayload> detectInImage(BufferedImage image) {
+        return QrCodes.decode(image).flatMap(QrPayload::parse);
+    }
+
+    /**
+     * Checks the scan's QR hash against the hash embedded in the given original PDF.
+     * An original without an embedded hash (legacy) cannot be compared and counts as matching.
+     */
+    public boolean matchesOriginal(QrPayload payload, Path originalPdf) throws IOException {
+        try (PDDocument document = Loader.loadPDF(originalPdf.toFile())) {
+            String expected = document.getDocumentInformation()
+                    .getCustomMetadataValue(PdfStamper.PROPERTY_CONTENT_HASH);
+            return expected == null || expected.equals(payload.contentHash());
+        }
     }
 
     private static String requireSupportedFile(Path scan) throws IOException {

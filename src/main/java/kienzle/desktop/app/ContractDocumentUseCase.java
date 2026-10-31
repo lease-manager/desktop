@@ -4,6 +4,7 @@ import kienzle.desktop.contract.ContractDocument;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.DocumentKind;
 import kienzle.desktop.pdf.ContractPdfService;
+import kienzle.desktop.pdf.QrPayload;
 import kienzle.desktop.pdf.ScanImportService;
 
 import java.io.IOException;
@@ -28,8 +29,14 @@ public final class ContractDocumentUseCase {
         return pdfs.createOriginalPdf(entry);
     }
 
-    public Optional<UUID> detectScanTarget(Path scan) throws IOException {
-        return scans.detectContractId(scan);
+    public Optional<QrPayload> detectScanTarget(Path scan) throws IOException {
+        return scans.detectPayload(scan);
+    }
+
+    /** @return false if the scan was made from an older version of the contract PDF */
+    public boolean isCurrentScan(ContractEntry entry, QrPayload payload) throws IOException {
+        Optional<Path> original = originalPdf(entry);
+        return original.isEmpty() || scans.matchesOriginal(payload, original.get());
     }
 
     public ContractEntry attachScan(ContractEntry entry, Path scan) throws IOException {

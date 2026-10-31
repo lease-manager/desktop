@@ -3,13 +3,22 @@
 Arbeitsprotokoll, damit bei der Weiterarbeit nicht bei null begonnen werden muss.
 Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
+## 2026-10-31 – Hash-Abgleich beim Scan-Import
+
+- Der Hash im QR-Code des Scans wird mit dem im Original-PDF eingebetteten Hash (`LeaseContentHash`)
+  verglichen (`ScanImportService.matchesOriginal`, `ContractDocumentUseCase.isCurrentScan`).
+- Weicht er ab (Scan stammt von einer älteren Fassung, z. B. nach erneutem PDF-Erzeugen), erscheint eine
+  Warnung (`scan.outdated`); der Nutzer kann trotzdem übernehmen oder abbrechen. Originale ohne
+  eingebetteten Hash (Altbestand) werden nicht beanstandet.
+- `detectContractId` → `detectPayload` (liefert `QrPayload`). Tests in `ScanImportServiceTest` ergänzt.
+
 ## 2026-10-31 – Scan-Import (Schritt 3, Pfad B)
 
 - Neuer Button „Scan importieren“: Datei (PDF, PNG, JPG) wählen → QR-Code wird gelesen → Vertrag wird
   zugeordnet (Bestätigung durch den Nutzer); ohne erkannten QR-Code Auswahl aus den Verträgen im Status
   „wartet auf Unterschrift“. Der Scan wird **unverändert** unter `documents/<id>/signed-scan-<uuid>.<ext>`
   gespeichert, SHA-256 notiert, Status → `SIGNED` (`attachSigned(..., SCAN, ...)`).
-- `pdf/ScanImportService` (`detectContractId`, `attachScan`; erlaubte Endungen, Größenlimit 50 MB);
+- `pdf/ScanImportService` (`detectPayload`, `attachScan`; erlaubte Endungen, Größenlimit 50 MB);
   Durchreichung über `ContractDocumentUseCase`, `ContractWorkflow`, `ContractUiActions`.
 - QR-Erkennung läuft im Hintergrund-Task (Warte-Cursor), damit die UI nicht blockiert.
 - „PDF öffnen“ öffnet jetzt das unterschriebene Dokument, falls vorhanden (sonst das Original-PDF);
@@ -19,8 +28,7 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 - `QrCodes.decode`: Ecken-Suche (oben rechts, für ältere PDFs unten links) statt Suche über die ganze untere
   Hälfte (Treffer ~1 s statt >30 s Fehlversuch).
 - Tests: `ScanImportServiceTest` (PDF-/Bild-Scan, kein QR, falsche Endung, falscher Status, Dokumentwahl).
-- Bekannt: Der Hash im QR-Code wird beim Import noch nicht gegen das Original geprüft; verdrehte oder stark
-  verrauschte Scans werden evtl. nicht erkannt (dann manuelle Auswahl). Praxistest mit echtem Scan steht aus.
+- Bekannt: verdrehte oder stark verrauschte Scans werden evtl. nicht erkannt (dann manuelle Auswahl). Praxistest mit echtem Scan steht aus.
 
 ## 2026-10-31 – Unterschrift zurücknehmen, PDF drucken, Linux-Fixes
 

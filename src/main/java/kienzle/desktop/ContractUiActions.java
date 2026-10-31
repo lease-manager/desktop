@@ -2,13 +2,13 @@ package kienzle.desktop;
 
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.ContractEntry;
+import kienzle.desktop.pdf.QrPayload;
 import kienzle.desktop.contract.ContractStatus;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /** Thin application-layer facade for UI actions that orchestrate workflow calls. */
 public final class ContractUiActions {
@@ -38,8 +38,12 @@ public final class ContractUiActions {
         return workflow.currentDocument(current);
     }
 
-    public Optional<UUID> detectScanTarget(Path scan) throws IOException {
+    public Optional<QrPayload> detectScanTarget(Path scan) throws IOException {
         return workflow.detectScanTarget(scan);
+    }
+
+    public boolean isCurrentScan(ContractEntry entry, QrPayload payload) throws IOException {
+        return workflow.isCurrentScan(entry, payload);
     }
 
     public ContractEntry attachScan(ContractEntry target, Path scan) throws IOException {

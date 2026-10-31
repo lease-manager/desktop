@@ -20,10 +20,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,7 +51,7 @@ class ScanImportServiceTest {
         Path scan = dir.resolve("scan.pdf");
         Files.copy(originalPdf, scan);
 
-        assertEquals(awaiting.id(), workflow.detectScanTarget(scan).orElseThrow());
+        assertEquals(awaiting.id(), workflow.detectScanTarget(scan).orElseThrow().contractId());
 
         ContractEntry signed = workflow.attachScan(awaiting, scan);
 
@@ -73,7 +73,7 @@ class ScanImportServiceTest {
             ImageIO.write(new PDFRenderer(document).renderImageWithDPI(0, 200f), "png", scan.toFile());
         }
 
-        assertEquals(awaiting.id(), workflow.detectScanTarget(scan).orElseThrow());
+        assertEquals(awaiting.id(), workflow.detectScanTarget(scan).orElseThrow().contractId());
     }
 
     @Test
@@ -100,6 +100,26 @@ class ScanImportServiceTest {
         ContractEntry back = workflow.revokeAwaitingSignature(awaiting);
 
         assertThrows(IllegalStateException.class, () -> workflow.attachScan(back, scan));
-        assertTrue(workflow.detectScanTarget(scan).map(UUID::toString).isPresent());
+        assertTrue(workflow.detectScanTarget(scan).isPresent());
+    }
+
+    @Test
+    void scanOfCurrentVersion_matchesOriginal() throws Exception {
+        Path scan = dir.resolve("scan.pdf");
+        Files.copy(originalPdf, scan);
+
+        assertTrue(workflow.isCurrentScan(awaiting, workflow.detectScanTarget(scan).orElseThrow()));
+    }
+
+    @Test
+    void scanOfOlderVersion_isDetectedAsOutdated() throws Exception {
+        Path oldScan = dir.resolve("old.pdf");
+        Files.copy(originalPdf, oldScan);
+        QrPayload oldPayload = workflow.detectScanTarget(oldScan).orElseThrow();
+        ContractEntry back = workflow.revokeAwaitingSignature(awaiting);
+        ContractEntry changed = workflow.createPdf(back);
+        ContractEntry again = workflow.markAwaitingSignature(changed);
+
+        assertFalse(workflow.isCurrentScan(again, oldPayload));
     }
 }

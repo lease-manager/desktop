@@ -23,6 +23,7 @@ import kienzle.desktop.app.AppContext;
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractStatus;
+import kienzle.desktop.pdf.QrPayload;
 import kienzle.desktop.pdf.ScanImportService;
 
 import java.io.IOException;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class MainLayoutController {
 
@@ -233,9 +233,9 @@ public class MainLayoutController {
     private void detectScanTargetInBackground(Path scan, List<ContractEntry> awaiting) {
         Scene scene = contractList.getScene();
         scene.setCursor(Cursor.WAIT);
-        Task<Optional<UUID>> task = new Task<>() {
+        Task<Optional<QrPayload>> task = new Task<>() {
             @Override
-            protected Optional<UUID> call() throws Exception {
+            protected Optional<QrPayload> call() throws Exception {
                 return uiActions.detectScanTarget(scan);
             }
         };
@@ -252,20 +252,23 @@ public class MainLayoutController {
         worker.start();
     }
 
-    private void attachScan(Path scan, List<ContractEntry> awaiting, Optional<UUID> detectedId) throws IOException {
-        ContractEntry target = matchScanTarget(awaiting, detectedId);
+    private void attachScan(Path scan, List<ContractEntry> awaiting, Optional<QrPayload> payload) throws IOException {
+        ContractEntry target = matchScanTarget(awaiting, payload);
         if (target != null) {
             revealEntry(uiActions.attachScan(target, scan));
         }
     }
 
     /** Uses the QR code to find the contract (user confirms); falls back to a manual choice. */
-    private ContractEntry matchScanTarget(List<ContractEntry> awaiting, Optional<UUID> detectedId) {
-        Optional<ContractEntry> detected = detectedId
-                .flatMap(id -> awaiting.stream().filter(entry -> entry.id().equals(id)).findFirst());
+    private ContractEntry matchScanTarget(List<ContractEntry> awaiting, Optional<QrPayload> payload) throws IOException {
+        Optional<ContractEntry> detected = payload
+                .flatMap(p -> awaiting.stream().filter(entry -> entry.id().equals(p.contractId())).findFirst());
         if (detected.isPresent()) {
-            String message = I18n.get("scan.confirm") + detected.get().contract().name();
-            return feedback.confirm(message) ? detected.get() : null;
+            String name = detected.get().contract().name();
+            if (!uiActions.isCurrentScan(detected.get(), payload.get())) {
+                return feedback.confirm(I18n.get("scan.outdated") + name) ? detected.get() : null;
+            }
+            return feedback.confirm(I18n.get("scan.confirm") + name) ? detected.get() : null;
         }
         List<String> labels = awaiting.stream().map(MainLayoutController::scanChoiceLabel).toList();
         return feedback.choose(I18n.get("scan.import.title"), I18n.get("scan.choose"), labels)
