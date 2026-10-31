@@ -41,8 +41,8 @@ public final class ContractDetailRows {
                 new ContractDetailRow(I18n.get("court"), contract.court()),
                 new ContractDetailRow(I18n.get("notice"), contract.terminationNotice()),
                 new ContractDetailRow(I18n.get("detail.gardening.end"), ContractFormats.monthDay(contract.gardeningYearEnd())),
-                new ContractDetailRow("§ 4", contract.paragraphFour()),
-                new ContractDetailRow("§ 5", contract.paragraphFive()),
+                new ContractDetailRow("§ 5", contract.paragraphFour()),
+                new ContractDetailRow("§ 6", contract.paragraphFive()),
                 new ContractDetailRow(I18n.get("detail.description"), contract.description())
         );
     }

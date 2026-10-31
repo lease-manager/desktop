@@ -105,7 +105,7 @@ public final class LeaseContractPdfPreview {
     private void renderSecondPage(PDDocument document, PDPage page, Map<String, String> values) throws IOException {
         try (PDPageContentStream content = new PDPageContentStream(document, page)) {
             float y = PAGE_HEIGHT - 58;
-            y = sectionHeading(content, "", "Zahlungsverzug und Gerichtsstand", y);
+            y = sectionHeading(content, "§ 4", "Zahlungsverzug und Gerichtsstand", y);
             y -= 8;
             y = paragraph(content,
                     "Sollte der/die Pächter(in) seiner/ihrer Zahlungsverpflichtung nicht rechtzeitig nachkommen, "
@@ -119,12 +119,12 @@ public final class LeaseContractPdfPreview {
             y = paragraph(content, blankIfEmpty(value(values, "court")), y, BODY_SIZE, BODY_FONT);
 
             y -= 20;
-            y = sectionHeading(content, "§ 4", "Vorzeitige Kündigung", y);
+            y = sectionHeading(content, "§ 5", "Vorzeitige Kündigung", y);
             y -= 10;
                 y = editableParagraph(content, value(values, "paragraphFour"), y);
 
             y -= 20;
-            y = sectionHeading(content, "§ 5", "Sonstige Vereinbarungen", y);
+            y = sectionHeading(content, "§ 6", "Sonstige Vereinbarungen", y);
             y -= 10;
                 y = editableParagraph(content, value(values, "paragraphFive"), y);
             String description = value(values, "description");

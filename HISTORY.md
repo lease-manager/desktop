@@ -3,6 +3,13 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-10-31 – Section numbering in the contract
+
+- PDF and UI now number the sections: § 4 payment default and jurisdiction, § 5 early termination,
+  § 6 other agreements. The model fields `paragraphFour`/`paragraphFive` keep their names (stored
+  contracts stay compatible); only the displayed numbers changed. The "(§ 4)" suffix was dropped from the
+  "Term and termination" form section. PDFs generated earlier keep the old numbering until regenerated.
+
 ## 2026-10-31 – Permanently delete contracts
 
 - New "Delete" button (next to "Archive"): permanently removes a wrongly created contract together with its
