@@ -1,0 +1,349 @@
+package kienzle.desktop;
+
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.MonthDay;
+
+/** The contract input form: configures the controls, reads them into a {@link LeaseContract} and fills them from one. */
+public class ContractFormController {
+
+    @FXML
+    private TextField contractNameField;
+
+    @FXML
+    private TextField textField;
+
+    @FXML
+    private TextField lessorAddressField;
+
+    @FXML
+    private TextField lessorLocationField;
+
+    @FXML
+    private DatePicker lessorDateField;
+
+    @FXML
+    private TextField tenantField;
+
+    @FXML
+    private TextField tenantAddressField;
+
+    @FXML
+    private TextField tenantLocationField;
+
+    @FXML
+    private DatePicker tenantDateField;
+
+    @FXML
+    private TextField parcelField;
+
+    @FXML
+    private TextField districtField;
+
+    @FXML
+    private ComboBox<Amtsgericht> courtComboBox;
+
+    @FXML
+    private Label courtAddressLabel;
+
+    @FXML
+    private TextField noticeField;
+
+    @FXML
+    private DatePicker gardeningYearField;
+
+    @FXML
+    private TextArea paragraphFourArea;
+
+    @FXML
+    private TextArea paragraphFiveArea;
+
+    @FXML
+    private TextArea descriptionArea;
+
+    @FXML
+    private TextField sizeField;
+
+    @FXML
+    private TextField typeField;
+
+    @FXML
+    private TextField rentField;
+
+    @FXML
+    private ComboBox<String> durationField;
+
+    @FXML
+    private CheckBox hasIntroductoryRentCheckBox;
+
+    @FXML
+    private VBox introductoryRentFields;
+
+    @FXML
+    private HBox leaseEndDateRow;
+
+    @FXML
+    private DatePicker startDateField;
+
+    @FXML
+    private TextField introRentField;
+
+    @FXML
+    private DatePicker introductoryRentFromField;
+
+    @FXML
+    private TextField introductoryRentWordsField;
+
+    @FXML
+    private TextField rentWordsField;
+
+    @FXML
+    private DatePicker firstRentDateField;
+
+    @FXML
+    private TextField recipientField;
+
+    @FXML
+    private TextField bankField;
+
+    @FXML
+    private TextField ibanField;
+
+    @FXML
+    private TextField bicField;
+
+    @FXML
+    private DatePicker leaseEndDateField;
+
+    @FXML
+    private DatePicker introductoryRentUntilField;
+
+    @FXML
+    private DatePicker rentIncreaseDateField;
+
+    @FXML
+    private TextField rentDueIntervalField;
+
+    @FXML
+    private TextField rentDueDayField;
+
+    @FXML
+    public void initialize() {
+        durationField.setItems(FXCollections.observableArrayList(ContractDefaults.DURATION_INDEFINITE, ContractDefaults.DURATION_FIXED));
+        durationField.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String duration) {
+                if (ContractDefaults.DURATION_INDEFINITE.equals(duration)) {
+                    return I18n.get("duration.indefinite");
+                }
+                return ContractDefaults.DURATION_FIXED.equals(duration) ? I18n.get("duration.fixed") : duration;
+            }
+
+            @Override
+            public String fromString(String text) {
+                return text;
+            }
+        });
+        configureDatePickers();
+        ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
+        ibanField.setTextFormatter(IbanFormatter.textFormatter());
+        loadAmtsgerichte();
+        courtComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldCourt, court) ->
+            courtAddressLabel.setText(court == null ? "" : court.anschrift()));
+        hasIntroductoryRentCheckBox.selectedProperty().addListener((observable, oldValue, selected) ->
+            setIntroductoryRentFieldsVisible(selected));
+        durationField.valueProperty().addListener((observable, oldValue, duration) ->
+            updateLeaseEndDateVisibility(duration));
+
+    }
+
+    public String contractName() {
+        return get(contractNameField);
+    }
+
+    public LeaseContract read() {
+        boolean intro = hasIntroductoryRentCheckBox.isSelected();
+        return LeaseContract.builder()
+                .name(get(contractNameField))
+                .lessor(get(textField))
+                .lessorAddress(get(lessorAddressField))
+                .lessorLocation(get(lessorLocationField))
+                .lessorDate(lessorDateField.getValue())
+                .tenant(get(tenantField))
+                .tenantAddress(get(tenantAddressField))
+                .tenantLocation(get(tenantLocationField))
+                .tenantDate(tenantDateField.getValue())
+                .parcelNumber(get(parcelField))
+                .district(get(districtField))
+                .size(decimal(sizeField))
+                .type(get(typeField))
+                .description(get(descriptionArea))
+                .rent(decimal(rentField))
+                .leaseDuration(durationField.getValue() == null ? "" : durationField.getValue())
+                .startDate(startDateField.getValue())
+                .leaseEndDate(leaseEndDateField.getValue())
+                .hasIntroductoryRent(intro)
+                .introductoryRent(intro ? decimal(introRentField) : null)
+                .introductoryRentFrom(intro ? introductoryRentFromField.getValue() : null)
+                .introductoryRentUntil(intro ? introductoryRentUntilField.getValue() : null)
+                .introductoryRentWords(get(introductoryRentWordsField))
+                .rentIncreaseDate(intro ? rentIncreaseDateField.getValue() : null)
+                .rentWords(get(rentWordsField))
+                .rentDueInterval(get(rentDueIntervalField))
+                .rentDueDay(get(rentDueDayField))
+                .firstRentDate(firstRentDateField.getValue())
+                .rentRecipient(get(recipientField))
+                .bankName(get(bankField))
+                .iban(get(ibanField))
+                .bic(get(bicField))
+                .court(selectedCourtAddress())
+                .terminationNotice(get(noticeField))
+                .gardeningYearEnd(gardeningYearField.getValue() == null ? null
+                        : MonthDay.from(gardeningYearField.getValue()))
+                .paragraphFour(get(paragraphFourArea))
+                .paragraphFive(get(paragraphFiveArea))
+                .build();
+    }
+
+    private BigDecimal decimal(TextInputControl control) {
+        try {
+            return ContractFormats.parseDecimal(control.getText());
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException(I18n.get("error.number") + control.getText(), exception);
+        }
+    }
+
+    public void fill(LeaseContract contract) {
+        if (contract == null) {
+            return;
+        }
+
+        contractNameField.setText(contract.name());
+        textField.setText(contract.lessor());
+        lessorAddressField.setText(contract.lessorAddress());
+        lessorLocationField.setText(contract.lessorLocation());
+        lessorDateField.setValue(contract.lessorDate());
+        tenantField.setText(contract.tenant());
+        tenantAddressField.setText(contract.tenantAddress());
+        tenantLocationField.setText(contract.tenantLocation());
+        tenantDateField.setValue(contract.tenantDate());
+        parcelField.setText(contract.parcelNumber());
+        districtField.setText(contract.district());
+        selectCourtForContract(contract.court());
+        noticeField.setText(contract.terminationNotice());
+        gardeningYearField.setValue(contract.gardeningYearEnd() == null ? null : contract.gardeningYearEnd().atYear(2000));
+        paragraphFourArea.setText(contract.paragraphFour());
+        paragraphFiveArea.setText(contract.paragraphFive());
+        descriptionArea.setText(contract.description());
+        sizeField.setText(ContractFormats.number(contract.size()));
+        typeField.setText(contract.type());
+        rentField.setText(ContractFormats.money(contract.rent()));
+        durationField.setValue(contract.leaseDuration());
+        hasIntroductoryRentCheckBox.setSelected(contract.hasIntroductoryRent());
+        setIntroductoryRentFieldsVisible(contract.hasIntroductoryRent());
+        updateLeaseEndDateVisibility(contract.leaseDuration());
+        startDateField.setValue(contract.startDate());
+        leaseEndDateField.setValue(contract.leaseEndDate());
+        introRentField.setText(ContractFormats.money(contract.introductoryRent()));
+        introductoryRentFromField.setValue(contract.introductoryRentFrom());
+        introductoryRentUntilField.setValue(contract.introductoryRentUntil());
+        introductoryRentWordsField.setText(contract.introductoryRentWords());
+        rentWordsField.setText(contract.rentWords());
+        rentIncreaseDateField.setValue(contract.rentIncreaseDate());
+        rentDueIntervalField.setText(contract.rentDueInterval());
+        rentDueDayField.setText(contract.rentDueDay());
+        firstRentDateField.setValue(contract.firstRentDate());
+        recipientField.setText(contract.rentRecipient());
+        bankField.setText(contract.bankName());
+        ibanField.setText(contract.iban());
+        bicField.setText(contract.bic());
+    }
+
+    private void loadAmtsgerichte() {
+        try {
+            courtComboBox.setItems(FXCollections.observableArrayList(new AmtsgerichtRepository().load()));
+        } catch (IOException exception) {
+            throw new IllegalStateException(I18n.get("court.load.error"), exception);
+        }
+    }
+
+    private void selectCourtForContract(String courtValue) {
+        String location = courtValue.replaceFirst("(?i)^Amtsgericht\\s+", "").trim();
+        Amtsgericht match = courtComboBox.getItems().stream()
+                .filter(court -> court.ort().equalsIgnoreCase(location)
+                        || court.name().equalsIgnoreCase(courtValue)
+                        || courtValue.startsWith(court.name() + ","))
+                .findFirst()
+            .orElse(null);
+        courtComboBox.getSelectionModel().select(match);
+    }
+
+    private void configureDatePickers() {
+        configureDatePicker(lessorDateField, false);
+        configureDatePicker(tenantDateField, false);
+        configureDatePicker(startDateField, false);
+        configureDatePicker(leaseEndDateField, false);
+        configureDatePicker(introductoryRentFromField, false);
+        configureDatePicker(introductoryRentUntilField, false);
+        configureDatePicker(rentIncreaseDateField, false);
+        configureDatePicker(firstRentDateField, false);
+        configureDatePicker(gardeningYearField, true);
+    }
+
+    private void configureDatePicker(DatePicker picker, boolean annualDate) {
+        picker.setEditable(false);
+        picker.setPromptText(I18n.get(annualDate ? "date.prompt.annual" : "date.prompt"));
+        picker.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(LocalDate date) {
+                if (date == null) {
+                    return "";
+                }
+                return annualDate ? ContractFormats.monthDay(MonthDay.from(date)) : ContractFormats.date(date);
+            }
+
+            @Override
+            public LocalDate fromString(String text) {
+                if (annualDate) {
+                    MonthDay monthDay = ContractFormats.parseMonthDay(text);
+                    return monthDay == null ? null : monthDay.atYear(2000);
+                }
+                return ContractFormats.parseDate(text);
+            }
+        });
+    }
+
+    private void setIntroductoryRentFieldsVisible(boolean visible) {
+        introductoryRentFields.setVisible(visible);
+        introductoryRentFields.setManaged(visible);
+    }
+
+    private void updateLeaseEndDateVisibility(String duration) {
+        boolean fixedTerm = ContractDefaults.DURATION_FIXED.equals(duration);
+        leaseEndDateRow.setVisible(fixedTerm);
+        leaseEndDateRow.setManaged(fixedTerm);
+    }
+
+    private String get(TextInputControl control) {
+        return control.getText() == null ? "" : control.getText().trim();
+    }
+
+    private String selectedCourtAddress() {
+        Amtsgericht court = courtComboBox.getValue();
+        return court == null ? "" : court.name() + ", " + court.anschrift();
+    }
+}

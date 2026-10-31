@@ -40,6 +40,8 @@ dependencies {
     implementation("com.dlsc.formsfx:formsfx-core:11.6.0")
     implementation("org.apache.pdfbox:pdfbox:3.0.5")
     implementation("com.google.code.gson:gson:2.13.1")
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.zxing:javase:3.5.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
