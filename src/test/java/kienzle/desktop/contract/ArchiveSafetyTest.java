@@ -1,6 +1,6 @@
 package kienzle.desktop.contract;
 
-import kienzle.desktop.LeaseContract;
+import kienzle.desktop.TestContracts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,7 +31,7 @@ class ArchiveSafetyTest {
     @Test
     void archive_rejectsDocumentOutsideContractFolder_andKeepsContractActive() throws IOException {
         var service = new ContractService(new JsonContractRepository(dir));
-        var entry = service.create(LeaseContract.builder().name("N").build());
+        var entry = service.create(TestContracts.sampleContract("N"));
         Path foreign = Files.writeString(dir.resolve("foreign.pdf"), "x");
         service.registerOriginalPdf(entry.id(), "foreign.pdf", "h");
 

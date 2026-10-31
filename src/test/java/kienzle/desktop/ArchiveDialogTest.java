@@ -31,8 +31,8 @@ class ArchiveDialogTest {
     @Test
     void refreshEntries_populatesArchivedContractsAndKeepsRestoreDisabledWithoutSelection() throws Exception {
         AppContext context = AppContext.create(tempDir);
-        ContractEntry first = context.workflow().save(null, LeaseContract.builder().name("Alpha").build());
-        ContractEntry second = context.workflow().save(null, LeaseContract.builder().name("Beta").build());
+        ContractEntry first = context.workflow().save(null, TestContracts.sampleContract("Alpha"));
+        ContractEntry second = context.workflow().save(null, TestContracts.sampleContract("Beta"));
         context.workflow().archive(first);
         context.workflow().archive(second);
 
@@ -52,7 +52,7 @@ class ArchiveDialogTest {
     @Test
     void restoreSelected_withoutSelection_doesNothing() throws Exception {
         AppContext context = AppContext.create(tempDir);
-        ContractEntry entry = context.workflow().save(null, LeaseContract.builder().name("Only").build());
+        ContractEntry entry = context.workflow().save(null, TestContracts.sampleContract("Only"));
         context.workflow().archive(entry);
 
         ArchiveDialog dialog = onFxThread(() -> new ArchiveDialog(context.workflow(), new Stage(), restored -> { }));

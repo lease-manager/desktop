@@ -1,6 +1,5 @@
 package kienzle.desktop;
 
-import javafx.stage.FileChooser;
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.ContractEntry;
 
@@ -15,16 +14,6 @@ public final class PackageFlowFacade {
     public PackageFlowFacade(ContractWorkflow workflow, UiFeedback feedback) {
         this.workflow = workflow;
         this.feedback = feedback;
-    }
-
-    public FileChooser createChooser(String title, String initialFileName) {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle(title);
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("package.filetype"), "*.leasepack"));
-        if (initialFileName != null && !initialFileName.isBlank()) {
-            chooser.setInitialFileName(initialFileName);
-        }
-        return chooser;
     }
 
     public void exportPackage(ContractEntry entry, Path targetFile) throws IOException {

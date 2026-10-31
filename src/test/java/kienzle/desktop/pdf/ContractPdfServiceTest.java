@@ -1,7 +1,7 @@
 package kienzle.desktop.pdf;
 
-import kienzle.desktop.LeaseContract;
 import kienzle.desktop.LeaseContractPdfPreview;
+import kienzle.desktop.TestContracts;
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.*;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class ContractPdfServiceTest {
         var pdfs = new ContractPdfService(contracts, new LeaseContractPdfPreview(), new PdfStamper(), new PdfStorage(dir));
         var workflow = new ContractWorkflow(contracts, pdfs);
 
-        ContractEntry draft = workflow.save(null, LeaseContract.builder().name("N").build());
+        ContractEntry draft = workflow.save(null, TestContracts.sampleContract("N"));
         ContractEntry created = workflow.createPdf(draft);
 
         assertEquals(ContractStatus.PDF_CREATED, created.status());
@@ -41,7 +41,7 @@ class ContractPdfServiceTest {
         var pdfs = new ContractPdfService(contracts, new LeaseContractPdfPreview(), new PdfStamper(), new PdfStorage(dir));
         var workflow = new ContractWorkflow(contracts, pdfs);
 
-        ContractEntry draft = workflow.save(null, LeaseContract.builder().name("N").build());
+        ContractEntry draft = workflow.save(null, TestContracts.sampleContract("N"));
         ContractEntry firstVersion = workflow.createPdf(draft);
         ContractDocument firstDocument = firstVersion.documents().get(0);
         Path firstFile = pdfs.locate(firstDocument.path());

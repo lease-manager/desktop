@@ -1,14 +1,12 @@
 package kienzle.desktop.contract;
 
 import kienzle.desktop.LeaseContract;
+import kienzle.desktop.TestContracts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.MonthDay;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,12 +15,27 @@ class ContractServiceTest {
     Path dir;
 
     private LeaseContract sample() {
-        return new LeaseContract("Name", "Lessor", "Ort", LocalDate.of(2025, 1, 1), "Tenant", "Ort",
-                LocalDate.of(2025, 1, 2), "1/2", "Flur", new BigDecimal("4800.5"), "Acker", "Desc",
-                new BigDecimal("2350.00"), "Unbestimmte Dauer", LocalDate.of(2025, 1, 1), new BigDecimal("1900.00"),
-                true, LocalDate.of(2027, 1, 1), LocalDate.of(2025, 2, 1), "Rcpt", "Bank", "DE00", "BIC", "AG",
-                "6 Monate", MonthDay.of(10, 31), "p4", "p5", "Addr1", "Addr2", null, LocalDate.of(2025, 1, 1),
-                LocalDate.of(2026, 12, 31), "jährlich", "1.", "words1", "words2");
+        return TestContracts.sampleContract().toBuilder()
+                .name("Name")
+                .lessor("Lessor")
+                .lessorLocation("Ort")
+                .tenant("Tenant")
+                .tenantLocation("Ort")
+                .parcelNumber("1/2")
+                .district("Flur")
+                .type("Acker")
+                .description("Desc")
+                .rentRecipient("Rcpt")
+                .iban("DE00")
+                .bic("BIC")
+                .court("AG")
+                .paragraphFour("p4")
+                .paragraphFive("p5")
+                .lessorAddress("Addr1")
+                .tenantAddress("Addr2")
+                .introductoryRentWords("words1")
+                .rentWords("words2")
+                .build();
     }
 
     @Test

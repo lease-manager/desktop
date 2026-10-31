@@ -5,6 +5,21 @@ Neueste Einträge zuerst. Gesamtkonzept: `docs/concept/README.md`.
 
 ## 2026-10-31 – UI-State-Refactoring + Testabdeckung erhöht
 
+- Nachlaufendes Stabilitäts-Refactoring im Listen-State:
+  - `ContractListState` behandelt Austausch per gleicher ID konsistent (`addEntry` ersetzt statt zu duplizieren).
+  - `currentEntry` wird bei Filter-/Sichtbarkeitswechseln und entfernten Einträgen sauber bereinigt.
+  - `ensureVisible(...)` prüft Sichtbarkeit über IDs in der gefilterten Liste und hält Selection-State konsistent.
+- Tests an das aktuelle `ContractEntry`-Modell angepasst (`documents`/`signature` statt Alt-Felder).
+- JavaFX-Testinitialisierung in `ContractListStateTest` vereinheitlicht (`JavaFxTestSupport.startToolkit()` via `@BeforeAll`).
+- Test-Fixtures konsolidiert:
+  - zentrale Testhilfe `TestContracts` eingeführt.
+  - neue API `sampleContract(String name)` ergänzt; bestehendes `sampleContract()` delegiert darauf.
+  - mehrere Tests auf die gemeinsame Fixture + `toBuilder()`-Overrides umgestellt.
+- Lesbarkeit verbessert:
+  - manuelle 37-Parameter-Testkonstruktionen weiter reduziert.
+  - Einrückung in `LeaseContract.toBuilder()` bereinigt.
+- Validierung: nach Refactoring vollständige Testsuite erfolgreich (`./gradlew test`).
+
 - `MainLayoutController` weiter entschlackt: Listen-/Filter-/Selection-State in neue Klasse
   `ContractListState` ausgelagert.
 - `ContractScreenCoordinator` entfernt; doppelte Zustandslogik bereinigt.

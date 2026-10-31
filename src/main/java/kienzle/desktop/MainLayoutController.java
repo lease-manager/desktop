@@ -1,34 +1,32 @@
 package kienzle.desktop;
 
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import kienzle.desktop.app.AppContext;
+import kienzle.desktop.app.ContractWorkflow;
+import kienzle.desktop.contract.ContractEntry;
+import kienzle.desktop.contract.ContractStatus;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
-import javafx.util.StringConverter;
-import kienzle.desktop.contract.ContractEntry;
-import kienzle.desktop.app.AppContext;
-import kienzle.desktop.app.ContractWorkflow;
-import kienzle.desktop.contract.ContractStatus;
 
 public class MainLayoutController {
 
@@ -88,11 +86,21 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         contractFormController.setOnValidationChanged(this::updateEntryControls);
+        configureLanguageButtons();
+        listState.setAll(workflow.list());
+        configureStatusFilter();
+        configureContractList();
+        selectInitialContract();
+    }
+
+    private void configureLanguageButtons() {
         germanButton.setGraphic(FlagIcons.germany());
         germanButton.setTooltip(new Tooltip(I18n.get("language.de")));
         englishButton.setGraphic(FlagIcons.unitedKingdom());
         englishButton.setTooltip(new Tooltip(I18n.get("language.en")));
-        listState.setAll(workflow.list());
+    }
+
+    private void configureStatusFilter() {
         statusFilter.setItems(FXCollections.observableArrayList(StatusFilter.values()));
         statusFilter.setConverter(new StringConverter<>() {
             @Override
@@ -107,7 +115,9 @@ public class MainLayoutController {
         });
         statusFilter.valueProperty().addListener((obs, oldValue, filter) -> applyFilter(filter));
         statusFilter.setValue(StatusFilter.ALL);
+    }
 
+    private void configureContractList() {
         contractList.setItems(listState.visibleEntries());
         contractList.setCellFactory(listView -> new ListCell<>() {
             @Override
@@ -121,12 +131,14 @@ public class MainLayoutController {
                 selectEntry(entry);
             }
         });
+    }
 
+    private void selectInitialContract() {
         if (listState.isEmpty()) {
             startNewContract();
-        } else {
-            contractList.getSelectionModel().selectFirst();
+            return;
         }
+        contractList.getSelectionModel().selectFirst();
     }
 
     private void applyFilter(StatusFilter filter) {
@@ -188,8 +200,7 @@ public class MainLayoutController {
         if (!listState.hasCurrentEntry()) {
             return;
         }
-        FileChooser chooser = packageFlow.createChooser(I18n.get("package.export.title"),
-                listState.currentEntry().contract().name().isBlank() ? "contract.leasepack" : listState.currentEntry().contract().name() + ".leasepack");
+        FileChooser chooser = PackageDialogSupport.buildChooser(I18n.get("package.export.title"), exportFileName());
         java.io.File file = chooser.showSaveDialog(contractList.getScene().getWindow());
         if (file == null) {
             return;
@@ -197,9 +208,14 @@ public class MainLayoutController {
         runOnCurrent(() -> packageFlow.exportPackage(listState.currentEntry(), file.toPath()));
     }
 
+    private String exportFileName() {
+        String name = listState.currentEntry().contract().name();
+        return name.isBlank() ? "contract.leasepack" : name + ".leasepack";
+    }
+
     @FXML
     private void importContractPackage() {
-        java.io.File file = packageFlow.createChooser(I18n.get("package.import.title"), null)
+        java.io.File file = PackageDialogSupport.buildChooser(I18n.get("package.import.title"), null)
                 .showOpenDialog(contractList.getScene().getWindow());
         if (file == null) {
             return;
@@ -314,14 +330,30 @@ public class MainLayoutController {
     private void updateEntryControls() {
         ContractEntry currentEntry = listState.currentEntry();
         ContractStatus status = currentEntry == null ? null : currentEntry.status();
-        saveButton.setDisable((status != null && status != ContractStatus.DRAFT)
-                || contractFormController.hasValidationErrors());
-        createPdfButton.setDisable(status != null && status != ContractStatus.DRAFT && status != ContractStatus.PDF_CREATED);
-        openPdfButton.setDisable(status == null || status == ContractStatus.DRAFT);
-        awaitingButton.setDisable(status != ContractStatus.PDF_CREATED);
+
+        saveButton.setDisable(isLockedForEditing(status) || contractFormController.hasValidationErrors());
+        createPdfButton.setDisable(!canCreatePdf(status));
+        openPdfButton.setDisable(!canOpenPdf(status));
+        awaitingButton.setDisable(!isAwaitingSignatureEligible(status));
         deleteButton.setDisable(currentEntry == null);
         statusLabel.setText(currentEntry == null
                 ? I18n.get("status.new") : ContractStatusText.describe(currentEntry));
+    }
+
+    private boolean isLockedForEditing(ContractStatus status) {
+        return status != null && status != ContractStatus.DRAFT;
+    }
+
+    private boolean canCreatePdf(ContractStatus status) {
+        return status == null || status == ContractStatus.DRAFT || status == ContractStatus.PDF_CREATED;
+    }
+
+    private boolean canOpenPdf(ContractStatus status) {
+        return status != null && status != ContractStatus.DRAFT;
+    }
+
+    private boolean isAwaitingSignatureEligible(ContractStatus status) {
+        return status == ContractStatus.PDF_CREATED;
     }
 
 
@@ -359,24 +391,35 @@ public class MainLayoutController {
             VBox pages = new VBox(18.0);
             pages.setPadding(new Insets(20.0));
             pages.setStyle("-fx-background-color: #d8d8d8;");
-            for (javafx.scene.image.Image page : new LeaseContractPdfPreview().render(values)) {
-                ImageView pageView = new ImageView(page);
-                pageView.setPreserveRatio(true);
-                pageView.setFitWidth(790.0);
-                pages.getChildren().add(pageView);
-            }
+            pages.getChildren().addAll(renderPreviewPages(values));
 
             ScrollPane scrollPane = new ScrollPane(pages);
             scrollPane.setFitToWidth(true);
-            Stage previewStage = new Stage();
-            previewStage.setTitle(I18n.get("preview.title") + contractFormController.contractName());
-            previewStage.initModality(Modality.WINDOW_MODAL);
-            previewStage.initOwner(contractList.getScene().getWindow());
-            previewStage.setScene(new Scene(scrollPane, 900.0, 850.0));
+            Stage previewStage = createPreviewStage(scrollPane);
             previewStage.show();
         } catch (IOException | IllegalArgumentException exception) {
             feedback.showError(I18n.get("preview.error") + exception.getMessage());
         }
+    }
+
+    private java.util.List<ImageView> renderPreviewPages(Map<String, String> values) throws IOException {
+        return new LeaseContractPdfPreview().render(values).stream()
+                .map(page -> {
+                    ImageView pageView = new ImageView(page);
+                    pageView.setPreserveRatio(true);
+                    pageView.setFitWidth(790.0);
+                    return pageView;
+                })
+                .toList();
+    }
+
+    private Stage createPreviewStage(ScrollPane scrollPane) {
+        Stage previewStage = new Stage();
+        previewStage.setTitle(I18n.get("preview.title") + contractFormController.contractName());
+        previewStage.initModality(Modality.WINDOW_MODAL);
+        previewStage.initOwner(contractList.getScene().getWindow());
+        previewStage.setScene(new Scene(scrollPane, 900.0, 850.0));
+        return previewStage;
     }
 
 

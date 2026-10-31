@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.math.BigDecimal;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -37,45 +36,29 @@ class MainLayoutControllerTest {
 
     @Test
     void buildDetailRows_shouldContainSelectedContractDetails() {
-        LeaseContract contract = new LeaseContract(
-                "Pachtvertrag Muster",
-                "Müller GmbH",
-                "Berlin",
-                LocalDate.of(2025, 1, 1),
-                "Hans Weber",
-                "Berlin",
-                LocalDate.of(2025, 1, 1),
-                "123/4",
-                "Gemarkung Ost",
-                new BigDecimal("4800"),
-                "Ackerland",
-                "Erbpachtfläche für landwirtschaftliche Nutzung",
-                new BigDecimal("2350.00"),
-                "unbestimmte Dauer",
-                LocalDate.of(2025, 1, 1),
-                new BigDecimal("1900.00"),
-                true,
-                LocalDate.of(2027, 1, 1),
-                LocalDate.of(2025, 1, 1),
-                "Müller GmbH",
-                "Raiffeisenbank Ost",
-                "DE12 3456 7890 1234 5678 90",
-                "GENODEF1RFS",
-                "Amtsgericht Berlin",
-                "6 Monate",
-                MonthDay.of(10, 31),
-                "§ 4 Pachtverhältnis: 6 Monate Kündigungsfrist; § 5 Gartenjahr endet am 31.10.",
-                "§ 5: Kündigungsfrist 6 Monate, Gartenjahr endet am 31.10.",
-                "Musterstraße 1, 10115 Berlin",
-                "Beispielweg 2, 10117 Berlin",
-                null,
-                LocalDate.of(2026, 12, 31),
-                LocalDate.of(2025, 1, 1),
-                "jährlich",
-                "zum 3. Werktag des Jahres",
-                "eintausendneunhundert Euro",
-                "zweitausenddreihundertfünfzig Euro"
-        );
+        LeaseContract contract = TestContracts.sampleContract().toBuilder()
+                .name("Pachtvertrag Muster")
+                .lessor("Müller GmbH")
+                .tenant("Hans Weber")
+                .tenantDate(LocalDate.of(2025, 1, 1))
+                .parcelNumber("123/4")
+                .district("Gemarkung Ost")
+                .description("Erbpachtfläche für landwirtschaftliche Nutzung")
+                .leaseDuration("unbestimmte Dauer")
+                .firstRentDate(LocalDate.of(2025, 1, 1))
+                .rentRecipient("Müller GmbH")
+                .bankName("Raiffeisenbank Ost")
+                .iban("DE12 3456 7890 1234 5678 90")
+                .paragraphFour("§ 4 Pachtverhältnis: 6 Monate Kündigungsfrist; § 5 Gartenjahr endet am 31.10.")
+                .paragraphFive("§ 5: Kündigungsfrist 6 Monate, Gartenjahr endet am 31.10.")
+                .lessorAddress("Musterstraße 1, 10115 Berlin")
+                .tenantAddress("Beispielweg 2, 10117 Berlin")
+                .introductoryRentFrom(LocalDate.of(2026, 12, 31))
+                .introductoryRentUntil(LocalDate.of(2025, 1, 1))
+                .rentDueDay("zum 3. Werktag des Jahres")
+                .introductoryRentWords("eintausendneunhundert Euro")
+                .rentWords("zweitausenddreihundertfünfzig Euro")
+                .build();
 
         List<ContractDetailRow> rows = ContractDetailRows.of(contract);
 
@@ -110,7 +93,7 @@ class MainLayoutControllerTest {
     @Test
     void handleRestoredArchivedEntry_resetsFilterAndSelectsRestoredEntry() throws Exception {
         AppContext context = AppContext.create(tempDir);
-        ContractEntry restored = context.workflow().save(null, LeaseContract.builder().name("Restored").build());
+        ContractEntry restored = context.workflow().save(null, TestContracts.sampleContract("Restored"));
 
         MainLayoutController controller = new MainLayoutController(context);
         onFxThread(() -> {

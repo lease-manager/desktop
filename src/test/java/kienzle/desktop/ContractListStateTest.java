@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractStatus;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContractListStateTest {
+
+    @BeforeAll
+    static void initJavaFx() throws Exception {
+        JavaFxTestSupport.startToolkit();
+    }
 
     @Test
     void replaceEntry_updatesExistingEntryAndCurrentSelection() {
@@ -59,6 +65,29 @@ class ContractListStateTest {
     }
 
     @Test
+    void addEntry_replacesExistingEntryWithSameId() {
+        ContractListState state = new ContractListState();
+        ContractEntry first = contract("first", ContractStatus.DRAFT);
+        ContractEntry updated = contract("first-updated", ContractStatus.PDF_CREATED);
+        updated = new ContractEntry(
+                first.id(),
+                updated.contract(),
+                updated.status(),
+                updated.createdAt(),
+                updated.updatedAt(),
+                updated.documents(),
+                updated.signature()
+        );
+        state.setAll(FXCollections.observableArrayList(first));
+
+        state.addEntry(updated);
+
+        assertEquals(1, state.visibleEntries().size());
+        assertEquals("first-updated", state.visibleEntries().get(0).contract().name());
+        assertEquals(first.id(), state.visibleEntries().get(0).id());
+    }
+
+    @Test
     void removeCurrentEntry_removesSelectedEntryFromList() {
         ContractListState state = new ContractListState();
         ContractEntry first = contract("first", ContractStatus.DRAFT);
@@ -70,6 +99,7 @@ class ContractListStateTest {
 
         assertEquals(1, state.visibleEntries().size());
         assertEquals(second.id(), state.visibleEntries().get(0).id());
+        assertNull(state.currentEntry());
     }
 
     @Test
@@ -85,7 +115,7 @@ class ContractListStateTest {
     }
 
     @Test
-    void ensureVisible_clearsSelectionWhenEntryHiddenByFilter() {
+    void ensureVisible_clearsCurrentEntryWhenEntryHiddenByFilter() {
         ContractListState state = new ContractListState();
         ContractEntry signed = contract("signed", ContractStatus.SIGNED);
         state.setAll(FXCollections.observableArrayList(signed));
@@ -98,49 +128,49 @@ class ContractListStateTest {
 
         state.ensureVisible(list, signed);
 
-        assertNull(list.getSelectionModel().getSelectedItem());
+        assertNull(state.currentEntry());
     }
 
     private static ContractEntry contract(String name, ContractStatus status) {
-        LeaseContract contract = new LeaseContract(
-                name,
-                "Lessor",
-                "Berlin",
-                LocalDate.of(2025, 1, 1),
-                "Lessee",
-                "Berlin",
-                LocalDate.of(2025, 1, 2),
-                "123/45",
-                "Parcel",
-                new BigDecimal("3000"),
-                "Field",
-                "Description",
-                new BigDecimal("1500"),
-                "permanent",
-                LocalDate.of(2025, 1, 3),
-                new BigDecimal("900"),
-                true,
-                LocalDate.of(2027, 1, 1),
-                LocalDate.of(2025, 2, 1),
-                "Bank",
-                "IBAN",
-                "DE89 3704 0044 0532 0130 00",
-                "GENODEF1RFS",
-                "Court",
-                "6 months",
-                MonthDay.of(10, 31),
-                "Clause 1",
-                "Clause 2",
-                "Street 1",
-                "Street 2",
-                null,
-                LocalDate.of(2025, 1, 1),
-                LocalDate.of(2026, 12, 31),
-                "annual",
-                "first",
-                "word one",
-                "word two"
-        );
+        LeaseContract contract = LeaseContract.builder()
+                .name(name)
+                .lessor("Lessor")
+                .lessorLocation("Berlin")
+                .lessorDate(LocalDate.of(2025, 1, 1))
+                .tenant("Lessee")
+                .tenantLocation("Berlin")
+                .tenantDate(LocalDate.of(2025, 1, 2))
+                .parcelNumber("123/45")
+                .district("Parcel")
+                .size(new BigDecimal("3000"))
+                .type("Field")
+                .description("Description")
+                .rent(new BigDecimal("1500"))
+                .leaseDuration("permanent")
+                .startDate(LocalDate.of(2025, 1, 3))
+                .introductoryRent(new BigDecimal("900"))
+                .hasIntroductoryRent(true)
+                .rentIncreaseDate(LocalDate.of(2027, 1, 1))
+                .firstRentDate(LocalDate.of(2025, 2, 1))
+                .rentRecipient("Bank")
+                .bankName("IBAN")
+                .iban("DE89 3704 0044 0532 0130 00")
+                .bic("GENODEF1RFS")
+                .court("Court")
+                .terminationNotice("6 months")
+                .gardeningYearEnd(MonthDay.of(10, 31))
+                .paragraphFour("Clause 1")
+                .paragraphFive("Clause 2")
+                .lessorAddress("Street 1")
+                .tenantAddress("Street 2")
+                .leaseEndDate(null)
+                .introductoryRentFrom(LocalDate.of(2025, 1, 1))
+                .introductoryRentUntil(LocalDate.of(2026, 12, 31))
+                .rentDueInterval("annual")
+                .rentDueDay("first")
+                .introductoryRentWords("word one")
+                .rentWords("word two")
+                .build();
         return new ContractEntry(UUID.randomUUID(), contract, status, Instant.now(), Instant.now(), java.util.List.of(), null);
     }
 }

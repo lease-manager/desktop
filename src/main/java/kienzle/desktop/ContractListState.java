@@ -26,6 +26,9 @@ final class ContractListState {
 
     void setAll(List<ContractEntry> source) {
         entries.setAll(source);
+        if (currentEntry != null && entries.stream().noneMatch(entry -> entry.id().equals(currentEntry.id()))) {
+            currentEntry = null;
+        }
     }
 
     void applyFilter(StatusFilter filter) {
@@ -42,15 +45,24 @@ final class ContractListState {
     }
 
     void replaceEntry(ContractEntry saved) {
-        int index = indexOf(saved.id());
-        if (index >= 0) {
-            entries.set(index, saved);
+        if (saved == null) {
             return;
         }
-        entries.add(saved);
+        addEntry(saved);
     }
 
     void addEntry(ContractEntry entry) {
+        if (entry == null) {
+            return;
+        }
+        int index = indexOf(entry.id());
+        if (index >= 0) {
+            entries.set(index, entry);
+            if (currentEntry != null && currentEntry.id().equals(entry.id())) {
+                currentEntry = entry;
+            }
+            return;
+        }
         entries.add(entry);
     }
 
@@ -58,8 +70,12 @@ final class ContractListState {
         if (currentEntry == null) {
             return;
         }
-        UUID currentId = currentEntry.id();
-        entries.removeIf(entry -> entry.id().equals(currentId));
+        removeEntry(currentEntry.id());
+        currentEntry = null;
+    }
+
+    private void removeEntry(UUID entryId) {
+        entries.removeIf(entry -> entry.id().equals(entryId));
     }
 
     boolean isEmpty() {
@@ -86,8 +102,14 @@ final class ContractListState {
         if (entry == null) {
             return;
         }
-        if (!visibleEntries.contains(entry)) {
-            contractList.getSelectionModel().clearSelection();
+        boolean visible = visibleEntries.stream().anyMatch(visibleEntry -> visibleEntry.id().equals(entry.id()));
+        if (!visible) {
+            var selectionModel = contractList.getSelectionModel();
+            selectionModel.clearSelection();
+            selectionModel.select(-1);
+            if (currentEntry != null && currentEntry.id().equals(entry.id())) {
+                currentEntry = null;
+            }
             return;
         }
         contractList.getSelectionModel().select(entry);
