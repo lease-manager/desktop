@@ -137,13 +137,19 @@ public class MainLayoutController {
         statusFilter.setValue(StatusFilter.ALL);
     }
 
+    static String listText(ContractEntry entry) {
+        int parcels = entry.contract().parcels().size();
+        String suffix = parcels > 1 ? " · " + java.text.MessageFormat.format(I18n.get("parcels.count"), parcels) : "";
+        return entry.contract().name() + "\n" + ContractStatusText.describe(entry) + suffix;
+    }
+
     private void configureContractList() {
         contractList.setItems(listState.visibleEntries());
         contractList.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(ContractEntry entry, boolean empty) {
                 super.updateItem(entry, empty);
-                setText(empty || entry == null ? null : entry.contract().name() + "\n" + ContractStatusText.describe(entry));
+                setText(empty || entry == null ? null : listText(entry));
             }
         });
         contractList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, entry) -> {

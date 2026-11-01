@@ -3,6 +3,11 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Parcel list hint and signature boxes
+- The contract list shows "N parcels" when a contract has more than one parcel (`MainLayoutController.listText`).
+- PDF: signature area is drawn as two boxes ("Ort, Datum" + signature field) like the paper template;
+  empty cells of the parcel table stay blank.
+
 ## 2026-11-01 – Multiple parcels per contract
 - A contract now holds a list of parcels (`Parcel`: number, district, size, type, designation, rent);
   the form has a `ParcelEditor` (add/remove rows), the total rent is calculated and read-only.

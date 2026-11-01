@@ -31,7 +31,7 @@ public final class LeaseContractPdfPreview {
     private static final float PARCEL_HEADER_HEIGHT = 34f;
     private static final float PAGE_TOP = PAGE_HEIGHT - 58;
     private static final float PAGE_BOTTOM = 45f;
-    private static final float SIGNATURE_TOP = 130f;
+    private static final float SIGNATURE_TOP = 175f;
     private static final PDType1Font BODY_FONT = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
     private static final PDType1Font BOLD_FONT = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
 
@@ -508,16 +508,25 @@ public final class LeaseContractPdfPreview {
     }
 
     private void drawSignatures(PDPageContentStream content, Map<String, String> values) throws IOException {
-        float signatureY = 92;
-        float middle = PAGE_WIDTH / 2;
-        String lessorPlaceDate = signatureDate(value(values, "lessorSignatureDate"));
-        String tenantPlaceDate = signatureDate(value(values, "tenantSignatureDate"));
-        text(content, blankIfEmpty(lessorPlaceDate), LEFT, signatureY + 25, 8.0f, BODY_FONT);
-        text(content, blankIfEmpty(tenantPlaceDate), middle + 10, signatureY + 25, 8.0f, BODY_FONT);
-        line(content, LEFT, signatureY, middle - 20, signatureY);
-        line(content, middle + 10, signatureY, RIGHT, signatureY);
-        text(content, "Unterschrift Verpächter(in)", LEFT, signatureY - 13, 8.0f, BOLD_FONT);
-        text(content, "Unterschrift Pächter(in)", middle + 10, signatureY - 13, 8.0f, BOLD_FONT);
+        float bottom = 60;
+        float dateHeight = 28;
+        float boxHeight = 75;
+        float width = 190;
+        drawSignatureBox(content, LEFT, bottom, width, dateHeight, boxHeight,
+                signatureDate(value(values, "lessorSignatureDate")), "Unterschrift Verpächter(in)");
+        drawSignatureBox(content, RIGHT - width, bottom, width, dateHeight, boxHeight,
+                signatureDate(value(values, "tenantSignatureDate")), "Unterschrift Pächter(in)");
+    }
+
+    private void drawSignatureBox(PDPageContentStream content, float x, float bottom, float width,
+                                  float dateHeight, float boxHeight, String placeDate, String caption)
+            throws IOException {
+        float dateBottom = bottom + boxHeight;
+        rectangle(content, x, bottom, width, boxHeight);
+        rectangle(content, x, dateBottom, width, dateHeight);
+        text(content, "Ort, Datum", x + 4, dateBottom + dateHeight - 7, 6.5f, BODY_FONT);
+        text(content, placeDate, x + 4, dateBottom + 5, 9.0f, BODY_FONT);
+        text(content, caption, x + 5, bottom + boxHeight - 12, 7.5f, BOLD_FONT);
     }
 
     private String signatureDate(String value) {
