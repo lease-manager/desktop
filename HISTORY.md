@@ -3,6 +3,13 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Release package and user guide
+- `./gradlew packageApp` creates a self-contained app image with `jpackage` (53 MB, runtime bundled).
+  jlink rejects the automatic modules (PDFBox etc.), so JavaFX is the only module-path content and the
+  app runs from the class path. Smoke test on Linux: the image starts and keeps running without errors.
+- README: release package section and a short user guide. Windows/macOS images are not built or tested yet
+  (jpackage must run on each target OS).
+
 ## 2026-11-01 – Import robustness tests
 - New tests for `ZipLeasePackageCodec` and `SignedReturnCodec`: non-archive/empty files, missing manifest or
   PDF, malformed or wrongly typed manifest, path traversal entry names, oversized entries, round trip.

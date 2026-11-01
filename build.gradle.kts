@@ -71,3 +71,37 @@ tasks.named<JacocoReport>("jacocoTestReport") {
         csv.required.set(false)
     }
 }
+
+// Builds a self-contained application image (runtime included) with the JDK's jpackage:
+// ./gradlew packageApp  ->  build/jpackage/LeaseManager
+// jlink cannot handle the automatic modules (PDFBox, ZXing ...), so only JavaFX goes onto the module path
+// of the bundled runtime; the application and the other libraries run from the class path.
+val prepareJpackage by tasks.registering(Sync::class) {
+    dependsOn(tasks.named("installDist"))
+    val lib = layout.buildDirectory.dir("install/${project.name}/lib")
+    from(lib) { exclude("javafx-*") ; into("input") }
+    from(lib) { include("javafx-*") ; into("javafx") }
+    into(layout.buildDirectory.dir("jpackage-work"))
+}
+
+val packageApp by tasks.registering(Exec::class) {
+    group = "distribution"
+    description = "Creates a self-contained app image with jpackage"
+    dependsOn(prepareJpackage)
+    val launcher = javaToolchains.launcherFor(java.toolchain)
+    val work = layout.buildDirectory.dir("jpackage-work")
+    val outDir = layout.buildDirectory.dir("jpackage")
+    doFirst { delete(outDir) }
+    executable(launcher.map { it.metadata.installationPath.file("bin/jpackage").asFile.absolutePath }.get())
+    args(
+        "--type", "app-image",
+        "--name", "LeaseManager",
+        "--app-version", "1.0",
+        "--input", work.get().dir("input").asFile.absolutePath,
+        "--main-jar", "${project.name}-${project.version}.jar",
+        "--main-class", "kienzle.desktop.LeaseManagerApplication",
+        "--module-path", work.get().dir("javafx").asFile.absolutePath,
+        "--add-modules", "javafx.controls,javafx.fxml,java.logging,java.desktop,java.prefs",
+        "--dest", outDir.get().asFile.absolutePath
+    )
+}

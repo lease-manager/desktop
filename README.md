@@ -28,3 +28,21 @@ systems the application restricts the backup file to the current user.
 `.leasepack` signatures are currently verifiable only with the key in the same data directory.
 For that reason, lease packages are not yet transferable between installations. A full backup
 preserves the key so the restored copy retains its local package trust.
+
+## Release package
+
+`./gradlew packageApp` builds a self-contained app image (bundled Java runtime, no installed Java needed)
+in `build/jpackage/LeaseManager`; start it with `build/jpackage/LeaseManager/bin/LeaseManager`
+(`.exe` on Windows). It is built for the operating system it runs on. The image has been smoke-tested on Linux only.
+
+## Quick user guide
+
+1. **New contract:** fill in lessor, tenant, parcels (add rows with *Flurstück hinzufügen*), term, rent and
+   bank data; the total rent is calculated from the parcels. Save.
+2. **PDF:** open the preview, print it or save the PDF. It carries a QR code with the contract ID and hash.
+3. **Sign on paper:** print, sign, scan, then import the scan (the QR code identifies the contract; a warning
+   appears if the scan belongs to an older version). Signed contracts can only be archived, not deleted.
+4. **Sign on mobile:** export a `.leasepack`, sign it in the Android app and import the returned
+   `.leasesigned` file with *Mobil-Unterschrift importieren*.
+5. **Backup:** *Daten sichern / wiederherstellen* creates and restores `.leasebackup` files.
+
