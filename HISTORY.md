@@ -3,10 +3,14 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
-## 2026-11-01 – Parcel number must be numeric
-- Parcel number is validated: exactly one number per row, digits with optional "/digits" (`1080`, `1080/1`);
-  several numbers need several rows. Input is also filtered while typing/pasting (`InputFilters`: parcel number
-  accepts only digits and one "/", size/rent/intro rent only digits, "." and ","); the check stays for incomplete input like `1080/`. Size and rent must be numbers. Test `acceptsOnlyOneParcelNumberPerRow`.
+## 2026-11-01 – Parcel number validation and input filters
+- Parcel number: exactly one per row, digits with optional "/digits" (`1080`, `1080/1`); several numbers need several
+  rows. Size and rent must be numbers. Test `acceptsOnlyOneParcelNumberPerRow`.
+- `InputFilters` blocks invalid characters while typing/pasting: parcel number accepts only digits and one "/",
+  size/rent/intro rent only digits, "." and ",". Pasted text with invalid characters is rejected as a whole.
+  Test `blocksInvalidCharactersWhileTyping`.
+- The check stays for incomplete input like `1080/`; legacy values (e.g. `12a`) are kept on load and shown in red.
+- Not yet checked visually. Next: Android (pairing, v2 signing, Wi-Fi send).
 
 ## 2026-11-01 – Live validation messages
 - Invalid introductory rent now shows its message immediately below the field (`introRentErrorLabel`, i18n
