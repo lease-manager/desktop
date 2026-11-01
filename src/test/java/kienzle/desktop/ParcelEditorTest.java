@@ -59,6 +59,21 @@ class ParcelEditorTest {
     }
 
     @Test
+    void blocksInvalidCharactersWhileTyping() throws Exception {
+        onFx(() -> {
+            javafx.scene.control.TextField number = new javafx.scene.control.TextField();
+            InputFilters.parcelNumber(number);
+            "10a8/0/1 x".chars().forEach(c -> number.appendText(String.valueOf((char) c)));
+            assertEquals("108/01", number.getText());
+            javafx.scene.control.TextField rent = new javafx.scene.control.TextField();
+            InputFilters.decimal(rent);
+            "1.2a50,00€".chars().forEach(c -> rent.appendText(String.valueOf((char) c)));
+            assertEquals("1.250,00", rent.getText());
+            return null;
+        });
+    }
+
+    @Test
     void readsSeveralParcelsAndSumsTheRent() throws Exception {
         onFx(() -> {
             ParcelEditor editor = new ParcelEditor();

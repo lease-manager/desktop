@@ -219,6 +219,9 @@ public final class ParcelEditor extends VBox {
                 GridPane.setHgrow(field, Priority.ALWAYS);
                 fields.add(field);
             }
+            InputFilters.parcelNumber(fields.get(0));
+            InputFilters.decimal(fields.get(2));
+            InputFilters.decimal(fields.get(5));
             remove.setTooltip(new javafx.scene.control.Tooltip(I18n.get("parcel.remove")));
         }
 

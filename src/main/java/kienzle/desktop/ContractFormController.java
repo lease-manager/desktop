@@ -173,6 +173,7 @@ public class ContractFormController {
         ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
         ibanField.setTextFormatter(IbanFormatter.textFormatter());
         configureIbanValidation();
+        InputFilters.decimal(introRentField);
         configureIntroRentValidation();
         loadAmtsgerichte();
         courtComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldCourt, court) ->
