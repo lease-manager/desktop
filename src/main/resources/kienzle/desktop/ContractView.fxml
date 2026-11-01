@@ -35,6 +35,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#startNewContract" text="%contract.new" />
                         <Button mnemonicParsing="false" onAction="#showArchive" text="%contract.archive.view" />
+                        <Button mnemonicParsing="false" onAction="#duplicateContract" text="%contract.duplicate" />
                         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveContract" text="%contract.save" />
                         <Button fx:id="archiveButton" mnemonicParsing="false" onAction="#archiveContract" text="%contract.archive" />
                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteContract" text="%contract.delete" />

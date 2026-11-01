@@ -3,6 +3,13 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Parcel validation and duplicating a contract
+- `ParcelEditor.hasErrors()`: a filled row needs a parcel number and a valid rent (size must be a number if given).
+  Faulty cells get a red border, a hint appears below the table, and saving is blocked via `hasValidationErrors()`.
+- Button "Vertrag duplizieren": copies the current form (also unsaved edits) into a new draft named "Kopie von ...";
+  no entry is selected until it is saved. i18n DE/EN (`parcel.error`, `contract.duplicate`, `contract.copy.prefix`).
+- Test: `ParcelEditorTest.flagsFilledRowsWithoutNumberOrValidRent`. Not yet checked visually.
+
 ## 2026-11-01 – Receive signed contracts over Wi-Fi
 - `ReturnReceiver` (JDK `HttpServer`, module `jdk.httpserver`): `POST /return` with the raw `.leasesigned` file, port
   48765 (random port if taken). Each file goes through the normal import (`importSignedReturn`), so only returns signed

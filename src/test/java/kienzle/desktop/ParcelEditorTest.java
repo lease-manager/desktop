@@ -32,6 +32,23 @@ class ParcelEditorTest {
     }
 
     @Test
+    void flagsFilledRowsWithoutNumberOrValidRent() throws Exception {
+        onFx(() -> {
+            ParcelEditor editor = new ParcelEditor();
+            assertEquals(false, editor.hasErrors());
+            editor.setDrafts(List.of(new ParcelEditor.Draft("", "Flur", "", "", "", "10")));
+            assertEquals(true, editor.hasErrors());
+            editor.setDrafts(List.of(new ParcelEditor.Draft("1", "", "", "", "", "")));
+            assertEquals(true, editor.hasErrors());
+            editor.setDrafts(List.of(new ParcelEditor.Draft("1", "", "", "", "", "abc")));
+            assertEquals(true, editor.hasErrors());
+            editor.setDrafts(List.of(new ParcelEditor.Draft("1", "", "", "", "", "10,00")));
+            assertEquals(false, editor.hasErrors());
+            return null;
+        });
+    }
+
+    @Test
     void readsSeveralParcelsAndSumsTheRent() throws Exception {
         onFx(() -> {
             ParcelEditor editor = new ParcelEditor();

@@ -161,7 +161,10 @@ public class ContractFormController {
         });
         configureDatePickers();
         parcelBox.getChildren().add(parcelEditor);
-        parcelEditor.setOnChange(() -> rentField.setText(ContractFormats.money(parcelEditor.totalRent())));
+        parcelEditor.setOnChange(() -> {
+            rentField.setText(ContractFormats.money(parcelEditor.totalRent()));
+            onValidationChanged.run();
+        });
         ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
         ibanField.setTextFormatter(IbanFormatter.textFormatter());
         configureIbanValidation();
@@ -194,8 +197,12 @@ public class ContractFormController {
         this.onValidationChanged = Objects.requireNonNull(callback);
     }
 
+    void setContractName(String name) {
+        contractNameField.setText(name);
+    }
+
     public boolean hasValidationErrors() {
-        return ibanInvalid;
+        return ibanInvalid || parcelEditor.hasErrors();
     }
 
     public FormState snapshot() {

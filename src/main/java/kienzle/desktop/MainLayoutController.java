@@ -180,6 +180,20 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void duplicateContract() {
+        try {
+            LeaseContract copy = contractFormController.read();
+            contractList.getSelectionModel().clearSelection();
+            listState.clearCurrentEntry();
+            showContract(copy);
+            contractFormController.setContractName(I18n.get("contract.copy.prefix") + copy.name());
+            updateEntryControls();
+        } catch (IllegalArgumentException | IllegalStateException exception) {
+            feedback.showError(exception.getMessage());
+        }
+    }
+
+    @FXML
     private void saveContract() {
         if (contractFormController.hasValidationErrors()) {
             updateEntryControls();

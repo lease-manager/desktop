@@ -33,6 +33,7 @@ public final class ParcelEditor extends VBox {
 
     private final GridPane grid = new GridPane();
     private final List<Row> rows = new ArrayList<>();
+    private final Label errorLabel = new Label(I18n.get("parcel.error"));
     private Runnable onChange = () -> {
     };
 
@@ -54,16 +55,24 @@ public final class ParcelEditor extends VBox {
         addButton.setOnAction(event -> {
             addRow(Draft.empty());
             rebuild();
-            onChange.run();
+            changed();
         });
-        getChildren().addAll(grid, addButton);
+        errorLabel.setStyle("-fx-text-fill: #c0392b;");
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+        getChildren().addAll(grid, errorLabel, addButton);
         addRow(Draft.empty());
         rebuild();
     }
 
+    private void changed() {
+        markErrors();
+        onChange.run();
+    }
+
     public void setOnChange(Runnable callback) {
         this.onChange = callback;
-        callback.run();
+        changed();
     }
 
     public List<Draft> drafts() {
@@ -77,7 +86,7 @@ public final class ParcelEditor extends VBox {
             addRow(Draft.empty());
         }
         rebuild();
-        onChange.run();
+        changed();
     }
 
     public void setParcels(List<Parcel> parcels) {
@@ -112,6 +121,38 @@ public final class ParcelEditor extends VBox {
         return total;
     }
 
+    /** True if a filled row lacks a parcel number or a valid rent, or has an invalid size. */
+    public boolean hasErrors() {
+        return rows.stream().anyMatch(row -> rowInvalid(row.draft()));
+    }
+
+    private static boolean rowInvalid(Draft draft) {
+        if (draft.isBlank()) {
+            return false;
+        }
+        return draft.number().isBlank() || !validNumber(draft.rent(), true) || !validNumber(draft.size(), false);
+    }
+
+    private static boolean validNumber(String text, boolean required) {
+        try {
+            return ContractFormats.parseDecimal(text) != null || !required;
+        } catch (NumberFormatException exception) {
+            return false;
+        }
+    }
+
+    private void markErrors() {
+        for (Row row : rows) {
+            Draft draft = row.draft();
+            boolean blank = draft.isBlank();
+            row.mark(0, !blank && draft.number().isBlank());
+            row.mark(2, !blank && !validNumber(draft.size(), false));
+            row.mark(5, !blank && !validNumber(draft.rent(), true));
+        }
+        errorLabel.setVisible(hasErrors());
+        errorLabel.setManaged(hasErrors());
+    }
+
     int rowCount() {
         return rows.size();
     }
@@ -135,7 +176,7 @@ public final class ParcelEditor extends VBox {
             if (rows.size() > 1) {
                 rows.remove(row);
                 rebuild();
-                onChange.run();
+                changed();
             }
         });
         row.fields.forEach(field -> field.textProperty().addListener((observable, oldValue, newValue) ->
@@ -174,6 +215,10 @@ public final class ParcelEditor extends VBox {
                 fields.add(field);
             }
             remove.setTooltip(new javafx.scene.control.Tooltip(I18n.get("parcel.remove")));
+        }
+
+        void mark(int column, boolean error) {
+            fields.get(column).setStyle(error ? "-fx-border-color: #c0392b;" : "");
         }
 
         Draft draft() {
