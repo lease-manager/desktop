@@ -19,6 +19,7 @@ module kienzle.desktop {
     exports kienzle.desktop.contract;
     exports kienzle.desktop.pdf;
     exports kienzle.desktop.app;
+    opens kienzle.desktop.app to com.google.gson;
     opens kienzle.desktop.contract to com.google.gson;
     exports kienzle.customcontrols;
     opens kienzle.customcontrols to javafx.fxml;

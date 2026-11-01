@@ -10,6 +10,8 @@ Newest entries first. Overall concept: `docs/concept/README.md`.
   Both files live in the data directory and are therefore part of backups.
 - `PairingDialog` (button "Mobilgerät koppeln"): own QR code + fingerprint, accept the phone's code by pasting
   it or reading a QR image, list/remove paired devices. i18n DE/EN.
+- Fix: `module-info.java` now opens `kienzle.desktop.app` to Gson (the pairing dialog failed at runtime with
+  `InaccessibleObjectException`; unit tests run on the class path and did not catch it).
 - Not wired yet: packages and returns are still HMAC-only; Ed25519 signatures in `.leasepack`/`.leasesigned`,
   the Android side of pairing and the Wi-Fi sync follow (see `docs/concept/README.md`).
 - The dialog was compiled and the service unit-tested (`PairingServiceTest`), but the window itself was not
