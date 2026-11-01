@@ -97,8 +97,11 @@ class ContractPackageServiceTest {
         ContractPackageService.ContractPackage exported = serviceUnderTest.exportPackage(withPdf, archive);
 
         assertFalse(exported.manifest().packageSignature().isBlank());
+        assertEquals(ContractPackageService.PACKAGE_SCHEMA_V2, exported.manifest().schemaVersion());
+        assertFalse(exported.manifest().senderId().isBlank());
+        assertDoesNotThrow(() -> serviceUnderTest.readPackage(archive));
         assertEquals(exported.manifest().packageSignature(),
-                PackageSecurity.sign(dataDir, exported.manifest().withoutSignature()));
+                serviceUnderTest.readPackage(archive).manifest().packageSignature());
 
         ContractPackageService.LeasePackageManifest tampered = new ContractPackageService.LeasePackageManifest(
                 exported.manifest().schemaVersion(),
@@ -107,7 +110,8 @@ class ContractPackageServiceTest {
                 exported.manifest().originalPdfSha256(),
                 exported.manifest().contractName(),
                 exported.manifest().contractJson(),
-                exported.manifest().packageSignature() + "0");
+                exported.manifest().packageSignature() + "0",
+                exported.manifest().senderId());
         Path tamperedArchive = dir.resolve("tampered-signature.leasepack");
         new ZipLeasePackageCodec().writePackage(tamperedArchive, tampered, exported.pdfBytes());
 

@@ -22,7 +22,10 @@ import java.util.zip.ZipOutputStream;
 
 /** Reads and writes {@code .leasesigned} archives (mobile to desktop); see {@code shared/libs/leasepack}. */
 public final class SignedReturnCodec {
-    public static final String SCHEMA_VERSION = "leasesigned:v1";
+    /** Current format: signed by the Ed25519 key of the mobile device. */
+    public static final String SCHEMA_VERSION = "leasesigned:v2";
+    /** Legacy format without a signature; no longer accepted. */
+    public static final String LEGACY_SCHEMA_VERSION = "leasesigned:v1";
     private static final Gson GSON = new Gson();
     private static final String MANIFEST = "manifest.json";
     private static final String PDF = "signed.pdf";
@@ -37,8 +40,28 @@ public final class SignedReturnCodec {
             String signedPdfSha256,
             Instant signedAt,
             String signerName,
-            String deviceInfo
+            String deviceInfo,
+            String signerId,
+            String signature
     ) {
+        public Manifest {
+            signerId = signerId == null ? "" : signerId;
+            signature = signature == null ? "" : signature;
+        }
+
+        /** Manifest without signer data (legacy form). */
+        public Manifest(String schemaVersion, UUID contractId, String originalPdfSha256, String signedPdfSha256,
+                        Instant signedAt, String signerName, String deviceInfo) {
+            this(schemaVersion, contractId, originalPdfSha256, signedPdfSha256, signedAt, signerName, deviceInfo,
+                    "", "");
+        }
+
+        /** The text that the mobile device signs; missing optional values count as empty strings. */
+        public String signedPayload() {
+            return String.join("|", schemaVersion, contractId.toString(), originalPdfSha256, signedPdfSha256,
+                    signedAt.toString(), signerName == null ? "" : signerName,
+                    deviceInfo == null ? "" : deviceInfo, signerId);
+        }
     }
 
     public record SignedReturn(Manifest manifest, byte[] pdfBytes) {
@@ -53,6 +76,10 @@ public final class SignedReturnCodec {
         object.addProperty("signedAt", manifest.signedAt().toString());
         object.addProperty("signerName", manifest.signerName());
         object.addProperty("deviceInfo", manifest.deviceInfo());
+        if (!manifest.signerId().isBlank()) {
+            object.addProperty("signerId", manifest.signerId());
+            object.addProperty("signature", manifest.signature());
+        }
         try (OutputStream out = Files.newOutputStream(target);
              ZipOutputStream zip = new ZipOutputStream(out, StandardCharsets.UTF_8)) {
             zip.putNextEntry(new ZipEntry(MANIFEST));
@@ -114,7 +141,9 @@ public final class SignedReturnCodec {
                     string(o, "signedPdfSha256", true),
                     Instant.parse(string(o, "signedAt", true)),
                     string(o, "signerName", false),
-                    string(o, "deviceInfo", false));
+                    string(o, "deviceInfo", false),
+                    string(o, "signerId", false),
+                    string(o, "signature", false));
         } catch (JsonParseException | IllegalArgumentException | DateTimeException e) {
             throw new IOException("Signed return manifest is malformed", e);
         }

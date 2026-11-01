@@ -3,6 +3,19 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Ed25519 signatures in `.leasepack` and `.leasesigned` (step 2 of the trust model)
+- `.leasepack` is now `leasepack:v2`: new manifest field `senderId`, `packageSignature` is an Ed25519 signature
+  (`PairingService.sign`) over the payload incl. `senderId`. On import the sender must be a paired device or this
+  installation itself (`PackageSecurity.validate(dataDir, pairing, manifest)`). `leasepack:v1` (HMAC) is still read.
+- `.leasesigned` is now `leasesigned:v2` with `signerId` + `signature`. The desktop rejects returns from devices that are
+  not paired, with a changed manifest, or in the old unsigned v1 format (decision: only paired phones are trusted).
+  **The Android app still writes v1 and must be updated (pairing + signing) before returns can be imported again.**
+- `ContractPackageService` takes the `PairingService` (also `AppContext`); manifest records got the extra
+  field plus compatibility constructors. Tests: `PackageSigningTest` (paired/unpaired/forged/no sender),
+  extended `SignedReturnImportServiceTest` (unpaired, changed manifest, legacy v1).
+- Spec updated in `shared/libs/leasepack/README.md` (pairing code, payloads, fingerprint).
+- Next: Wi-Fi sync on the desktop, then the Android side (pairing, signing, sync client).
+
 ## 2026-11-01 – Device pairing (step 1 of the trust model)
 - `PairingService`: Ed25519 device identity (`device-identity.json`, owner-only permissions), pairing code
   `leasepair:v1` (id, name, public key; shown as QR), list of paired devices (`paired-devices.json`), sign/verify

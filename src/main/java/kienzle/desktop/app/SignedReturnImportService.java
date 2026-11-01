@@ -11,6 +11,7 @@ import kienzle.desktop.pdf.PdfStorage;
 import org.apache.pdfbox.Loader;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,11 +20,13 @@ import java.util.UUID;
 public class SignedReturnImportService {
     private final ContractService contracts;
     private final PdfStorage storage;
+    private final PairingService pairing;
     private final SignedReturnCodec codec = new SignedReturnCodec();
 
-    public SignedReturnImportService(ContractService contracts, PdfStorage storage) {
+    public SignedReturnImportService(ContractService contracts, PdfStorage storage, PairingService pairing) {
         this.contracts = contracts;
         this.storage = storage;
+        this.pairing = pairing;
     }
 
     public ContractEntry importSigned(Path file) throws IOException {
@@ -31,6 +34,11 @@ public class SignedReturnImportService {
         SignedReturnCodec.Manifest manifest = signed.manifest();
         if (!SignedReturnCodec.SCHEMA_VERSION.equals(manifest.schemaVersion())) {
             throw new IOException("Unsupported signed return schema: " + manifest.schemaVersion());
+        }
+        if (manifest.signerId().isBlank() || manifest.signature().isBlank()
+                || !pairing.verify(manifest.signerId(),
+                        manifest.signedPayload().getBytes(StandardCharsets.UTF_8), manifest.signature())) {
+            throw new IOException("Signed return does not come from a paired mobile device");
         }
         String actualHash = Hashing.sha256(signed.pdfBytes());
         if (!actualHash.equals(manifest.signedPdfSha256())) {

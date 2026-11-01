@@ -24,9 +24,10 @@ public record AppContext(ContractWorkflow workflow, ContractPackageService packa
         ContractService contracts = new ContractService(new JsonContractRepository(dataDir));
         ContractPdfService pdfs = new ContractPdfService(contracts, new LeaseContractPdfPreview(),
                 new PdfStamper(), new PdfStorage(dataDir));
-        ContractPackageService packages = new ContractPackageService(dataDir);
+        PairingService pairing = new PairingService(dataDir, deviceName());
+        ContractPackageService packages = new ContractPackageService(dataDir, new ZipLeasePackageCodec(), pairing);
         ContractWorkflow workflow = new ContractWorkflow(contracts, pdfs, packages);
-        return new AppContext(workflow, packages, new PairingService(dataDir, deviceName()));
+        return new AppContext(workflow, packages, pairing);
     }
 
     public static AppContext createDefault() {

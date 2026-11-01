@@ -112,10 +112,22 @@ public class ZipLeasePackageCodec implements LeasePackageCodec {
                     requiredString(object, "originalPdfSha256"),
                     requiredString(object, "contractName"),
                     requiredString(object, "contractJson"),
-                    requiredString(object, "packageSignature"));
+                    requiredString(object, "packageSignature"),
+                    optionalString(object, "senderId"));
         } catch (JsonParseException | IllegalArgumentException | DateTimeException e) {
             throw new IOException("Package manifest is malformed", e);
         }
+    }
+
+    private static String optionalString(JsonObject object, String name) throws IOException {
+        JsonElement element = object.get(name);
+        if (element == null || element.isJsonNull()) {
+            return "";
+        }
+        if (!element.isJsonPrimitive() || !element.getAsJsonPrimitive().isString()) {
+            throw new IOException("Package manifest field is not a string: " + name);
+        }
+        return element.getAsString();
     }
 
     private static String requiredString(JsonObject object, String name) throws IOException {
@@ -135,6 +147,9 @@ public class ZipLeasePackageCodec implements LeasePackageCodec {
         object.addProperty("contractName", manifest.contractName());
         object.addProperty("contractJson", manifest.contractJson());
         object.addProperty("packageSignature", manifest.packageSignature());
+        if (!manifest.senderId().isBlank()) {
+            object.addProperty("senderId", manifest.senderId());
+        }
         return GSON.toJson(object);
     }
 }

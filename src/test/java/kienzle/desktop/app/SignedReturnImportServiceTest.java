@@ -32,13 +32,17 @@ class SignedReturnImportServiceTest {
     private ContractService contracts;
     private ContractPackageService packages;
     private ContractEntry awaiting;
+    private PairingService phone;
     private final SignedReturnCodec codec = new SignedReturnCodec();
 
     @BeforeEach
     void setUp() throws IOException {
         Path dataDir = dir.resolve("data");
         contracts = new ContractService(new JsonContractRepository(dataDir));
-        packages = new ContractPackageService(dataDir);
+        PairingService desktopPairing = new PairingService(dataDir, "Desktop");
+        phone = new PairingService(dir.resolve("phone"), "Phone");
+        desktopPairing.acceptPairingCode(phone.ownPairingCode());
+        packages = new ContractPackageService(dataDir, new ZipLeasePackageCodec(), desktopPairing);
         ContractEntry entry = contracts.create(TestContracts.sampleContract());
         Path original = dataDir.resolve("documents").resolve(entry.id().toString()).resolve("original.pdf");
         Files.createDirectories(original.getParent());
@@ -58,9 +62,20 @@ class SignedReturnImportServiceTest {
     }
 
     private Path signedFile(String originalHash, byte[] signedPdf, String signedHash) throws IOException {
+        return signedFile(phone, originalHash, signedPdf, signedHash, "Max");
+    }
+
+    private Path signedFile(PairingService signer, String originalHash, byte[] signedPdf, String signedHash,
+                            String signedName) throws IOException {
+        SignedReturnCodec.Manifest unsigned = new SignedReturnCodec.Manifest(SignedReturnCodec.SCHEMA_VERSION,
+                awaiting.id(), originalHash, signedHash, Instant.parse("2026-11-01T10:00:00Z"), "Max", "Android",
+                signer.ownId(), "");
+        String signature = signer.sign(unsigned.signedPayload().getBytes(StandardCharsets.UTF_8));
+        SignedReturnCodec.Manifest manifest = new SignedReturnCodec.Manifest(unsigned.schemaVersion(),
+                unsigned.contractId(), unsigned.originalPdfSha256(), unsigned.signedPdfSha256(), unsigned.signedAt(),
+                signedName, unsigned.deviceInfo(), unsigned.signerId(), signature);
         Path file = dir.resolve("return-" + System.nanoTime() + ".leasesigned");
-        codec.write(file, new SignedReturnCodec.Manifest(SignedReturnCodec.SCHEMA_VERSION, awaiting.id(),
-                originalHash, signedHash, Instant.parse("2026-11-01T10:00:00Z"), "Max", "Android"), signedPdf);
+        codec.write(file, manifest, signedPdf);
         return file;
     }
 
@@ -111,6 +126,35 @@ class SignedReturnImportServiceTest {
         byte[] signed = pdf();
         Path file = signedFile(originalHash(), signed, Hashing.sha256(signed));
         packages.importSignedReturn(file);
+
+        assertThrows(IOException.class, () -> packages.importSignedReturn(file));
+    }
+
+    @Test
+    void returnFromUnpairedDevice_isRejected() throws Exception {
+        byte[] signed = pdf();
+        PairingService stranger = new PairingService(dir.resolve("stranger"), "Stranger");
+        Path file = signedFile(stranger, originalHash(), signed, Hashing.sha256(signed), "Max");
+
+        assertThrows(IOException.class, () -> packages.importSignedReturn(file));
+        assertEquals(ContractStatus.AWAITING_SIGNATURE, contracts.list().get(0).status());
+    }
+
+    @Test
+    void manifestChangedAfterSigning_isRejected() throws Exception {
+        byte[] signed = pdf();
+        Path file = signedFile(phone, originalHash(), signed, Hashing.sha256(signed), "Somebody else");
+
+        assertThrows(IOException.class, () -> packages.importSignedReturn(file));
+    }
+
+    @Test
+    void legacyUnsignedReturn_isRejected() throws Exception {
+        byte[] signed = pdf();
+        Path file = dir.resolve("legacy.leasesigned");
+        codec.write(file, new SignedReturnCodec.Manifest(SignedReturnCodec.LEGACY_SCHEMA_VERSION, awaiting.id(),
+                originalHash(), Hashing.sha256(signed), Instant.parse("2026-11-01T10:00:00Z"), "Max", "Android"),
+                signed);
 
         assertThrows(IOException.class, () -> packages.importSignedReturn(file));
     }

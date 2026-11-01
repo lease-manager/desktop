@@ -128,12 +128,34 @@ public final class PairingService {
     /** Checks a Base64 signature against the key of a paired device. Unknown devices never verify. */
     public synchronized boolean verify(String peerId, byte[] data, String signatureBase64) throws IOException {
         Peer peer = peers().stream().filter(candidate -> candidate.id().equals(peerId)).findFirst().orElse(null);
-        if (peer == null || signatureBase64 == null) {
+        return peer != null && verifyWithKey(peer.publicKey(), data, signatureBase64);
+    }
+
+    /** Like {@link #verify}, but also accepts signatures made by this installation itself (own exports). */
+    public synchronized boolean verifyPeerOrSelf(String signerId, byte[] data, String signatureBase64)
+            throws IOException {
+        Path file = dataDir.resolve(IDENTITY_FILE);
+        if (Files.exists(file)) {
+            Identity identity = identity();
+            if (identity.id().equals(signerId)) {
+                return verifyWithKey(identity.publicKey(), data, signatureBase64);
+            }
+        }
+        return verify(signerId, data, signatureBase64);
+    }
+
+    /** Identifier of this installation; it is part of the pairing code and names the signer of packages. */
+    public synchronized String ownId() throws IOException {
+        return identity().id();
+    }
+
+    private static boolean verifyWithKey(String publicKeyBase64, byte[] data, String signatureBase64) {
+        if (signatureBase64 == null) {
             return false;
         }
         try {
             Signature signature = Signature.getInstance("Ed25519");
-            signature.initVerify(publicKey(peer.publicKey()));
+            signature.initVerify(publicKey(publicKeyBase64));
             signature.update(data);
             return signature.verify(Base64.getDecoder().decode(signatureBase64));
         } catch (GeneralSecurityException | IllegalArgumentException e) {

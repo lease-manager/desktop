@@ -13,12 +13,16 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ContractPackageService {
+    /** Legacy format, signed with the local HMAC key. */
     public static final String PACKAGE_SCHEMA_VERSION = "leasepack:v1";
+    /** Current format, signed with the Ed25519 key of the sending device. */
+    public static final String PACKAGE_SCHEMA_V2 = "leasepack:v2";
 
     private final Path dataDir;
     private final LeasePackageExportService exportService;
     private final LeasePackageImportService importService;
     private final LeasePackageCodec codec;
+    private final PairingService pairing;
     private final SignedReturnImportService signedReturns;
 
     public ContractPackageService() {
@@ -30,14 +34,19 @@ public class ContractPackageService {
     }
 
     public ContractPackageService(Path dataDir, LeasePackageCodec codec) {
+        this(dataDir, codec, new PairingService(dataDir, "Desktop"));
+    }
+
+    public ContractPackageService(Path dataDir, LeasePackageCodec codec, PairingService pairing) {
         this.dataDir = dataDir.toAbsolutePath().normalize();
         this.codec = codec;
+        this.pairing = pairing;
         kienzle.desktop.contract.ContractService contracts =
                 new kienzle.desktop.contract.ContractService(new JsonContractRepository(dataDir));
-        this.signedReturns = new SignedReturnImportService(contracts, new kienzle.desktop.pdf.PdfStorage(this.dataDir));
-        this.exportService = new LeasePackageExportService(dataDir, codec);
+        this.signedReturns = new SignedReturnImportService(contracts, new kienzle.desktop.pdf.PdfStorage(this.dataDir), pairing);
+        this.exportService = new LeasePackageExportService(dataDir, codec, pairing);
         this.importService = new LeasePackageImportService(new kienzle.desktop.contract.ContractService(
-                new JsonContractRepository(dataDir)), dataDir, codec);
+                new JsonContractRepository(dataDir)), dataDir, codec, pairing);
     }
 
     public ContractPackage exportPackage(ContractEntry entry, Path targetFile) throws IOException {
@@ -47,7 +56,7 @@ public class ContractPackageService {
     public ContractPackage readPackage(Path packageFile) throws IOException {
         ContractPackage packageData = codec.readPackage(packageFile);
         packageData.validate();
-        PackageSecurity.validate(dataDir, packageData.manifest());
+        PackageSecurity.validate(dataDir, pairing, packageData.manifest());
         return packageData;
     }
 
@@ -77,7 +86,8 @@ public class ContractPackageService {
             String originalPdfSha256,
             String contractName,
             String contractJson,
-            String packageSignature
+            String packageSignature,
+            String senderId
     ) {
         public LeasePackageManifest {
             Objects.requireNonNull(schemaVersion, "schemaVersion");
@@ -87,6 +97,15 @@ public class ContractPackageService {
             Objects.requireNonNull(contractName, "contractName");
             Objects.requireNonNull(contractJson, "contractJson");
             packageSignature = packageSignature == null ? "" : packageSignature;
+            senderId = senderId == null ? "" : senderId;
+        }
+
+        /** Legacy (v1) manifest without a sender. */
+        public LeasePackageManifest(String schemaVersion, UUID contractId, Instant createdAt,
+                                    String originalPdfSha256, String contractName, String contractJson,
+                                    String packageSignature) {
+            this(schemaVersion, contractId, createdAt, originalPdfSha256, contractName, contractJson,
+                    packageSignature, "");
         }
 
         public LeaseContract contract() {
@@ -94,24 +113,26 @@ public class ContractPackageService {
         }
 
         public String signedPayload() {
-            return String.join("|",
+            String base = String.join("|",
                     schemaVersion,
                     contractId.toString(),
                     createdAt.toString(),
                     originalPdfSha256,
                     contractName,
                     contractJson);
+            return PACKAGE_SCHEMA_V2.equals(schemaVersion) ? base + "|" + senderId : base;
         }
 
         public LeasePackageManifest withoutSignature() {
             return new LeasePackageManifest(schemaVersion, contractId, createdAt, originalPdfSha256, contractName,
-                    contractJson, "");
+                    contractJson, "", senderId);
         }
     }
 
     public record ContractPackage(LeasePackageManifest manifest, byte[] pdfBytes) {
         public void validate() throws IOException {
-            if (!PACKAGE_SCHEMA_VERSION.equals(manifest.schemaVersion())) {
+            if (!PACKAGE_SCHEMA_VERSION.equals(manifest.schemaVersion())
+                    && !PACKAGE_SCHEMA_V2.equals(manifest.schemaVersion())) {
                 throw new IOException("Unsupported package schema: " + manifest.schemaVersion());
             }
             String actualHash = Hashing.sha256(pdfBytes);

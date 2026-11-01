@@ -15,6 +15,7 @@ public class LeasePackageImportService {
     private final Path dataDir;
     private final LeasePackageCodec codec;
     private final ContractService contracts;
+    private final PairingService pairing;
 
     public LeasePackageImportService(ContractService contracts) {
         this(contracts, JsonContractRepository.defaultDataDir(), new ZipLeasePackageCodec());
@@ -25,15 +26,21 @@ public class LeasePackageImportService {
     }
 
     public LeasePackageImportService(ContractService contracts, Path dataDir, LeasePackageCodec codec) {
+        this(contracts, dataDir, codec, new PairingService(dataDir, "Desktop"));
+    }
+
+    public LeasePackageImportService(ContractService contracts, Path dataDir, LeasePackageCodec codec,
+                                     PairingService pairing) {
         this.contracts = contracts;
         this.dataDir = dataDir.toAbsolutePath().normalize();
         this.codec = codec;
+        this.pairing = pairing;
     }
 
     public ContractEntry importPackage(Path packageFile) throws IOException {
         ContractPackageService.ContractPackage imported = codec.readPackage(packageFile);
         imported.validate();
-        PackageSecurity.validate(dataDir, imported.manifest());
+        PackageSecurity.validate(dataDir, pairing, imported.manifest());
 
         LeaseContract contract = imported.manifest().contract();
         ContractEntry created = contracts.create(contract);

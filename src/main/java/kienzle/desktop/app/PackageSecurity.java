@@ -43,6 +43,22 @@ public final class PackageSecurity {
         }
     }
 
+    /** v2 packages are checked against the Ed25519 key of a paired device (or this one); v1 against the local HMAC. */
+    public static void validate(Path dataDir, PairingService pairing,
+                                ContractPackageService.LeasePackageManifest manifest) throws IOException {
+        if (!ContractPackageService.PACKAGE_SCHEMA_V2.equals(manifest.schemaVersion())) {
+            validate(dataDir, manifest);
+            return;
+        }
+        if (manifest.senderId().isBlank()) {
+            throw new IOException("Package sender is missing");
+        }
+        byte[] payload = manifest.withoutSignature().signedPayload().getBytes(StandardCharsets.UTF_8);
+        if (!pairing.verifyPeerOrSelf(manifest.senderId(), payload, manifest.packageSignature())) {
+            throw new IOException("Package is not signed by a paired device (contract " + manifest.contractId() + ")");
+        }
+    }
+
     public static void validate(Path dataDir, ContractPackageService.LeasePackageManifest manifest) throws IOException {
         if (manifest.packageSignature() == null || manifest.packageSignature().isBlank()) {
             throw new IOException("Package signature is missing");

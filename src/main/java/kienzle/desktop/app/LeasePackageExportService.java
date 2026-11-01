@@ -13,6 +13,7 @@ import java.time.Instant;
 public class LeasePackageExportService {
     private final Path dataDir;
     private final LeasePackageCodec codec;
+    private final PairingService pairing;
 
     public LeasePackageExportService() {
         this(JsonContractRepository.defaultDataDir());
@@ -23,8 +24,13 @@ public class LeasePackageExportService {
     }
 
     public LeasePackageExportService(Path dataDir, LeasePackageCodec codec) {
+        this(dataDir, codec, new PairingService(dataDir, "Desktop"));
+    }
+
+    public LeasePackageExportService(Path dataDir, LeasePackageCodec codec, PairingService pairing) {
         this.dataDir = dataDir.toAbsolutePath().normalize();
         this.codec = codec;
+        this.pairing = pairing;
     }
 
     public ContractPackageService.ContractPackage exportPackage(ContractEntry entry, Path targetFile) throws IOException {
@@ -38,14 +44,15 @@ public class LeasePackageExportService {
         String sha256 = Hashing.sha256(pdfBytes);
 
         ContractPackageService.LeasePackageManifest manifest = new ContractPackageService.LeasePackageManifest(
-                ContractPackageService.PACKAGE_SCHEMA_VERSION,
+                ContractPackageService.PACKAGE_SCHEMA_V2,
                 entry.id(),
                 Instant.now(),
                 sha256,
                 entry.contract().name(),
                 LeasePackageSerializer.serialize(entry.contract()),
-                "");
-        String signature = PackageSecurity.sign(dataDir, manifest);
+                "",
+                pairing.ownId());
+        String signature = pairing.sign(manifest.signedPayload().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         ContractPackageService.LeasePackageManifest signedManifest = new ContractPackageService.LeasePackageManifest(
                 manifest.schemaVersion(),
                 manifest.contractId(),
@@ -53,7 +60,8 @@ public class LeasePackageExportService {
                 manifest.originalPdfSha256(),
                 manifest.contractName(),
                 manifest.contractJson(),
-                signature);
+                signature,
+                manifest.senderId());
 
         Files.createDirectories(targetFile.toAbsolutePath().getParent());
         codec.writePackage(targetFile, signedManifest, pdfBytes);
