@@ -3,6 +3,22 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Mobile return path (`.leasesigned`) and Android signing app
+
+- Specified the two transfer formats in `shared/libs/leasepack/README.md`: `.leasepack`
+  (desktop to mobile, unchanged) and the new `.leasesigned` (mobile to desktop: `manifest.json` with
+  `contractId`, `originalPdfSha256`, `signedPdfSha256`, `signedAt`, `signerName`, `deviceInfo`, plus `signed.pdf`).
+- Desktop: `SignedReturnCodec` (bounded ZIP reader/writer, no unexpected or duplicate entries) and
+  `SignedReturnImportService`. A return is accepted only for a known contract in `AWAITING_SIGNATURE`
+  whose stored original hash equals `originalPdfSha256`, with a matching, parseable signed PDF; it is
+  stored as `SIGNED_MOBILE`. New UI button "Import mobile signature". Tests: `SignedReturnImportServiceTest`.
+- Android (`mobile-app/android`): opens `.leasepack` (VIEW/SEND intent or file picker), checks the PDF hash,
+  renders pages with `PdfRenderer`, lets the user draw and place a signature, flattens the pages into a
+  new PDF and shares the `.leasesigned` file via `FileProvider`. Unit tests cover reading/writing.
+- Known limits: the mobile app only verifies integrity, not authenticity (the package HMAC key is
+  local to one desktop installation). The signed PDF is flattened (original PDF metadata is lost; the QR
+  code stays visible). Not yet tested on a device or emulator.
+
 ## 2026-11-01 – Android app skeleton created
 
 - Created the Android Studio project (Empty Views Activity, Kotlin, Kotlin DSL, minSdk 26) in

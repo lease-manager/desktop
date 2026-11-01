@@ -69,6 +69,7 @@
                               <Button fx:id="awaitingButton" mnemonicParsing="false" onAction="#markAwaitingSignature" text="%pdf.awaiting" />
                               <Button fx:id="revokeAwaitingButton" mnemonicParsing="false" onAction="#revokeAwaitingSignature" text="%pdf.awaiting.revoke" />
                               <Button mnemonicParsing="false" onAction="#importScan" text="%scan.import" />
+                              <Button mnemonicParsing="false" onAction="#importSignedReturn" text="%signed.import" />
                            </children>
                         </HBox>
 

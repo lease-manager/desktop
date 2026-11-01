@@ -24,4 +24,8 @@ public final class ContractPackageUseCase {
     public ContractPackageService.ContractPackage readPackage(Path packageFile) throws IOException {
         return packages.readPackage(packageFile);
     }
+
+    public ContractEntry importSignedReturn(Path file) throws IOException {
+        return packages.importSignedReturn(file);
+    }
 }

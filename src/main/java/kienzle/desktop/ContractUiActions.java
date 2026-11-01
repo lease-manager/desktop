@@ -54,6 +54,10 @@ public final class ContractUiActions {
         return workflow.attachScan(target, scan);
     }
 
+    public ContractEntry importSignedReturn(Path file) throws IOException {
+        return workflow.importSignedReturn(file);
+    }
+
     public List<ContractEntry> awaitingSignature() {
         return workflow.list().stream()
                 .filter(entry -> entry.status() == ContractStatus.AWAITING_SIGNATURE)

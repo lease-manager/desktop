@@ -19,6 +19,7 @@ public class ContractPackageService {
     private final LeasePackageExportService exportService;
     private final LeasePackageImportService importService;
     private final LeasePackageCodec codec;
+    private final SignedReturnImportService signedReturns;
 
     public ContractPackageService() {
         this(JsonContractRepository.defaultDataDir());
@@ -31,6 +32,9 @@ public class ContractPackageService {
     public ContractPackageService(Path dataDir, LeasePackageCodec codec) {
         this.dataDir = dataDir.toAbsolutePath().normalize();
         this.codec = codec;
+        kienzle.desktop.contract.ContractService contracts =
+                new kienzle.desktop.contract.ContractService(new JsonContractRepository(dataDir));
+        this.signedReturns = new SignedReturnImportService(contracts, new kienzle.desktop.pdf.PdfStorage(this.dataDir));
         this.exportService = new LeasePackageExportService(dataDir, codec);
         this.importService = new LeasePackageImportService(new kienzle.desktop.contract.ContractService(
                 new JsonContractRepository(dataDir)), dataDir, codec);
@@ -49,6 +53,10 @@ public class ContractPackageService {
 
     public ContractEntry importPackage(Path packageFile) throws IOException {
         return importService.importPackage(packageFile);
+    }
+
+    public ContractEntry importSignedReturn(Path file) throws IOException {
+        return signedReturns.importSigned(file);
     }
 
     public Path dataDir() {

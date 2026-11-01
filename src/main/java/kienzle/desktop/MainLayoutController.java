@@ -304,6 +304,18 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void importSignedReturn() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(I18n.get("signed.import.title"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("signed.filetype"), "*.leasesigned"));
+        java.io.File file = chooser.showOpenDialog(contractList.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        runInBackground(() -> uiActions.importSignedReturn(file.toPath()), this::revealEntry);
+    }
+
+    @FXML
     private void exportContractPackage() {
         if (!listState.hasCurrentEntry()) {
             return;
