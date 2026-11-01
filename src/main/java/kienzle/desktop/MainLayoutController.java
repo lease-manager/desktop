@@ -15,11 +15,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import kienzle.desktop.app.AppContext;
+import kienzle.desktop.app.BackupService;
 import kienzle.desktop.app.ContractWorkflow;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractStatus;
@@ -29,6 +31,8 @@ import kienzle.desktop.pdf.ScanImportService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -337,6 +341,120 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void manageBackup() {
+        List<String> choices = List.of(I18n.get("backup.create"), I18n.get("backup.restore"));
+        feedback.choose(I18n.get("backup.title"), I18n.get("backup.choice"), choices)
+                .ifPresent(choice -> {
+                    if (choice == 0) {
+                        createBackup();
+                    } else {
+                        restoreBackup();
+                    }
+                });
+    }
+
+    private void createBackup() {
+        if (!feedback.confirm(I18n.get("backup.export.confirm"))) {
+            return;
+        }
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(I18n.get("backup.export.title"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                I18n.get("backup.filetype"), "*" + BackupService.BACKUP_EXTENSION));
+        chooser.setInitialFileName("lease-manager-backup-"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"))
+                + BackupService.BACKUP_EXTENSION);
+        java.io.File file = chooser.showSaveDialog(contractList.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+        Path target = file.toPath();
+        if (!target.getFileName().toString().toLowerCase(Locale.ROOT)
+                .endsWith(BackupService.BACKUP_EXTENSION)) {
+            target = target.resolveSibling(target.getFileName() + BackupService.BACKUP_EXTENSION);
+        }
+        Path backupTarget = target;
+        runInBackground(
+                () -> new BackupService(context.dataDir()).createBackup(backupTarget),
+                created -> feedback.showInfo(I18n.get("backup.export.success") + "\n" + created));
+    }
+
+    private void restoreBackup() {
+        if (!feedback.confirm(I18n.get("backup.restore.confirm"))) {
+            return;
+        }
+        FileChooser backupChooser = new FileChooser();
+        backupChooser.setTitle(I18n.get("backup.import.title"));
+        backupChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                I18n.get("backup.filetype"), "*" + BackupService.BACKUP_EXTENSION));
+        java.io.File backupFile = backupChooser.showOpenDialog(contractList.getScene().getWindow());
+        if (backupFile == null) {
+            return;
+        }
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(I18n.get("backup.directory.title"));
+        Path home = Path.of(System.getProperty("user.home"));
+        if (Files.isDirectory(home)) {
+            directoryChooser.setInitialDirectory(home.toFile());
+        }
+        java.io.File destination = directoryChooser.showDialog(contractList.getScene().getWindow());
+        if (destination == null) {
+            return;
+        }
+        runInBackground(
+                () -> new BackupService(context.dataDir())
+                        .restoreToNewDirectory(backupFile.toPath(), destination.toPath()),
+                this::activateRestoredData);
+    }
+
+    private void activateRestoredData(Path restoredDataDir) throws IOException {
+        I18n.loadFromConfig(restoredDataDir.resolve("config.properties"));
+        Scene restoredScene = new Scene(ViewLoader.load(AppContext.create(restoredDataDir)).root(), 1100, 700);
+        Stage stage = (Stage) contractList.getScene().getWindow();
+        stage.setTitle(I18n.get("app.title"));
+        stage.setScene(restoredScene);
+        feedback.showInfo(I18n.get("backup.restore.success") + "\n" + restoredDataDir);
+    }
+
+    private interface BackgroundAction<T> {
+        T run() throws IOException;
+    }
+
+    private interface BackgroundSuccess<T> {
+        void accept(T value) throws IOException;
+    }
+
+    private <T> void runInBackground(BackgroundAction<T> action, BackgroundSuccess<T> onSuccess) {
+        Scene scene = contractList.getScene();
+        scene.getRoot().setDisable(true);
+        scene.setCursor(Cursor.WAIT);
+        Task<T> task = new Task<>() {
+            @Override
+            protected T call() throws Exception {
+                return action.run();
+            }
+        };
+        task.setOnSucceeded(event -> {
+            scene.getRoot().setDisable(false);
+            scene.setCursor(Cursor.DEFAULT);
+            try {
+                onSuccess.accept(task.getValue());
+            } catch (IOException | RuntimeException exception) {
+                feedback.showError(exception.getMessage());
+            }
+        });
+        task.setOnFailed(event -> {
+            scene.getRoot().setDisable(false);
+            scene.setCursor(Cursor.DEFAULT);
+            feedback.showError(task.getException().getMessage());
+        });
+        Thread worker = new Thread(task, "backup-operation");
+        worker.setDaemon(true);
+        worker.start();
+    }
+
+    @FXML
     private void createPdf() {
         runOnCurrent(() -> show(uiActions.createPdf(listState.currentEntry(), contractFormController.read())));
     }
@@ -528,11 +646,30 @@ public class MainLayoutController {
 
     private void switchLanguage(Locale locale) {
         ContractViewUiSupport.switchLanguage(context, contractList.getScene(),
-                locale, contractList.getSelectionModel().getSelectedIndex());
+                locale, contractList.getSelectionModel().getSelectedIndex(), statusFilter.getValue(),
+                contractFormController.snapshot());
     }
 
     public void selectListIndex(int index) {
         contractList.getSelectionModel().select(Math.max(index, 0));
+    }
+
+    void restoreSelection(int selectedIndex, StatusFilter filter) {
+        statusFilter.setValue(filter == null ? StatusFilter.ALL : filter);
+        if (selectedIndex < 0 || selectedIndex >= contractList.getItems().size()) {
+            contractList.getSelectionModel().clearSelection();
+            listState.clearCurrentEntry();
+            return;
+        }
+        contractList.getSelectionModel().select(selectedIndex);
+    }
+
+    void restoreFormState(ContractFormController.FormState state) {
+        contractFormController.restore(state);
+    }
+
+    ContractFormController.FormState snapshotFormState() {
+        return contractFormController.snapshot();
     }
 
     @FXML

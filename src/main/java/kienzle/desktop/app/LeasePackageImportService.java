@@ -33,11 +33,21 @@ public class LeasePackageImportService {
     public ContractEntry importPackage(Path packageFile) throws IOException {
         ContractPackageService.ContractPackage imported = codec.readPackage(packageFile);
         imported.validate();
+        PackageSecurity.validate(dataDir, imported.manifest());
 
         LeaseContract contract = imported.manifest().contract();
         ContractEntry created = contracts.create(contract);
-        String relativePdfPath = storeImportedPdf(created.id(), imported.pdfBytes());
-        return contracts.registerOriginalPdf(created.id(), relativePdfPath, Hashing.sha256(imported.pdfBytes()));
+        try {
+            String relativePdfPath = storeImportedPdf(created.id(), imported.pdfBytes());
+            return contracts.registerOriginalPdf(created.id(), relativePdfPath, Hashing.sha256(imported.pdfBytes()));
+        } catch (IOException | RuntimeException failure) {
+            try {
+                contracts.delete(created.id());
+            } catch (RuntimeException cleanupFailure) {
+                failure.addSuppressed(cleanupFailure);
+            }
+            throw failure;
+        }
     }
 
     public String storeImportedPdf(UUID contractId, byte[] pdfBytes) throws IOException {

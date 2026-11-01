@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.List;
 import java.util.Objects;
 
 /** The contract input form: configures the controls, reads them into a {@link LeaseContract} and fills them from one. */
@@ -197,6 +198,66 @@ public class ContractFormController {
 
     public boolean hasValidationErrors() {
         return ibanInvalid;
+    }
+
+    public FormState snapshot() {
+        List<String> textValues = textControls().stream().map(TextInputControl::getText).toList();
+        List<DatePickerState> dates = datePickers().stream()
+                .map(picker -> new DatePickerState(picker.getValue(), picker.getEditor().getText()))
+                .toList();
+        return new FormState(textValues, dates,
+                courtComboBox.getSelectionModel().getSelectedIndex(),
+                durationField.getSelectionModel().getSelectedIndex(),
+                hasIntroductoryRentCheckBox.isSelected());
+    }
+
+    public void restore(FormState state) {
+        List<TextInputControl> textControls = textControls();
+        if (state.textValues().size() != textControls.size()
+                || state.dates().size() != datePickers().size()) {
+            throw new IllegalArgumentException("Form state does not match the current contract form");
+        }
+        for (int index = 0; index < textControls.size(); index++) {
+            textControls.get(index).setText(state.textValues().get(index));
+        }
+        List<DatePicker> datePickers = datePickers();
+        for (int index = 0; index < datePickers.size(); index++) {
+            DatePicker picker = datePickers.get(index);
+            DatePickerState date = state.dates().get(index);
+            picker.setValue(date.value());
+            picker.getEditor().setText(date.editorText());
+        }
+        courtComboBox.getSelectionModel().select(state.courtIndex());
+        durationField.getSelectionModel().select(state.durationIndex());
+        hasIntroductoryRentCheckBox.setSelected(state.hasIntroductoryRent());
+        updateIbanValidation();
+        setIntroductoryRentFieldsVisible(state.hasIntroductoryRent());
+        updateLeaseEndDateVisibility(durationField.getValue());
+    }
+
+    private List<TextInputControl> textControls() {
+        return List.of(contractNameField, textField, lessorAddressField, lessorLocationField, tenantField,
+                tenantAddressField, tenantLocationField, parcelField, districtField, noticeField,
+                paragraphFourArea, paragraphFiveArea, descriptionArea, sizeField, typeField, rentField,
+                introRentField, introductoryRentWordsField, rentWordsField, rentDueIntervalField,
+                rentDueDayField, recipientField, bankField, ibanField, bicField);
+    }
+
+    private List<DatePicker> datePickers() {
+        return List.of(lessorDateField, tenantDateField, gardeningYearField, startDateField,
+                introductoryRentFromField, firstRentDateField, leaseEndDateField,
+                introductoryRentUntilField, rentIncreaseDateField);
+    }
+
+    public record FormState(List<String> textValues, List<DatePickerState> dates, int courtIndex,
+                            int durationIndex, boolean hasIntroductoryRent) {
+        public FormState {
+            textValues = List.copyOf(textValues);
+            dates = List.copyOf(dates);
+        }
+    }
+
+    public record DatePickerState(LocalDate value, String editorText) {
     }
 
     public LeaseContract read() {

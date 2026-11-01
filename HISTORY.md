@@ -3,6 +3,56 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Android app skeleton created
+
+- Created the Android Studio project (Empty Views Activity, Kotlin, Kotlin DSL, minSdk 26) in
+  `mobile-app/android` (own repository `mobile-app-android`); namespace/application ID
+  `kienzle.leasemanager.android`.
+- Planned next steps: `.leasepack` intent filter and import, PDF display via `PdfRenderer`,
+  signature drawing view, returning the signed PDF via share sheet.
+- Open prerequisite: shared `.leasepack` schema in `shared/` and a cross-device trust model; the current
+  HMAC key is local to one desktop installation, so the mobile app cannot verify packages yet.
+
+## 2026-11-01 – Preserve unsaved input when changing language
+
+- Language switching snapshots and restores every contract form field, including raw text, date picker
+  values/editor text, checkboxes and combo-box selections. Invalid or partially typed values are retained
+  instead of being parsed or discarded during the view reload.
+- The selected contract and active status filter are restored separately; starting a new unsaved contract
+  remains a new form rather than selecting a persisted contract after the reload.
+- The active data directory continues to own the language configuration.
+- Tests cover form-state round-tripping with invalid numeric/date text and language configuration.
+
+## 2026-11-01 – Full data backup and isolated restore
+
+- Added `.leasebackup` creation for the entire local data directory, including active and archived
+  contract JSON, documents, configuration and the local package-signing key.
+- Backup archives are not encrypted, carry a SHA-256 manifest and are written privately on POSIX
+  systems. Restore checks every file hash and rejects unexpected entries, duplicate paths, traversal
+  paths, symlinks in the source data, and files or archives exceeding configured limits.
+- Restoring extracts into a newly created data directory, then switches the running app to that copy;
+  the current on-disk data is not overwritten. Failed restores clean up their staging directory.
+- Added a bilingual backup/restore UI with warnings that backups contain sensitive data and unsaved
+  form input is not included. Backup work runs off the JavaFX UI thread.
+- Tests cover full data round-trip, preserved original data, path traversal and integrity failures.
+
+## 2026-11-01 – Local package trust and bounded import
+
+- Package signatures now use a cryptographically random 256-bit HMAC key stored per data directory;
+  POSIX filesystems restrict it to owner read/write. Verification requires an existing local key and
+  compares signatures in constant time.
+- The previous predictable key is detected and rotated. Packages signed with that legacy key are
+  rejected after the upgrade because their authenticity could not be trusted.
+- Import now performs the same package-signature validation as package preview before creating a
+  contract. If saving the imported PDF or registering it fails, the newly created contract is removed.
+- ZIP import rejects duplicate/unexpected entries, malformed manifests and oversized archives,
+  manifests (1 MiB) or PDFs (50 MiB). Manifest JSON is emitted and parsed through Gson.
+- **Trust boundary:** packages are intentionally verifiable only in the same data directory. They
+  cannot yet be exchanged between installations; mobile transfer requires a separate shared trust
+  model and the platform-neutral schema in `shared/`.
+- Tests: package security, legacy-key rotation, invalid-signature import rejection, and malformed and
+  unexpected ZIP entries. Duplicate ZIP entries are rejected by the parser.
+
 ## 2026-10-31 – Live header
 
 - The header above the form (contract name and "Lessor: …") now follows the input fields while typing
@@ -183,7 +233,8 @@ Newest entries first. Overall concept: `docs/concept/README.md`.
 - Scan import (step 3) is implemented, see above; real-world test with a real scan is still pending.
 - Print function (path B step 1): implemented as a JavaFX print dialog, see above; real-world test pending.
 - Hash comparison of the scan with the original: done (see "Hash check on scan import").
-- Step 4: `.leasepack` export/import (schema in `shared/`), then mobile apps.
+- `.leasepack` export/import exists in the desktop app. The shared schema and a trust model for
+  exchanging packages between installations are still open before mobile transfer.
 - Switching the language reloads the view → unsaved input is lost.
 - Known: The start folder `~/.lease-manager` is created on first start; the list is empty at first.
 - Legal clarification needed: written form § 585a BGB (path B possibly the standard case).

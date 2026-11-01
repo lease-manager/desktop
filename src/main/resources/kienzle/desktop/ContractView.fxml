@@ -42,6 +42,7 @@
                         <Button mnemonicParsing="false" onAction="#importContractPackage" text="%package.import" />
                      </children>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#manageBackup" text="%backup.manage" />
                </children>
             </VBox>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER">

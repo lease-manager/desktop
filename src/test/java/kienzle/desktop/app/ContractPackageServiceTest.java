@@ -4,11 +4,13 @@ import kienzle.desktop.LeaseContract;
 import kienzle.desktop.TestContracts;
 import kienzle.desktop.contract.ContractEntry;
 import kienzle.desktop.contract.ContractService;
+import kienzle.desktop.contract.ContractStatus;
 import kienzle.desktop.contract.JsonContractRepository;
 import kienzle.desktop.pdf.Hashing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,6 +72,11 @@ class ContractPackageServiceTest {
         ContractPackageService.ContractPackage reloaded = serviceUnderTest.readPackage(archive);
         assertEquals(exported.manifest(), reloaded.manifest());
         assertArrayEquals(pdfBytes, reloaded.pdfBytes());
+
+        ContractEntry imported = serviceUnderTest.importPackage(archive);
+        assertEquals(ContractStatus.PDF_CREATED, imported.status());
+        assertNotEquals(entry.id(), imported.id());
+        assertTrue(Files.exists(dataDir.resolve(imported.documents().get(0).path())));
     }
 
     @Test
@@ -106,7 +113,10 @@ class ContractPackageServiceTest {
         Path tamperedArchive = dir.resolve("tampered-signature.leasepack");
         new ZipLeasePackageCodec().writePackage(tamperedArchive, tampered, exported.pdfBytes());
 
-        assertThrows(Exception.class, () -> serviceUnderTest.readPackage(tamperedArchive));
+        assertThrows(IOException.class, () -> serviceUnderTest.readPackage(tamperedArchive));
+        assertThrows(IOException.class, () -> serviceUnderTest.importPackage(tamperedArchive));
+        assertEquals(1, new JsonContractRepository(dataDir).findAll().size(),
+                "A package with an invalid signature must not create a contract");
     }
 
     @Test
