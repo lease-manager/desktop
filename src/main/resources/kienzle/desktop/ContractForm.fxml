@@ -112,9 +112,10 @@
                                                 <TextField fx:id="introductoryRentWordsField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <Label text="%rent.regular.from" GridPane.rowIndex="4" />
                                                 <DatePicker fx:id="rentIncreaseDateField" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Label fx:id="introRentErrorLabel" style="-fx-text-fill: #b00020; -fx-font-size: 11px;" text="%error.number.inline" visible="false" managed="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                              </children>
                                              <rowConstraints>
-                                                <RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints />
+                                                <RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints /><RowConstraints />
                                              </rowConstraints>
                                           </GridPane>
                                        </children>

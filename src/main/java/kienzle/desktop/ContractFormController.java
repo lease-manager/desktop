@@ -120,6 +120,11 @@ public class ContractFormController {
     private Label ibanErrorLabel;
 
     @FXML
+    private Label introRentErrorLabel;
+
+    private boolean introRentInvalid;
+
+    @FXML
     private TextField bicField;
 
     @FXML
@@ -168,6 +173,7 @@ public class ContractFormController {
         ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
         ibanField.setTextFormatter(IbanFormatter.textFormatter());
         configureIbanValidation();
+        configureIntroRentValidation();
         loadAmtsgerichte();
         courtComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldCourt, court) ->
             courtAddressLabel.setText(court == null ? "" : court.anschrift()));
@@ -202,7 +208,7 @@ public class ContractFormController {
     }
 
     public boolean hasValidationErrors() {
-        return ibanInvalid || parcelEditor.hasErrors();
+        return ibanInvalid || introRentInvalid || parcelEditor.hasErrors();
     }
 
     public FormState snapshot() {
@@ -440,6 +446,28 @@ public class ContractFormController {
     private void configureIbanValidation() {
         ibanField.textProperty().addListener((observable, oldValue, newValue) -> updateIbanValidation());
         updateIbanValidation();
+    }
+
+    private void configureIntroRentValidation() {
+        introRentField.textProperty().addListener((observable, oldValue, newValue) -> updateIntroRentValidation());
+        hasIntroductoryRentCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
+                updateIntroRentValidation());
+        updateIntroRentValidation();
+    }
+
+    private void updateIntroRentValidation() {
+        boolean invalid = false;
+        if (hasIntroductoryRentCheckBox.isSelected()) {
+            try {
+                ContractFormats.parseDecimal(introRentField.getText());
+            } catch (NumberFormatException exception) {
+                invalid = true;
+            }
+        }
+        introRentInvalid = invalid;
+        introRentErrorLabel.setVisible(invalid);
+        introRentErrorLabel.setManaged(invalid);
+        onValidationChanged.run();
     }
 
     private void updateIbanValidation() {

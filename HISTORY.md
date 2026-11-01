@@ -3,6 +3,10 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Live validation messages
+- Invalid introductory rent now shows its message immediately below the field (`introRentErrorLabel`, i18n
+  `error.number.inline`) and disables Save, like IBAN and the parcel table already did. No error appears only on click anymore.
+
 ## 2026-11-01 – Parcel validation and duplicating a contract
 - `ParcelEditor.hasErrors()`: a filled row needs a parcel number and a valid rent (size must be a number if given).
   Faulty cells get a red border, a hint appears below the table, and saving is blocked via `hasValidationErrors()`.
