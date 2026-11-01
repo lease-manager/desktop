@@ -49,11 +49,11 @@ class ParcelEditorTest {
     }
 
     @Test
-    void acceptsParcelNumbersWithSlashAndLists() {
-        for (String ok : List.of("1080", "1080/1", "1080/1 1080/2", "1080/1, 1080/2", "7;8/3")) {
+    void acceptsOnlyOneParcelNumberPerRow() {
+        for (String ok : List.of("1080", "1080/1", " 7/3 ")) {
             assertEquals(true, ParcelEditor.validParcelNumber(ok), ok);
         }
-        for (String bad : List.of("", "abc", "1080/", "/1", "10 80x")) {
+        for (String bad : List.of("", "abc", "1080/", "/1", "10 80x", "1080/1 1080/2", "1080/1, 1080/2")) {
             assertEquals(false, ParcelEditor.validParcelNumber(bad), bad);
         }
     }

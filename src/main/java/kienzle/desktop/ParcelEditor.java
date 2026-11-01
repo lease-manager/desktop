@@ -133,9 +133,9 @@ public final class ParcelEditor extends VBox {
         return !validParcelNumber(draft.number()) || !validNumber(draft.rent(), true) || !validNumber(draft.size(), false);
     }
 
-    /** One or more parcel numbers such as "1080", "1080/1" or "1080/1 1080/2" (separated by blanks, comma or semicolon). */
+    /** Exactly one parcel number such as "1080" or "1080/1". */
     static boolean validParcelNumber(String text) {
-        return text.trim().matches("\\d+(/\\d+)?(?:(?:\\s*[,;]\\s*|\\s+)\\d+(/\\d+)?)*");
+        return text.trim().matches("\\d+(/\\d+)?");
     }
 
     private static boolean validNumber(String text, boolean required) {

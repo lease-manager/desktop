@@ -4,8 +4,8 @@ Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
 ## 2026-11-01 – Parcel number must be numeric
-- Parcel number is validated: digits with optional "/digits", several allowed separated by blank, comma or semicolon
-  (`1080/1 1080/2`). Size and rent must be numbers. Test `acceptsParcelNumbersWithSlashAndLists`.
+- Parcel number is validated: exactly one number per row, digits with optional "/digits" (`1080`, `1080/1`);
+  several numbers need several rows. Size and rent must be numbers. Test `acceptsOnlyOneParcelNumberPerRow`.
 
 ## 2026-11-01 – Live validation messages
 - Invalid introductory rent now shows its message immediately below the field (`introRentErrorLabel`, i18n
