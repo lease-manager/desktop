@@ -482,7 +482,23 @@ public class MainLayoutController {
 
     @FXML
     private void createPdf() {
-        runOnCurrent(() -> show(uiActions.createPdf(listState.currentEntry(), contractFormController.read())));
+        runOnCurrent(() -> {
+            show(uiActions.createPdf(listState.currentEntry(), contractFormController.read()));
+            offerPdfCopy();
+        });
+    }
+
+    /** The PDF itself stays in the data directory; this lets the user also save a copy where they want it. */
+    private void offerPdfCopy() throws IOException {
+        Path pdf = allowedCurrentPdf();
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(I18n.get("pdf.save.title"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+        chooser.setInitialFileName(exportFileName().replaceAll("\\.[^.]*$", "") + ".pdf");
+        java.io.File target = chooser.showSaveDialog(contractList.getScene().getWindow());
+        if (target != null) {
+            java.nio.file.Files.copy(pdf, target.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 
     @FXML

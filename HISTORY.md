@@ -14,6 +14,8 @@ Newest entries first. Overall concept: `docs/concept/README.md`.
   `InaccessibleObjectException`; unit tests run on the class path and did not catch it).
 - Fix: "PDF erstellen" on a contract in status PDF_CREATED failed with "Only drafts can be edited" because it saved
   the form first. It now regenerates the PDF from the stored contract (`ContractUiActions.createPdf`, test added).
+- "PDF erstellen" now ends with a save dialog ("PDF speichern unter") to store a copy of the PDF; the original stays in the
+  data directory (before, creating a PDF showed nothing visible). Cancel keeps only the internal copy. Not tested on screen.
 - Not wired yet: packages and returns are still HMAC-only; Ed25519 signatures in `.leasepack`/`.leasesigned`,
   the Android side of pairing and the Wi-Fi sync follow (see `docs/concept/README.md`).
 - The dialog was compiled and the service unit-tested (`PairingServiceTest`), but the window itself was not
