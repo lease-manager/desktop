@@ -3,6 +3,12 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Import robustness tests
+- New tests for `ZipLeasePackageCodec` and `SignedReturnCodec`: non-archive/empty files, missing manifest or
+  PDF, malformed or wrongly typed manifest, path traversal entry names, oversized entries, round trip.
+  No production change was needed, the codecs already reject all of these with an `IOException`.
+- Decided against more UI work for now (parcel validation, duplicating contracts): open for a later round.
+
 ## 2026-11-01 – Parcel list hint and signature boxes
 - The contract list shows "N parcels" when a contract has more than one parcel (`MainLayoutController.listText`).
 - PDF: signature area is drawn as two boxes ("Ort, Datum" + signature field) like the paper template;
