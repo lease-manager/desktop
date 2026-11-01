@@ -130,7 +130,12 @@ public final class ParcelEditor extends VBox {
         if (draft.isBlank()) {
             return false;
         }
-        return draft.number().isBlank() || !validNumber(draft.rent(), true) || !validNumber(draft.size(), false);
+        return !validParcelNumber(draft.number()) || !validNumber(draft.rent(), true) || !validNumber(draft.size(), false);
+    }
+
+    /** One or more parcel numbers such as "1080", "1080/1" or "1080/1 1080/2" (separated by blanks, comma or semicolon). */
+    static boolean validParcelNumber(String text) {
+        return text.trim().matches("\\d+(/\\d+)?(?:(?:\\s*[,;]\\s*|\\s+)\\d+(/\\d+)?)*");
     }
 
     private static boolean validNumber(String text, boolean required) {
@@ -145,7 +150,7 @@ public final class ParcelEditor extends VBox {
         for (Row row : rows) {
             Draft draft = row.draft();
             boolean blank = draft.isBlank();
-            row.mark(0, !blank && draft.number().isBlank());
+            row.mark(0, !blank && !validParcelNumber(draft.number()));
             row.mark(2, !blank && !validNumber(draft.size(), false));
             row.mark(5, !blank && !validNumber(draft.rent(), true));
         }
