@@ -31,7 +31,9 @@ public final class ContractUiActions {
     }
 
     public ContractEntry createPdf(ContractEntry current, LeaseContract contract) throws IOException {
-        return workflow.createPdf(workflow.save(current, contract));
+        // Only drafts can be edited; a contract that already has a PDF is regenerated from its stored data.
+        boolean editable = current == null || current.status() == ContractStatus.DRAFT;
+        return workflow.createPdf(editable ? workflow.save(current, contract) : current);
     }
 
     public Optional<Path> originalPdf(ContractEntry current) {
