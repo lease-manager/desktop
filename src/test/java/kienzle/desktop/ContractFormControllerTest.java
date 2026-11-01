@@ -1,5 +1,6 @@
 package kienzle.desktop;
 
+import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,12 +37,12 @@ class ContractFormControllerTest {
                 .tenantAddress("Beispielweg 2")
                 .tenantLocation("Berlin")
                 .tenantDate(LocalDate.of(2025, 1, 2))
-                .parcelNumber("123/4")
-                .district("Gemarkung Ost")
-                .size(new BigDecimal("4800.5"))
-                .type("Ackerland")
+                .parcels(List.of(
+                        new Parcel("123/4", "Gemarkung Ost", new BigDecimal("4800.5"), "Ackerland",
+                                "Nordfeld", new BigDecimal("2000.00")),
+                        new Parcel("123/5", "Gemarkung West", new BigDecimal("1200"), "Wiese",
+                                "", new BigDecimal("350.00"))))
                 .description("Erbpachtfläche")
-                .rent(new BigDecimal("2350.00"))
                 .leaseDuration(ContractDefaults.DURATION_FIXED)
                 .startDate(LocalDate.of(2025, 1, 1))
                 .leaseEndDate(LocalDate.of(2026, 12, 31))
@@ -78,10 +79,17 @@ class ContractFormControllerTest {
         assertEquals(original.name(), roundTripped.name());
         assertEquals(original.lessor(), roundTripped.lessor());
         assertEquals(original.tenant(), roundTripped.tenant());
-        assertEquals(original.parcelNumber(), roundTripped.parcelNumber());
-        assertEquals(original.district(), roundTripped.district());
-        assertEquals(0, original.size().compareTo(roundTripped.size()));
-        assertEquals(0, original.rent().compareTo(roundTripped.rent()));
+        assertEquals(original.parcels().size(), roundTripped.parcels().size());
+        for (int index = 0; index < original.parcels().size(); index++) {
+            Parcel expected = original.parcels().get(index);
+            Parcel actual = roundTripped.parcels().get(index);
+            assertEquals(expected.number(), actual.number());
+            assertEquals(expected.district(), actual.district());
+            assertEquals(0, expected.size().compareTo(actual.size()));
+            assertEquals(expected.designation(), actual.designation());
+            assertEquals(0, expected.rent().compareTo(actual.rent()));
+        }
+        assertEquals(0, new BigDecimal("2350.00").compareTo(roundTripped.totalRent()));
         assertEquals(original.leaseDuration(), roundTripped.leaseDuration());
         assertEquals(original.startDate(), roundTripped.startDate());
         assertEquals(original.leaseEndDate(), roundTripped.leaseEndDate());

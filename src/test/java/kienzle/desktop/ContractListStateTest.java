@@ -1,5 +1,6 @@
 package kienzle.desktop;
 
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import kienzle.desktop.contract.ContractEntry;
@@ -140,12 +141,9 @@ class ContractListStateTest {
                 .tenant("Lessee")
                 .tenantLocation("Berlin")
                 .tenantDate(LocalDate.of(2025, 1, 2))
-                .parcelNumber("123/45")
-                .district("Parcel")
-                .size(new BigDecimal("3000"))
-                .type("Field")
+                .parcels(List.of(new Parcel("123/45", "Parcel", new BigDecimal("3000"), "Field",
+                        "Description", new BigDecimal("1500"))))
                 .description("Description")
-                .rent(new BigDecimal("1500"))
                 .leaseDuration("permanent")
                 .startDate(LocalDate.of(2025, 1, 3))
                 .introductoryRent(new BigDecimal("900"))

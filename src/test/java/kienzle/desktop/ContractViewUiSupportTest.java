@@ -66,7 +66,9 @@ class ContractViewUiSupportTest {
         ContractFormController.FormState state = onFxThread(() -> {
             ContractFormController form = loadFormController();
             getField(form, "contractNameField", TextField.class).setText("Unsaved name");
-            getField(form, "sizeField", TextField.class).setText("not a number");
+            form.parcelEditor().setDrafts(java.util.List.of(
+                    new ParcelEditor.Draft("1/2", "Flur", "not a number", "", "", "10,00"),
+                    new ParcelEditor.Draft("1/3", "", "", "", "", "")));
             getField(form, "startDateField", DatePicker.class).getEditor().setText("invalid date text");
             getField(form, "hasIntroductoryRentCheckBox", CheckBox.class).setSelected(true);
             getField(form, "durationField", ComboBox.class).getSelectionModel().select(1);

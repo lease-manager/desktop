@@ -1,5 +1,6 @@
 package kienzle.desktop;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,18 +14,20 @@ class LeaseContractBuilderTest {
         LeaseContract contract = LeaseContract.builder().name("A").build();
         assertEquals("A", contract.name());
         assertEquals("", contract.lessor());
-        assertNull(contract.rent());
+        assertNull(contract.totalRent());
+        assertEquals(0, contract.parcels().size());
         assertNull(contract.startDate());
         assertFalse(contract.hasIntroductoryRent());
     }
 
     @Test
     void toBuilder_copiesAndAllowsModification() {
-        LeaseContract original = LeaseContract.builder().name("A").rent(new BigDecimal("10"))
+        LeaseContract original = LeaseContract.builder().name("A")
+                .parcels(List.of(new Parcel("1", "", null, "", "", new BigDecimal("10"))))
                 .startDate(LocalDate.of(2025, 1, 1)).build();
         LeaseContract copy = original.toBuilder().name("B").build();
         assertEquals("B", copy.name());
-        assertEquals(original.rent(), copy.rent());
+        assertEquals(original.parcels(), copy.parcels());
         assertEquals(original.startDate(), copy.startDate());
         assertEquals("A", original.name());
         assertEquals(original, original.toBuilder().build());

@@ -26,6 +26,12 @@ public final class LeaseContractPdfPreview {
     private static final float RIGHT = PAGE_WIDTH - LEFT;
     private static final float CONTENT_WIDTH = RIGHT - LEFT;
     private static final float BODY_SIZE = 9.5f;
+    private static final float PARCEL_ROW_HEIGHT = 30f;
+    private static final float[] PARCEL_COLUMN_WIDTHS = {66, 76, 62, 82, 116, 85};
+    private static final float PARCEL_HEADER_HEIGHT = 34f;
+    private static final float PAGE_TOP = PAGE_HEIGHT - 58;
+    private static final float PAGE_BOTTOM = 45f;
+    private static final float SIGNATURE_TOP = 130f;
     private static final PDType1Font BODY_FONT = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
     private static final PDType1Font BOLD_FONT = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
 
@@ -44,98 +50,235 @@ public final class LeaseContractPdfPreview {
     }
 
     public byte[] generatePdf(Map<String, String> values) throws IOException {
-        try (PDDocument document = new PDDocument(); ByteArrayOutputStream pdf = new ByteArrayOutputStream()) {
-            PDPage firstPage = new PDPage(PDRectangle.A4);
-            PDPage secondPage = new PDPage(PDRectangle.A4);
-            document.addPage(firstPage);
-            document.addPage(secondPage);
-
-            renderFirstPage(document, firstPage, values);
-            renderSecondPage(document, secondPage, values);
+        try (PDDocument document = new PDDocument();
+             PDDocument scratch = new PDDocument();
+             ByteArrayOutputStream pdf = new ByteArrayOutputStream()) {
+            Layout layout = layout(scratch, blocks(values));
+            List<List<Placement>> pages = layout.pages();
+            if (layout.endY() < SIGNATURE_TOP) {
+                pages.add(new ArrayList<>());
+            }
+            for (int index = 0; index < pages.size(); index++) {
+                PDPage page = new PDPage(PDRectangle.A4);
+                document.addPage(page);
+                try (PDPageContentStream content = new PDPageContentStream(document, page)) {
+                    for (Placement placement : pages.get(index)) {
+                        placement.drawer().draw(content, placement.y());
+                    }
+                    if (index == pages.size() - 1) {
+                        drawSignatures(content, values);
+                    }
+                    pageNumber(content, index + 1);
+                }
+            }
             document.save(pdf);
             return pdf.toByteArray();
         }
     }
 
-    private void renderFirstPage(PDDocument document, PDPage page, Map<String, String> values) throws IOException {
-        try (PDPageContentStream content = new PDPageContentStream(document, page)) {
-            float y = PAGE_HEIGHT - 58;
-            y = centeredTitle(content, "Pachtvertrag", y);
-            y -= 22;
-            y = paragraph(content, "Zwischen", y, BODY_SIZE, BODY_FONT);
-            y -= 5;
-            y = partyBlock(content, "Verpächter(in)", value(values, "lessor"), value(values, "lessorAddress"), y);
-            y -= 8;
-            y = paragraph(content, "und", y, BODY_SIZE, BODY_FONT);
-            y -= 5;
-            y = partyBlock(content, "Pächter(in)", value(values, "tenant"), value(values, "tenantAddress"), y);
-            y -= 12;
-            y = paragraph(content, "wird der nachstehende Pachtvertrag geschlossen:", y, BODY_SIZE, BODY_FONT);
+    /** Draws a part of the contract starting at {@code y} and returns the y below it. */
+    @FunctionalInterface
+    private interface Drawer {
+        float draw(PDPageContentStream content, float y) throws IOException;
+    }
 
-            y -= 20;
+    /** A part of the contract that is never split across pages; {@code tableRow} parts repeat the table header. */
+    private record Block(float gapBefore, Drawer drawer, boolean tableRow) {
+    }
+
+    private record Placement(Drawer drawer, float y) {
+    }
+
+    private record Layout(List<List<Placement>> pages, float endY) {
+    }
+
+    private List<Block> blocks(Map<String, String> values) {
+        List<Block> blocks = new ArrayList<>();
+        blocks.add(new Block(0, (content, y) -> drawHeader(content, values, y), false));
+
+        List<String[]> rows = parcelRows(values);
+        String sum = sumText(values);
+        Drawer start = (content, y) -> {
             y = sectionHeading(content, "§ 1", "Pachtgegenstand", y);
             y -= 10;
-            y = drawParcelTable(content, values, y);
+            y = drawParcelHeader(content, y);
+            y = drawParcelRow(content, rows.get(0), y);
+            return rows.size() == 1 ? drawParcelSum(content, sum, y) : y;
+        };
+        blocks.add(new Block(20, start, false));
+        for (int index = 1; index < rows.size(); index++) {
+            String[] cells = rows.get(index);
+            boolean last = index == rows.size() - 1;
+            blocks.add(new Block(0, (content, y) -> {
+                y = drawParcelRow(content, cells, y);
+                return last ? drawParcelSum(content, sum, y) : y;
+            }, true));
+        }
 
-            y -= 24;
-            y = sectionHeading(content, "§ 2", "Pachtdauer", y);
-            y -= 10;
-            y = paragraph(content, "Das Pachtverhältnis wird abgeschlossen auf "
-                    + blankIfEmpty(value(values, "leaseDuration")) + ".", y, BODY_SIZE, BODY_FONT);
-            y -= 4;
-            y = paragraph(content, "Das Pachtverhältnis beginnt am "
-                    + blankIfEmpty(value(values, "startDate")) + ".", y, BODY_SIZE, BODY_FONT);
-                if ("Bestimmte Dauer".equals(value(values, "leaseDuration"))
-                    && !value(values, "leaseEndDate").isBlank()) {
-                y -= 4;
-                y = paragraph(content, "Das Pachtverhältnis endet am "
-                        + value(values, "leaseEndDate") + ".", y, BODY_SIZE, BODY_FONT);
-            }
-
-            y -= 18;
+        blocks.add(new Block(24, (content, y) -> drawDuration(content, values, y), false));
+        blocks.add(new Block(18, (content, y) -> {
             y = sectionHeading(content, "§ 3", "Pachtzins", y);
-            y -= 10;
-            y = drawRentTerms(content, values, y);
-            y -= 12;
-            drawBankDetails(content, values, y);
-            pageNumber(content, 1);
+            return drawRentTerms(content, values, y - 10);
+        }, false));
+        blocks.add(new Block(12, (content, y) -> drawBankDetails(content, values, y), false));
+        blocks.add(new Block(20, (content, y) -> drawPaymentDefault(content, values, y), false));
+        blocks.add(new Block(20, (content, y) -> {
+            y = sectionHeading(content, "§ 5", "Vorzeitige Kündigung", y);
+            return editableParagraph(content, value(values, "paragraphFour"), y - 10);
+        }, false));
+        blocks.add(new Block(20, (content, y) -> drawOtherAgreements(content, values, y), false));
+        return blocks;
+    }
+
+    /** Places the blocks top to bottom and starts a new page whenever the next block does not fit. */
+    private Layout layout(PDDocument scratch, List<Block> blocks) throws IOException {
+        List<List<Placement>> pages = new ArrayList<>();
+        List<Placement> current = new ArrayList<>();
+        pages.add(current);
+        float y = PAGE_TOP;
+        boolean atTop = true;
+        for (Block block : blocks) {
+            float gap = atTop ? 0 : block.gapBefore();
+            float height = measure(scratch, block.drawer());
+            if (!atTop && y - gap - height < PAGE_BOTTOM) {
+                current = new ArrayList<>();
+                pages.add(current);
+                y = PAGE_TOP;
+                gap = 0;
+                if (block.tableRow()) {
+                    current.add(new Placement(this::drawParcelHeader, y));
+                    y = drawParcelHeaderHeight(y);
+                }
+            }
+            y -= gap;
+            current.add(new Placement(block.drawer(), y));
+            y -= height;
+            atTop = false;
+        }
+        return new Layout(pages, y);
+    }
+
+    private float measure(PDDocument scratch, Drawer drawer) throws IOException {
+        PDPage page = new PDPage(PDRectangle.A4);
+        scratch.addPage(page);
+        try (PDPageContentStream content = new PDPageContentStream(scratch, page)) {
+            return PAGE_HEIGHT - drawer.draw(content, PAGE_HEIGHT);
         }
     }
 
-    private void renderSecondPage(PDDocument document, PDPage page, Map<String, String> values) throws IOException {
-        try (PDPageContentStream content = new PDPageContentStream(document, page)) {
-            float y = PAGE_HEIGHT - 58;
-            y = sectionHeading(content, "§ 4", "Zahlungsverzug und Gerichtsstand", y);
-            y -= 8;
-            y = paragraph(content,
-                    "Sollte der/die Pächter(in) seiner/ihrer Zahlungsverpflichtung nicht rechtzeitig nachkommen, "
-                            + "ist der/die Verpächter(in) berechtigt, den Pachtvertrag zu lösen und das Pachtobjekt "
-                            + "anderweitig zu verpachten. Forderungsaufrechnungen werden nicht anerkannt.",
-                    y, BODY_SIZE, BODY_FONT);
-            y -= 10;
-            y = paragraph(content, "Für Streitigkeiten aus diesem Pachtvertrag ist folgendes Amtsgericht zuständig:",
-                    y, BODY_SIZE, BODY_FONT);
-            y -= 4;
-            y = paragraph(content, blankIfEmpty(value(values, "court")), y, BODY_SIZE, BODY_FONT);
-
-            y -= 20;
-            y = sectionHeading(content, "§ 5", "Vorzeitige Kündigung", y);
-            y -= 10;
-                y = editableParagraph(content, value(values, "paragraphFour"), y);
-
-            y -= 20;
-            y = sectionHeading(content, "§ 6", "Sonstige Vereinbarungen", y);
-            y -= 10;
-                y = editableParagraph(content, value(values, "paragraphFive"), y);
-            String description = value(values, "description");
-            if (!description.isBlank()) {
-                y -= 4;
-                y = paragraph(content, "Weitere Beschreibung: " + description, y, BODY_SIZE, BODY_FONT);
-            }
-
-            drawSignatures(content, values);
-            pageNumber(content, 2);
+    private float rowHeight(String[] cells) {
+        int lines = 1;
+        for (int index = 0; index < cells.length; index++) {
+            lines = Math.max(lines, wrappedLineCount(cells[index], PARCEL_COLUMN_WIDTHS[index] - 10, 8.0f));
         }
+        return Math.max(PARCEL_ROW_HEIGHT, 13f + (lines - 1) * 9.5f + 9f);
+    }
+
+    private int wrappedLineCount(String value, float maxWidth, float size) {
+        if (value == null || value.isBlank()) {
+            return 1;
+        }
+        int lines = 1;
+        StringBuilder line = new StringBuilder();
+        try {
+            for (String word : sanitize(value).split("\\s+")) {
+                String candidate = line.isEmpty() ? word : line + " " + word;
+                if (BODY_FONT.getStringWidth(candidate) / 1000.0f * size > maxWidth && !line.isEmpty()) {
+                    lines++;
+                    line.setLength(0);
+                    line.append(word);
+                } else {
+                    line.setLength(0);
+                    line.append(candidate);
+                }
+            }
+        } catch (IOException exception) {
+            throw new IllegalStateException(exception);
+        }
+        return lines;
+    }
+
+    /** Table cells per parcel; a contract without parcels still gets one blank row to fill in by hand. */
+    private List<String[]> parcelRows(Map<String, String> values) {
+        int count;
+        try {
+            count = Integer.parseInt(value(values, "parcelCount"));
+        } catch (NumberFormatException exception) {
+            count = 0;
+        }
+        List<String[]> rows = new ArrayList<>();
+        for (int index = 0; index < count; index++) {
+            String prefix = "parcel" + index;
+            String rent = value(values, prefix + "Rent");
+            rows.add(new String[]{
+                    value(values, prefix + "Number"), value(values, prefix + "District"),
+                    value(values, prefix + "Size"), value(values, prefix + "Type"),
+                    value(values, prefix + "Designation"), rent.isBlank() ? "" : moneyValue(rent) + " EUR"});
+        }
+        if (rows.isEmpty()) {
+            rows.add(new String[]{"", "", "", "", "", ""});
+        }
+        return rows;
+    }
+
+    private float drawHeader(PDPageContentStream content, Map<String, String> values, float y) throws IOException {
+        y = centeredTitle(content, "Pachtvertrag", y);
+        y -= 22;
+        y = paragraph(content, "Zwischen", y, BODY_SIZE, BODY_FONT);
+        y -= 5;
+        y = partyBlock(content, "Verpächter(in)", value(values, "lessor"), value(values, "lessorAddress"), y);
+        y -= 8;
+        y = paragraph(content, "und", y, BODY_SIZE, BODY_FONT);
+        y -= 5;
+        y = partyBlock(content, "Pächter(in)", value(values, "tenant"), value(values, "tenantAddress"), y);
+        y -= 12;
+        return paragraph(content, "wird der nachstehende Pachtvertrag geschlossen:", y, BODY_SIZE, BODY_FONT);
+    }
+
+    private float drawDuration(PDPageContentStream content, Map<String, String> values, float y) throws IOException {
+        y = sectionHeading(content, "§ 2", "Pachtdauer", y);
+        y -= 10;
+        y = paragraph(content, "Das Pachtverhältnis wird abgeschlossen auf "
+                + blankIfEmpty(value(values, "leaseDuration")) + ".", y, BODY_SIZE, BODY_FONT);
+        y -= 4;
+        y = paragraph(content, "Das Pachtverhältnis beginnt am "
+                + blankIfEmpty(value(values, "startDate")) + ".", y, BODY_SIZE, BODY_FONT);
+        if ("Bestimmte Dauer".equals(value(values, "leaseDuration"))
+                && !value(values, "leaseEndDate").isBlank()) {
+            y -= 4;
+            y = paragraph(content, "Das Pachtverhältnis endet am "
+                    + value(values, "leaseEndDate") + ".", y, BODY_SIZE, BODY_FONT);
+        }
+        return y;
+    }
+
+    private float drawPaymentDefault(PDPageContentStream content, Map<String, String> values, float y)
+            throws IOException {
+        y = sectionHeading(content, "§ 4", "Zahlungsverzug und Gerichtsstand", y);
+        y -= 8;
+        y = paragraph(content,
+                "Sollte der/die Pächter(in) seiner/ihrer Zahlungsverpflichtung nicht rechtzeitig nachkommen, "
+                        + "ist der/die Verpächter(in) berechtigt, den Pachtvertrag zu lösen und das Pachtobjekt "
+                        + "anderweitig zu verpachten. Forderungsaufrechnungen werden nicht anerkannt.",
+                y, BODY_SIZE, BODY_FONT);
+        y -= 10;
+        y = paragraph(content, "Für Streitigkeiten aus diesem Pachtvertrag ist folgendes Amtsgericht zuständig:",
+                y, BODY_SIZE, BODY_FONT);
+        y -= 4;
+        return paragraph(content, blankIfEmpty(value(values, "court")), y, BODY_SIZE, BODY_FONT);
+    }
+
+    private float drawOtherAgreements(PDPageContentStream content, Map<String, String> values, float y)
+            throws IOException {
+        y = sectionHeading(content, "§ 6", "Sonstige Vereinbarungen", y);
+        y -= 10;
+        y = editableParagraph(content, value(values, "paragraphFive"), y);
+        String description = value(values, "description");
+        if (!description.isBlank()) {
+            y -= 4;
+            y = paragraph(content, "Weitere Beschreibung: " + description, y, BODY_SIZE, BODY_FONT);
+        }
+        return y;
     }
 
     private float centeredTitle(PDPageContentStream content, String title, float y) throws IOException {
@@ -171,45 +314,51 @@ public final class LeaseContractPdfPreview {
         return y - 17;
     }
 
-    private float drawParcelTable(PDPageContentStream content, Map<String, String> values, float y)
-            throws IOException {
-        float[] widths = {66, 76, 62, 82, 116, 85};
-        String[] headers = {"Flurstücknr.", "Gemarkung", "Größe m²", "Wirtschaftsart", "Bezeichnung", "Pachtzins EUR"};
-        float headerHeight = 34;
-        float dataHeight = 38;
-        float sumHeight = 28;
-        float x = LEFT;
-        for (int index = 0; index < widths.length; index++) {
-            content.setNonStrokingColor(new Color(225, 225, 225));
-            content.addRect(x, y - headerHeight, widths[index], headerHeight);
-            content.fill();
-            rectangle(content, x, y - headerHeight, widths[index], headerHeight);
-            fitText(content, headers[index], x + 5, y - 20, widths[index] - 10, 8.0f, BOLD_FONT);
-            x += widths[index];
-        }
-        String[] cells = {
-                value(values, "parcelNumber"), value(values, "district"), value(values, "size"),
-                value(values, "type"), value(values, "description"),
-                moneyValue(value(values, "rent")) + " EUR"
-        };
-        x = LEFT;
-        float dataTop = y - headerHeight;
-        float cellY = dataTop - 15;
-        for (int index = 0; index < widths.length; index++) {
-            rectangle(content, x, dataTop - dataHeight, widths[index], dataHeight);
-            drawWrapped(content, cells[index], x + 5, cellY, widths[index] - 10, 8.0f, BODY_FONT, 9.5f);
-            x += widths[index];
-        }
+    private String sumText(Map<String, String> values) {
+        return moneyValue(blankIfEmpty(value(values, "totalRent"))) + " EUR";
+    }
 
-        float sumBottom = dataTop - dataHeight - sumHeight;
+    private float drawParcelHeaderHeight(float y) {
+        return y - PARCEL_HEADER_HEIGHT;
+    }
+
+    private float drawParcelHeader(PDPageContentStream content, float y) throws IOException {
+        String[] headers = {"Flurstücknr.", "Gemarkung", "Größe m²", "Wirtschaftsart", "Bezeichnung", "Pachtzins EUR"};
+        float x = LEFT;
+        for (int index = 0; index < PARCEL_COLUMN_WIDTHS.length; index++) {
+            float width = PARCEL_COLUMN_WIDTHS[index];
+            content.setNonStrokingColor(new Color(225, 225, 225));
+            content.addRect(x, y - PARCEL_HEADER_HEIGHT, width, PARCEL_HEADER_HEIGHT);
+            content.fill();
+            rectangle(content, x, y - PARCEL_HEADER_HEIGHT, width, PARCEL_HEADER_HEIGHT);
+            fitText(content, headers[index], x + 5, y - 20, width - 10, 8.0f, BOLD_FONT);
+            x += width;
+        }
+        return y - PARCEL_HEADER_HEIGHT;
+    }
+
+    private float drawParcelRow(PDPageContentStream content, String[] cells, float y) throws IOException {
+        float height = rowHeight(cells);
+        float x = LEFT;
+        for (int index = 0; index < PARCEL_COLUMN_WIDTHS.length; index++) {
+            float width = PARCEL_COLUMN_WIDTHS[index];
+            rectangle(content, x, y - height, width, height);
+            drawWrapped(content, cells[index], x + 5, y - 13, width - 10, 8.0f, BODY_FONT, 9.5f);
+            x += width;
+        }
+        return y - height;
+    }
+
+    private float drawParcelSum(PDPageContentStream content, String sum, float y) throws IOException {
+        float sumHeight = 28;
+        float sumBottom = y - sumHeight;
         content.setNonStrokingColor(new Color(242, 242, 242));
         content.addRect(LEFT, sumBottom, CONTENT_WIDTH, sumHeight);
         content.fill();
         rectangle(content, LEFT, sumBottom, CONTENT_WIDTH, sumHeight);
         text(content, "Summe Pachtzins", LEFT + 8, sumBottom + 10, 9.0f, BOLD_FONT);
-        String total = moneyValue(blankIfEmpty(value(values, "totalRent"))) + " EUR";
-        float totalWidth = BOLD_FONT.getStringWidth(sanitize(total)) / 1000.0f * 9.0f;
-        text(content, total, RIGHT - totalWidth - 8, sumBottom + 10, 9.0f, BOLD_FONT);
+        float totalWidth = BOLD_FONT.getStringWidth(sanitize(sum)) / 1000.0f * 9.0f;
+        text(content, sum, RIGHT - totalWidth - 8, sumBottom + 10, 9.0f, BOLD_FONT);
         return sumBottom - 8;
     }
 
@@ -236,7 +385,7 @@ public final class LeaseContractPdfPreview {
         return paragraph(content, "In Worten: " + blankIfEmpty(value(values, "rentWords")), y, BODY_SIZE, BODY_FONT);
     }
 
-    private void drawBankDetails(PDPageContentStream content, Map<String, String> values, float y)
+    private float drawBankDetails(PDPageContentStream content, Map<String, String> values, float y)
             throws IOException {
         text(content, "Der Pachtzins ist " + blankIfEmpty(value(values, "rentDueInterval"))
                 + " am " + blankIfEmpty(value(values, "rentDueDay"))
@@ -271,6 +420,7 @@ public final class LeaseContractPdfPreview {
             LEFT, transferBottom, ibanWidth, accountRowHeight);
         drawSeparatedAccountField(content, "BIC", value(values, "bic"), bicSplit, transferBottom,
             CONTENT_WIDTH - ibanWidth, accountRowHeight);
+        return transferBottom;
     }
 
         private void formCell(PDPageContentStream content, String label, String value,

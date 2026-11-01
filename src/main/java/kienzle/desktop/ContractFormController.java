@@ -51,10 +51,7 @@ public class ContractFormController {
     private DatePicker tenantDateField;
 
     @FXML
-    private TextField parcelField;
-
-    @FXML
-    private TextField districtField;
+    private VBox parcelBox;
 
     @FXML
     private ComboBox<Amtsgericht> courtComboBox;
@@ -76,12 +73,6 @@ public class ContractFormController {
 
     @FXML
     private TextArea descriptionArea;
-
-    @FXML
-    private TextField sizeField;
-
-    @FXML
-    private TextField typeField;
 
     @FXML
     private TextField rentField;
@@ -146,6 +137,7 @@ public class ContractFormController {
     @FXML
     private TextField rentDueDayField;
 
+    private final ParcelEditor parcelEditor = new ParcelEditor();
     private Runnable onValidationChanged = () -> {
     };
     private boolean ibanInvalid;
@@ -168,6 +160,8 @@ public class ContractFormController {
             }
         });
         configureDatePickers();
+        parcelBox.getChildren().add(parcelEditor);
+        parcelEditor.setOnChange(() -> rentField.setText(ContractFormats.money(parcelEditor.totalRent())));
         ibanField.setPromptText("DE00 0000 0000 0000 0000 00");
         ibanField.setTextFormatter(IbanFormatter.textFormatter());
         configureIbanValidation();
@@ -178,6 +172,10 @@ public class ContractFormController {
             setIntroductoryRentFieldsVisible(selected));
         durationField.valueProperty().addListener((observable, oldValue, duration) ->
             updateLeaseEndDateVisibility(duration));
+    }
+
+    ParcelEditor parcelEditor() {
+        return parcelEditor;
     }
 
     public String contractName() {
@@ -208,7 +206,8 @@ public class ContractFormController {
         return new FormState(textValues, dates,
                 courtComboBox.getSelectionModel().getSelectedIndex(),
                 durationField.getSelectionModel().getSelectedIndex(),
-                hasIntroductoryRentCheckBox.isSelected());
+                hasIntroductoryRentCheckBox.isSelected(),
+                parcelEditor.drafts());
     }
 
     public void restore(FormState state) {
@@ -227,6 +226,7 @@ public class ContractFormController {
             picker.setValue(date.value());
             picker.getEditor().setText(date.editorText());
         }
+        parcelEditor.setDrafts(state.parcels());
         courtComboBox.getSelectionModel().select(state.courtIndex());
         durationField.getSelectionModel().select(state.durationIndex());
         hasIntroductoryRentCheckBox.setSelected(state.hasIntroductoryRent());
@@ -237,8 +237,8 @@ public class ContractFormController {
 
     private List<TextInputControl> textControls() {
         return List.of(contractNameField, textField, lessorAddressField, lessorLocationField, tenantField,
-                tenantAddressField, tenantLocationField, parcelField, districtField, noticeField,
-                paragraphFourArea, paragraphFiveArea, descriptionArea, sizeField, typeField, rentField,
+                tenantAddressField, tenantLocationField, noticeField,
+                paragraphFourArea, paragraphFiveArea, descriptionArea,
                 introRentField, introductoryRentWordsField, rentWordsField, rentDueIntervalField,
                 rentDueDayField, recipientField, bankField, ibanField, bicField);
     }
@@ -250,10 +250,12 @@ public class ContractFormController {
     }
 
     public record FormState(List<String> textValues, List<DatePickerState> dates, int courtIndex,
-                            int durationIndex, boolean hasIntroductoryRent) {
+                            int durationIndex, boolean hasIntroductoryRent,
+                            List<ParcelEditor.Draft> parcels) {
         public FormState {
             textValues = List.copyOf(textValues);
             dates = List.copyOf(dates);
+            parcels = List.copyOf(parcels);
         }
     }
 
@@ -272,12 +274,8 @@ public class ContractFormController {
                 .tenantAddress(get(tenantAddressField))
                 .tenantLocation(get(tenantLocationField))
                 .tenantDate(tenantDateField.getValue())
-                .parcelNumber(get(parcelField))
-                .district(get(districtField))
-                .size(decimal(sizeField))
-                .type(get(typeField))
+                .parcels(parcelEditor.read())
                 .description(get(descriptionArea))
-                .rent(decimal(rentField))
                 .leaseDuration(durationField.getValue() == null ? "" : durationField.getValue())
                 .startDate(startDateField.getValue())
                 .leaseEndDate(leaseEndDateField.getValue())
@@ -338,17 +336,13 @@ public class ContractFormController {
         tenantAddressField.setText(contract.tenantAddress());
         tenantLocationField.setText(contract.tenantLocation());
         tenantDateField.setValue(contract.tenantDate());
-        parcelField.setText(contract.parcelNumber());
-        districtField.setText(contract.district());
+        parcelEditor.setParcels(contract.parcels());
         selectCourtForContract(contract.court());
         noticeField.setText(contract.terminationNotice());
         gardeningYearField.setValue(contract.gardeningYearEnd() == null ? null : contract.gardeningYearEnd().atYear(2000));
         paragraphFourArea.setText(contract.paragraphFour());
         paragraphFiveArea.setText(contract.paragraphFive());
         descriptionArea.setText(contract.description());
-        sizeField.setText(ContractFormats.number(contract.size()));
-        typeField.setText(contract.type());
-        rentField.setText(ContractFormats.money(contract.rent()));
         durationField.setValue(contract.leaseDuration());
         hasIntroductoryRentCheckBox.setSelected(contract.hasIntroductoryRent());
         setIntroductoryRentFieldsVisible(contract.hasIntroductoryRent());

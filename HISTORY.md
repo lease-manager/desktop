@@ -3,6 +3,15 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Multiple parcels per contract
+- A contract now holds a list of parcels (`Parcel`: number, district, size, type, designation, rent);
+  the form has a `ParcelEditor` (add/remove rows), the total rent is calculated and read-only.
+- The PDF lists all parcels in one § 1 table with a sum row. The layout is now a flow: blocks are
+  placed top to bottom, the table continues on further pages with a repeated header, the signatures stay on
+  the last page.
+- Persistence: `ContractJson` (Gson) migrates old contract files (single parcel fields) on load; the
+  `contractJson` in `.leasepack` is now JSON, old `\u0001` packages are still readable (HMAC unaffected).
+
 ## 2026-11-01 – Mobile return path (`.leasesigned`) and Android signing app
 
 - Specified the two transfer formats in `shared/libs/leasepack/README.md`: `.leasepack`

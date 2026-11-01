@@ -2,58 +2,36 @@ package kienzle.desktop.app;
 
 import com.google.gson.Gson;
 import kienzle.desktop.LeaseContract;
+import kienzle.desktop.Parcel;
+import kienzle.desktop.contract.ContractJson;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.List;
 
 final class LeasePackageSerializer {
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = ContractJson.compact();
 
     private LeasePackageSerializer() {
     }
 
     static String serialize(LeaseContract contract) {
-        return String.join("\u0001",
-                value(contract.name()),
-                value(contract.lessor()),
-                value(contract.lessorLocation()),
-                value(contract.lessorDate()),
-                value(contract.tenant()),
-                value(contract.tenantLocation()),
-                value(contract.tenantDate()),
-                value(contract.parcelNumber()),
-                value(contract.district()),
-                value(contract.size()),
-                value(contract.type()),
-                value(contract.description()),
-                value(contract.rent()),
-                value(contract.leaseDuration()),
-                value(contract.startDate()),
-                value(contract.introductoryRent()),
-                value(contract.hasIntroductoryRent()),
-                value(contract.rentIncreaseDate()),
-                value(contract.firstRentDate()),
-                value(contract.rentRecipient()),
-                value(contract.bankName()),
-                value(contract.iban()),
-                value(contract.bic()),
-                value(contract.court()),
-                value(contract.terminationNotice()),
-                value(contract.gardeningYearEnd()),
-                value(contract.paragraphFour()),
-                value(contract.paragraphFive()),
-                value(contract.lessorAddress()),
-                value(contract.tenantAddress()),
-                value(contract.leaseEndDate()),
-                value(contract.introductoryRentFrom()),
-                value(contract.introductoryRentUntil()),
-                value(contract.rentDueInterval()),
-                value(contract.rentDueDay()),
-                value(contract.introductoryRentWords()),
-                value(contract.rentWords()));
+        return GSON.toJson(contract);
     }
 
     static LeaseContract deserialize(String raw) {
+        if (raw.startsWith("{")) {
+            try {
+                return GSON.fromJson(raw, LeaseContract.class);
+            } catch (com.google.gson.JsonParseException e) {
+                throw new IllegalArgumentException("Invalid contract package payload", e);
+            }
+        }
+        return deserializeLegacy(raw);
+    }
+
+    /** Packages written before multi-parcel support: 37 fields separated by U+0001, one parcel. */
+    private static LeaseContract deserializeLegacy(String raw) {
         String[] values = raw.split("\u0001", -1);
         if (values.length < 37) {
             throw new IllegalArgumentException("Invalid contract package payload");
@@ -66,12 +44,11 @@ final class LeasePackageSerializer {
                 values[4],
                 values[5],
                 values[6].isBlank() ? null : LocalDate.parse(values[6]),
-                values[7],
-                values[8],
-                values[9].isBlank() ? null : new java.math.BigDecimal(values[9]),
-                values[10],
+                List.of(new Parcel(values[7], values[8],
+                        values[9].isBlank() ? null : new java.math.BigDecimal(values[9]),
+                        values[10], values[11],
+                        values[12].isBlank() ? null : new java.math.BigDecimal(values[12]))),
                 values[11],
-                values[12].isBlank() ? null : new java.math.BigDecimal(values[12]),
                 values[13],
                 values[14].isBlank() ? null : LocalDate.parse(values[14]),
                 values[15].isBlank() ? null : new java.math.BigDecimal(values[15]),
@@ -98,7 +75,4 @@ final class LeasePackageSerializer {
                 values[36]);
     }
 
-    private static String value(Object value) {
-        return value == null ? "" : value.toString();
-    }
 }

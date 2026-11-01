@@ -1,10 +1,6 @@
 package kienzle.desktop.contract;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -12,16 +8,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
 /** Stores active contracts under {@code contracts/} and archives records with their documents. */
 public class JsonContractRepository implements ContractRepository {
@@ -30,12 +22,7 @@ public class JsonContractRepository implements ContractRepository {
     private final DocumentRelocator documents;
     private final Path contractsDir;
     private final Path archivedContractsDir;
-    private final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .registerTypeAdapter(Instant.class, stringAdapter(Instant::parse))
-            .registerTypeAdapter(LocalDate.class, stringAdapter(LocalDate::parse))
-            .registerTypeAdapter(MonthDay.class, stringAdapter(MonthDay::parse))
-            .create();
+    private final Gson gson = ContractJson.pretty();
 
     public JsonContractRepository(Path dataDir) {
         this.root = dataDir.toAbsolutePath().normalize();
@@ -169,24 +156,6 @@ public class JsonContractRepository implements ContractRepository {
             return gson.fromJson(Files.readString(file, StandardCharsets.UTF_8), ContractEntry.class);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        }
-    }
-
-    private static <T> Object stringAdapter(Function<String, T> parser) {
-        return new StringAdapter<>(parser);
-    }
-
-    private record StringAdapter<T>(Function<String, T> parser) implements JsonSerializer<T>, JsonDeserializer<T> {
-        @Override
-        public com.google.gson.JsonElement serialize(T src, java.lang.reflect.Type type,
-                                                     com.google.gson.JsonSerializationContext context) {
-            return new JsonPrimitive(src.toString());
-        }
-
-        @Override
-        public T deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type type,
-                             com.google.gson.JsonDeserializationContext context) {
-            return parser.apply(json.getAsString());
         }
     }
 }

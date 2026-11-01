@@ -1,5 +1,6 @@
 package kienzle.desktop;
 
+import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -21,12 +22,9 @@ public final class TestContracts {
                 .tenant("Pächter")
                 .tenantLocation("Berlin")
                 .tenantDate(LocalDate.of(2025, 1, 2))
-                .parcelNumber("123/45")
-                .district("Flur 1")
-                .size(new BigDecimal("4800.50"))
-                .type("Ackerland")
+                .parcels(List.of(new Parcel("123/45", "Flur 1", new BigDecimal("4800.50"), "Ackerland",
+                        "Beschreibung", new BigDecimal("2350.00"))))
                 .description("Beschreibung")
-                .rent(new BigDecimal("2350.00"))
                 .leaseDuration("Unbestimmte Dauer")
                 .startDate(LocalDate.of(2025, 1, 1))
                 .introductoryRent(new BigDecimal("1900.00"))

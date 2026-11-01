@@ -41,8 +41,7 @@ class MainLayoutControllerTest {
                 .lessor("Müller GmbH")
                 .tenant("Hans Weber")
                 .tenantDate(LocalDate.of(2025, 1, 1))
-                .parcelNumber("123/4")
-                .district("Gemarkung Ost")
+                .parcels(List.of(new Parcel("123/4", "Gemarkung Ost", null, "", "", new java.math.BigDecimal("2350.00"))))
                 .description("Erbpachtfläche für landwirtschaftliche Nutzung")
                 .leaseDuration("unbestimmte Dauer")
                 .firstRentDate(LocalDate.of(2025, 1, 1))
@@ -71,7 +70,7 @@ class MainLayoutControllerTest {
                 .findFirst()
                 .orElseThrow();
         ContractDetailRow flurstueck = rows.stream()
-                .filter(row -> row.key().equals("Flurstück"))
+                .filter(row -> row.key().equals("Flurstück 1"))
                 .findFirst()
                 .orElseThrow();
         ContractDetailRow pachtzins = rows.stream()
@@ -85,7 +84,7 @@ class MainLayoutControllerTest {
 
         assertEquals("Pachtvertrag Muster", vertragsname.value());
         assertEquals("Müller GmbH", verpaechter.value());
-        assertEquals("123/4", flurstueck.value());
+        assertEquals("123/4, Gemarkung Ost, 2.350,00 €", flurstueck.value());
         assertEquals("2.350,00 €", pachtzins.value());
         assertEquals("Erbpachtfläche für landwirtschaftliche Nutzung", beschreibung.value());
     }

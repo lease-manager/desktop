@@ -22,10 +22,13 @@ class LeaseContractPdfPreviewTest {
             Map.entry("lessorAddress", "Musterstraße 1, 10115 Berlin"),
             Map.entry("tenant", "Pächter Test"),
             Map.entry("tenantAddress", "Pachtweg 2, 10117 Berlin"),
-            Map.entry("parcelNumber", "12/3"),
-            Map.entry("district", "Senden"),
-            Map.entry("size", "4800"),
-            Map.entry("type", "Ackerland"),
+            Map.entry("parcelCount", "1"),
+            Map.entry("parcel0Number", "12/3"),
+            Map.entry("parcel0District", "Senden"),
+            Map.entry("parcel0Size", "4800"),
+            Map.entry("parcel0Type", "Ackerland"),
+            Map.entry("parcel0Designation", "Nordfeld"),
+            Map.entry("parcel0Rent", "1500,00"),
             Map.entry("description", "Nordfeld"),
             Map.entry("rent", "1500,00"),
             Map.entry("totalRent", "1500,00"),
@@ -95,6 +98,46 @@ class LeaseContractPdfPreviewTest {
         try (PDDocument document = Loader.loadPDF(new LeaseContractPdfPreview().generatePdf(values))) {
             String pdfText = new PDFTextStripper().getText(document);
             assertFalse(pdfText.contains("Vom 01.01.2025 bis zum 31.12.2025"));
+        }
+    }
+
+    private static Map<String, String> parcelValues(int count) {
+        Map<String, String> values = new java.util.HashMap<>();
+        values.put("leaseDuration", "Unbestimmte Dauer");
+        values.put("parcelCount", String.valueOf(count));
+        for (int index = 0; index < count; index++) {
+            values.put("parcel" + index + "Number", "FL-" + index);
+            values.put("parcel" + index + "Rent", "100");
+        }
+        values.put("totalRent", String.valueOf(count * 100));
+        return values;
+    }
+
+    @Test
+    void generatePdf_shouldListFewParcelsInOneTable() throws Exception {
+        try (PDDocument document = Loader.loadPDF(new LeaseContractPdfPreview().generatePdf(parcelValues(4)))) {
+            String text = new PDFTextStripper().getText(document);
+            assertEquals(2, document.getNumberOfPages());
+            for (int index = 0; index < 4; index++) {
+                assertTrue(text.contains("FL-" + index));
+            }
+            assertTrue(text.contains("Summe Pachtzins"));
+        }
+    }
+
+    @Test
+    void generatePdf_shouldContinueTableOnFurtherPagesWithSignaturesLast() throws Exception {
+        try (PDDocument document = Loader.loadPDF(new LeaseContractPdfPreview().generatePdf(parcelValues(30)))) {
+            assertTrue(document.getNumberOfPages() >= 3);
+            PDFTextStripper stripper = new PDFTextStripper();
+            String all = stripper.getText(document);
+            assertTrue(all.contains("FL-29"));
+            assertEquals(1, all.split("Summe Pachtzins", -1).length - 1);
+            stripper.setStartPage(document.getNumberOfPages());
+            assertTrue(stripper.getText(document).contains("Unterschrift Verpächter(in)"));
+            stripper.setStartPage(2);
+            stripper.setEndPage(2);
+            assertTrue(stripper.getText(document).contains("Flurstücknr."));
         }
     }
 }

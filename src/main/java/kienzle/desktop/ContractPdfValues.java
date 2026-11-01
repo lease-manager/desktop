@@ -1,5 +1,6 @@
 package kienzle.desktop;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /** Maps a {@link LeaseContract} to the text values consumed by {@link LeaseContractPdfPreview}. */
@@ -9,18 +10,14 @@ public final class ContractPdfValues {
 
     public static Map<String, String> from(LeaseContract c) {
         boolean intro = c.hasIntroductoryRent();
-        return Map.ofEntries(
+        Map<String, String> values = new HashMap<>(Map.ofEntries(
                 e("lessor", c.lessor()),
                 e("lessorAddress", c.lessorAddress()),
                 e("tenant", c.tenant()),
                 e("tenantAddress", c.tenantAddress()),
-                e("parcelNumber", c.parcelNumber()),
-                e("district", c.district()),
-                e("size", ContractFormats.number(c.size())),
-                e("type", c.type()),
                 e("description", c.description()),
-                e("rent", ContractFormats.money(c.rent())),
-                e("totalRent", ContractFormats.money(c.rent())),
+                e("rent", ContractFormats.money(c.totalRent())),
+                e("totalRent", ContractFormats.money(c.totalRent())),
                 e("leaseDuration", c.leaseDuration()),
                 e("startDate", ContractFormats.date(c.startDate())),
                 e("introductoryRentFrom", intro ? ContractFormats.date(c.introductoryRentFrom()) : ""),
@@ -47,7 +44,24 @@ public final class ContractPdfValues {
                         signatureDate(c.lessorLocation(), ContractFormats.date(c.lessorDate()))),
                 e("tenantSignatureDate",
                         signatureDate(c.tenantLocation(), ContractFormats.date(c.tenantDate())))
-        );
+        ));
+        putParcels(values, c);
+        return values;
+    }
+
+    /** Parcels are passed as {@code parcelCount} plus {@code parcel<i>Number|District|Size|Type|Designation|Rent}. */
+    private static void putParcels(Map<String, String> values, LeaseContract c) {
+        values.put("parcelCount", Integer.toString(c.parcels().size()));
+        for (int index = 0; index < c.parcels().size(); index++) {
+            Parcel parcel = c.parcels().get(index);
+            String prefix = "parcel" + index;
+            values.put(prefix + "Number", parcel.number());
+            values.put(prefix + "District", parcel.district());
+            values.put(prefix + "Size", ContractFormats.number(parcel.size()));
+            values.put(prefix + "Type", parcel.type());
+            values.put(prefix + "Designation", parcel.designation());
+            values.put(prefix + "Rent", ContractFormats.money(parcel.rent()));
+        }
     }
 
     private static Map.Entry<String, String> e(String key, String value) {

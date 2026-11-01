@@ -3,6 +3,7 @@ package kienzle.desktop;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.List;
 
 public record LeaseContract(
         String name,
@@ -12,12 +13,8 @@ public record LeaseContract(
         String tenant,
         String tenantLocation,
         LocalDate tenantDate,
-        String parcelNumber,
-        String district,
-        BigDecimal size,
-        String type,
+        List<Parcel> parcels,
         String description,
-        BigDecimal rent,
         String leaseDuration,
         LocalDate startDate,
         BigDecimal introductoryRent,
@@ -44,6 +41,16 @@ public record LeaseContract(
         String rentWords
 ) {
 
+    public LeaseContract {
+        parcels = parcels == null ? List.of() : List.copyOf(parcels);
+    }
+
+    /** Sum of the rents of all parcels; {@code null} if no parcel has a rent. */
+    public BigDecimal totalRent() {
+        return parcels.stream().map(Parcel::rent).filter(java.util.Objects::nonNull)
+                .reduce(BigDecimal::add).orElse(null);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -57,12 +64,8 @@ public record LeaseContract(
         builder.tenant = tenant;
         builder.tenantLocation = tenantLocation;
         builder.tenantDate = tenantDate;
-        builder.parcelNumber = parcelNumber;
-        builder.district = district;
-        builder.size = size;
-        builder.type = type;
+        builder.parcels = parcels;
         builder.description = description;
-        builder.rent = rent;
         builder.leaseDuration = leaseDuration;
         builder.startDate = startDate;
         builder.introductoryRent = introductoryRent;
@@ -99,12 +102,8 @@ public record LeaseContract(
         private String tenant = "";
         private String tenantLocation = "";
         private LocalDate tenantDate;
-        private String parcelNumber = "";
-        private String district = "";
-        private BigDecimal size;
-        private String type = "";
+        private List<Parcel> parcels = List.of();
         private String description = "";
-        private BigDecimal rent;
         private String leaseDuration = "";
         private LocalDate startDate;
         private BigDecimal introductoryRent;
@@ -165,33 +164,13 @@ public record LeaseContract(
             return this;
         }
 
-        public Builder parcelNumber(String value) {
-            this.parcelNumber = value;
-            return this;
-        }
-
-        public Builder district(String value) {
-            this.district = value;
-            return this;
-        }
-
-        public Builder size(BigDecimal value) {
-            this.size = value;
-            return this;
-        }
-
-        public Builder type(String value) {
-            this.type = value;
+        public Builder parcels(List<Parcel> value) {
+            this.parcels = value;
             return this;
         }
 
         public Builder description(String value) {
             this.description = value;
-            return this;
-        }
-
-        public Builder rent(BigDecimal value) {
-            this.rent = value;
             return this;
         }
 
@@ -324,12 +303,8 @@ public record LeaseContract(
                 tenant,
                 tenantLocation,
                 tenantDate,
-                parcelNumber,
-                district,
-                size,
-                type,
+                parcels,
                 description,
-                rent,
                 leaseDuration,
                 startDate,
                 introductoryRent,
