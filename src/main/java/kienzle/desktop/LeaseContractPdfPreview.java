@@ -343,7 +343,9 @@ public final class LeaseContractPdfPreview {
         for (int index = 0; index < PARCEL_COLUMN_WIDTHS.length; index++) {
             float width = PARCEL_COLUMN_WIDTHS[index];
             rectangle(content, x, y - height, width, height);
-            drawWrapped(content, cells[index], x + 5, y - 13, width - 10, 8.0f, BODY_FONT, 9.5f);
+            if (!cells[index].isBlank()) {
+                drawWrapped(content, cells[index], x + 5, y - 13, width - 10, 8.0f, BODY_FONT, 9.5f);
+            }
             x += width;
         }
         return y - height;
