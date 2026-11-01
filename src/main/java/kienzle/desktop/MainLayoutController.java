@@ -310,6 +310,16 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void receiveReturns() {
+        try {
+            new ReceiveDialog(workflow::importSignedReturn, (javafx.stage.Stage) contractList.getScene().getWindow(),
+                    this::revealEntry).showAndWait();
+        } catch (IOException exception) {
+            feedback.showError(exception.getMessage());
+        }
+    }
+
+    @FXML
     private void managePairing() {
         if (context.pairing() == null) {
             return;

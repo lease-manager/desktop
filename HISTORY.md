@@ -3,6 +3,17 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Receive signed contracts over Wi-Fi
+- `ReturnReceiver` (JDK `HttpServer`, module `jdk.httpserver`): `POST /return` with the raw `.leasesigned` file, port
+  48765 (random port if taken). Each file goes through the normal import (`importSignedReturn`), so only returns signed
+  by a paired phone are accepted; answers 200/422/413/405. Runs only while the dialog is open.
+- `ReceiveDialog` (button "Per WLAN empfangen"): URL(s) of the local IPv4 addresses as text + QR code, log of
+  received/refused files; the imported contract is shown in the list. i18n DE/EN.
+- jpackage image adds `jdk.httpserver`. Tests: `ReturnReceiverTest` (accepted, refused, wrong method).
+- Spec in `shared/libs/leasepack/README.md` ("Wi-Fi transfer"). Plain HTTP in the local network; the dialog was not
+  clicked through on screen and not tried with a real phone yet.
+- Next: Android (pairing, v2 signing, Wi-Fi send); optional: parcel validation, duplicate contract.
+
 ## 2026-11-01 – Ed25519 signatures in `.leasepack` and `.leasesigned` (step 2 of the trust model)
 - `.leasepack` is now `leasepack:v2`: new manifest field `senderId`, `packageSignature` is an Ed25519 signature
   (`PairingService.sign`) over the payload incl. `senderId`. On import the sender must be a paired device or this

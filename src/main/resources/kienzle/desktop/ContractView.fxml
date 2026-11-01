@@ -44,6 +44,7 @@
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#manageBackup" text="%backup.manage" />
                   <Button mnemonicParsing="false" onAction="#managePairing" text="%pairing.manage" />
+                  <Button mnemonicParsing="false" onAction="#receiveReturns" text="%receive.manage" />
                </children>
             </VBox>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER">

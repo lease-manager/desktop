@@ -101,7 +101,7 @@ val packageApp by tasks.registering(Exec::class) {
         "--main-jar", "${project.name}-${project.version}.jar",
         "--main-class", "kienzle.desktop.LeaseManagerApplication",
         "--module-path", work.get().dir("javafx").asFile.absolutePath,
-        "--add-modules", "javafx.controls,javafx.fxml,java.logging,java.desktop,java.prefs",
+        "--add-modules", "javafx.controls,javafx.fxml,java.logging,java.desktop,java.prefs,jdk.httpserver",
         "--dest", outDir.get().asFile.absolutePath
     )
 }

@@ -134,7 +134,7 @@ final class PairingDialog {
         }
     }
 
-    private static WritableImage toFxImage(BufferedImage source) {
+    static WritableImage toFxImage(BufferedImage source) {
         WritableImage image = new WritableImage(source.getWidth(), source.getHeight());
         PixelWriter writer = image.getPixelWriter();
         for (int y = 0; y < source.getHeight(); y++) {

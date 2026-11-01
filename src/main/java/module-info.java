@@ -7,6 +7,7 @@ module kienzle.desktop {
     requires org.apache.commons.logging;
     requires com.google.gson;
     requires com.google.zxing;
+    requires jdk.httpserver;
 
     // Automatic module name for ControlsFX 11.2.1
     requires org.controlsfx.controls;
