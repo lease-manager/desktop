@@ -413,7 +413,7 @@ public final class LeaseContractPdfPreview {
         line(content, LEFT, accountsTop, RIGHT, accountsTop);
         formCell(content, "Geldinstitut", value(values, "bankName"), LEFT, accountsTop, CONTENT_WIDTH, bankRowHeight);
 
-        float ibanWidth = CONTENT_WIDTH * 0.68f;
+        float ibanWidth = CONTENT_WIDTH * 0.43f;
         float bicSplit = LEFT + ibanWidth;
         line(content, bicSplit, transferBottom, bicSplit, accountsTop);
         drawSeparatedAccountField(content, "IBAN", value(values, "iban"),
@@ -429,30 +429,31 @@ public final class LeaseContractPdfPreview {
         fitText(content, blankIfEmpty(value), x + 4, bottom + 5, width - 8, 9.0f, BODY_FONT);
     }
 
+    /** Draws one box per character; unused boxes stay empty so the field can be completed by hand. */
     private void drawSeparatedAccountField(PDPageContentStream content, String label, String value,
                                            float x, float bottom, float width, float height) throws IOException {
         text(content, label, x + 4, bottom + height - 7, 6.5f, BODY_FONT);
+        boolean iban = label.equals("IBAN");
         String normalized = value.replaceAll("\\s+", "").toUpperCase(java.util.Locale.ROOT);
-        if (normalized.isBlank()) {
-            normalized = label.equals("IBAN") ? "DE" : "";
+        if (normalized.isBlank() && iban) {
+            normalized = "DE";
         }
-        if (normalized.isEmpty()) {
-            return;
-        }
+        int cells = Math.max(iban ? 22 : 11, normalized.length());
+        float cellWidth = iban ? (width - 8) / cells : CONTENT_WIDTH * 0.0245f;
         float fieldLeft = x + 4;
-        float fieldWidth = width - 8;
         float fieldBottom = bottom + 3;
         float fieldTop = bottom + 22;
-        float characterWidth = fieldWidth / normalized.length();
-        for (int index = 0; index < normalized.length(); index++) {
-            float characterLeft = fieldLeft + index * characterWidth;
+        for (int index = 0; index < cells; index++) {
+            float cellLeft = fieldLeft + index * cellWidth;
             if (index > 0) {
-                line(content, characterLeft, fieldBottom, characterLeft, fieldTop);
+                line(content, cellLeft, fieldBottom, cellLeft, fieldTop);
             }
-            String character = String.valueOf(normalized.charAt(index));
-            float glyphWidth = BODY_FONT.getStringWidth(character) / 1000.0f * 10.0f;
-            text(content, character, characterLeft + (characterWidth - glyphWidth) / 2,
-                    fieldBottom + 5, 10.0f, BODY_FONT);
+            if (index < normalized.length()) {
+                String character = String.valueOf(normalized.charAt(index));
+                float glyphWidth = BODY_FONT.getStringWidth(character) / 1000.0f * 10.0f;
+                text(content, character, cellLeft + (cellWidth - glyphWidth) / 2, fieldBottom + 5, 10.0f,
+                        BODY_FONT);
+            }
         }
     }
 
