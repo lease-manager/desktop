@@ -310,6 +310,14 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void managePairing() {
+        if (context.pairing() == null) {
+            return;
+        }
+        new PairingDialog(context.pairing(), (javafx.stage.Stage) contractList.getScene().getWindow()).showAndWait();
+    }
+
+    @FXML
     private void importSignedReturn() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle(I18n.get("signed.import.title"));

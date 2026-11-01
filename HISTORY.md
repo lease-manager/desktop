@@ -3,6 +3,18 @@
 Work log so that work can be resumed without starting from scratch.
 Newest entries first. Overall concept: `docs/concept/README.md`.
 
+## 2026-11-01 – Device pairing (step 1 of the trust model)
+- `PairingService`: Ed25519 device identity (`device-identity.json`, owner-only permissions), pairing code
+  `leasepair:v1` (id, name, public key; shown as QR), list of paired devices (`paired-devices.json`), sign/verify
+  with the key of a paired device, short fingerprint (SHA-256, 8 bytes) to compare on both devices.
+  Both files live in the data directory and are therefore part of backups.
+- `PairingDialog` (button "Mobilgerät koppeln"): own QR code + fingerprint, accept the phone's code by pasting
+  it or reading a QR image, list/remove paired devices. i18n DE/EN.
+- Not wired yet: packages and returns are still HMAC-only; Ed25519 signatures in `.leasepack`/`.leasesigned`,
+  the Android side of pairing and the Wi-Fi sync follow (see `docs/concept/README.md`).
+- The dialog was compiled and the service unit-tested (`PairingServiceTest`), but the window itself was not
+  looked at on screen yet.
+
 ## 2026-11-01 – Release package and user guide
 - `./gradlew packageApp` creates a self-contained app image with `jpackage` (53 MB, runtime bundled).
   jlink rejects the automatic modules (PDFBox etc.), so JavaFX is the only module-path content and the

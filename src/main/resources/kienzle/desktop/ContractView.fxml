@@ -43,6 +43,7 @@
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#manageBackup" text="%backup.manage" />
+                  <Button mnemonicParsing="false" onAction="#managePairing" text="%pairing.manage" />
                </children>
             </VBox>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
